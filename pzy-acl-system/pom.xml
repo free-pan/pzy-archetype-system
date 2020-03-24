@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.pzy.opensource</groupId>
+        <artifactId>pzy-opensource</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.pzy.opensource.system</groupId>
+    <artifactId>pzy-acl-system</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>pzy-acl-dao</module>
+        <module>pzy-acl-service</module>
+        <module>pzy-acl-rest</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>org.pzy.opensource</groupId>
+                <artifactId>pzy-security</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.pzy.opensource</groupId>
+                <artifactId>pzy-redis-starter</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.pzy.opensource</groupId>
+                <artifactId>pzy-mybatis-plus-starter</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.pzy.opensource</groupId>
+                <artifactId>pzy-springboot-web-starter</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.pzy.opensource</groupId>
+                <artifactId>pzy-swagger-ui</artifactId>
+                <version>${project.parent.version}</version>
+                <optional>true</optional>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
