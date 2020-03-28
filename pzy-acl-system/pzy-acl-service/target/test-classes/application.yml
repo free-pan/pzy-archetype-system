@@ -1,10 +1,12 @@
 ##################### 数据库连接池配置:开始 #######################
 # JDBC 配置(驱动类自动从url的mysql识别,数据源类型自动识别)
 spring:
+  cache:
+    type: none
   datasource:
     druid:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/pzy-acl?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&useSSL=false
+      driver-class-name: com.p6spy.engine.spy.P6SpyDriver # com.mysql.cj.jdbc.Driver
+      url: jdbc:p6spy:mysql://localhost:3306/pzy-acl?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&useSSL=false
       username: root
       password: root
       initial-size: 1 # 连接池初始化大小
@@ -58,3 +60,14 @@ mybatis-plus:
     banner: false #关闭mybatis plus的banner打印
   mapper-locations: classpath*:mapper/**/*.xml
 ##################### mybatis配置:结束 #######################
+
+
+email:
+  mailServerHost: smtp.126.com
+  mailSenderAddress: pan_test_2020@126.com
+  mailSenderUsername: pan_test_2020@126.com
+  password: ZMPMXLYELXFVEKQY
+
+component:
+  cache:
+    cache-key-namespace: winter-cache

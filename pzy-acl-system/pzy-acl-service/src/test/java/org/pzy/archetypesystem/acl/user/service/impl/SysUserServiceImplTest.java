@@ -10,6 +10,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
 import javax.validation.ConstraintViolationException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author pan
@@ -27,9 +28,9 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
     public void testAdd01() {
         try {
             sysUserService.add(null);
-        }catch (ConstraintViolationException e){
+        } catch (ConstraintViolationException e) {
             e.printStackTrace();
-            log.error("发生异常",e);
+            log.error("发生异常", e);
             throw e;
         }
     }
@@ -43,9 +44,9 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
         Long id = null;
         try {
             id = sysUserService.add(sysUserAddDTO);
-        }catch (ConstraintViolationException e){
+        } catch (ConstraintViolationException e) {
             e.printStackTrace();
-            log.error("发生异常",e);
+            log.error("发生异常", e);
             throw e;
         }
     }
@@ -58,9 +59,9 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
         Long id = null;
         try {
             id = sysUserService.add(sysUserAddDTO);
-        }catch (ConstraintViolationException e){
+        } catch (ConstraintViolationException e) {
             e.printStackTrace();
-            log.error("发生异常",e);
+            log.error("发生异常", e);
             throw e;
         }
     }
@@ -68,14 +69,17 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
     @Test
     public void testAdd04() {
         SysUserAddDTO sysUserAddDTO = new SysUserAddDTO();
+        sysUserAddDTO.setEmail("sd4015700@126.com");
+        sysUserAddDTO.setName("潘志勇");
         sysUserAddDTO.setRemark("备注信息!");
         Long id = null;
+        id = sysUserService.add(sysUserAddDTO);
+        System.err.println("主业务执行完毕...");
         try {
-            id = sysUserService.add(sysUserAddDTO);
-        }catch (ConstraintViolationException e){
+            TimeUnit.SECONDS.sleep(15);
+            System.err.println("主线程完毕...");
+        } catch (InterruptedException e) {
             e.printStackTrace();
-            log.error("发生异常",e);
-            throw e;
         }
     }
 
@@ -87,14 +91,15 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
         Long id = null;
         try {
             id = sysUserService.add(sysUserAddDTO);
-        }catch (ConstraintViolationException e){
+        } catch (ConstraintViolationException e) {
             e.printStackTrace();
-            log.error("发生异常",e);
+            log.error("发生异常", e);
             throw e;
         }
     }
 
     @Test
     public void testEdit() {
+        System.out.println(sysUserService.searchSimpleUserById(1243552216950902784L));
     }
 }

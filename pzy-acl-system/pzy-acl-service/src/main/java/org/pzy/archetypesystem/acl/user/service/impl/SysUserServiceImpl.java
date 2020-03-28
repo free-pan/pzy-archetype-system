@@ -1,8 +1,8 @@
 package org.pzy.archetypesystem.acl.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.pzy.archetypesystem.acl.support.spring.event.UserAddEvent;
 import org.pzy.archetypesystem.acl.user.dao.SysUserDAO;
 import org.pzy.archetypesystem.acl.user.domain.dto.*;
 import org.pzy.archetypesystem.acl.user.domain.entity.SysUser;
@@ -12,8 +12,13 @@ import org.pzy.archetypesystem.acl.user.mapstruct.SysUserMapStruct;
 import org.pzy.archetypesystem.acl.user.service.SysUserService;
 import org.pzy.opensource.comm.exception.ValidateException;
 import org.pzy.opensource.comm.util.RandomPasswordUtil;
+import org.pzy.opensource.mybatisplus.service.ServiceTemplateImpl;
+import org.pzy.opensource.mybatisplus.util.SpringUtil;
 import org.pzy.opensource.security.shiro.matcher.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +43,8 @@ import java.util.stream.Collectors;
 @Service
 @Validated
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-public class SysUserServiceImpl extends ServiceImpl<SysUserDAO, SysUser> implements SysUserService {
+@CacheConfig(cacheNames = "test-")
+public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser> implements SysUserService {
 
     @Autowired
     private SysUserMapStruct mapStruct;
@@ -47,6 +53,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDAO, SysUser> impleme
 
     private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
+    @CacheEvict(allEntries = true, beforeInvocation = true)
     @Override
     public Long add(@Valid @NotNull SysUserAddDTO dto) {
         // TODO 邮箱是否唯一检测
@@ -56,14 +63,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDAO, SysUser> impleme
         String pwd = RandomPasswordUtil.generateSixRandomPassword();
         entity.setPassword(PASSWORD_ENCODER.encode(pwd));
         // 持久化
-        super.save(entity);
+        boolean optSuc = super.save(entity);
         if (log.isDebugEnabled()) {
-            log.debug("用户 id:[%s], email:[%s], pwd:[%s]", entity.getId(), entity.getEmail(), entity.getPassword());
+            log.debug("用户 id:[{}], email:[{}], pwd:[{}]", entity.getId(), entity.getEmail(), entity.getPassword());
         }
-        // TODO 发送账号激活邮件
+        // 发送账号激活邮件
+        if (optSuc) {
+            SpringUtil.publishEventOnAfterCommitIfNecessary(new UserAddEvent(this, entity.getId()));
+        }
         return entity.getId();
     }
 
+    @CacheEvict(allEntries = true, beforeInvocation = true)
     @Override
     public boolean edit(@Valid @NotNull SysUserEditDTO dto) {
         // 验证用户信息是否存在
@@ -74,8 +85,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDAO, SysUser> impleme
         return super.updateById(entity);
     }
 
+    @Cacheable(sync = true)
     @Override
     public SimpleSysUserVO searchSimpleUserById(@Valid @NotNull Long id) {
+        SysUserService proxy = (SysUserService) this.getCurrentBeanProxy();
+        System.out.println("代理对象:"+proxy);
         QueryWrapper<SysUser> queryWrapper = buildSimpleSysUserVOSelectQueryWrapper();
         queryWrapper.eq(SysUser.ID, id);
         return queryOneEntityToSimpleSysUserVO(queryWrapper);
@@ -101,6 +115,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDAO, SysUser> impleme
         return new QueryWrapper<SysUser>().select(SysUser.ID, SysUser.EMAIL, SysUser.NAME);
     }
 
+    @Cacheable(sync = true)
     @Override
     public List<SimpleSysUserVO> searchSimpleUserByIds(@Valid @NotEmpty Collection<Long> idColl) {
         QueryWrapper<SysUser> queryWrapper = buildSimpleSysUserVOSelectQueryWrapper();
@@ -108,6 +123,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDAO, SysUser> impleme
         return queryListEntityToSimpleSysUserVO(queryWrapper);
     }
 
+    @Cacheable(sync = true)
     @Override
     public Map<Long, SimpleSysUserVO> searchSimpleUserByIdsMap(@Valid @NotEmpty Collection<Long> idColl) {
         List<SimpleSysUserVO> simpleSysUserList = this.searchSimpleUserByIds(idColl);
@@ -126,6 +142,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDAO, SysUser> impleme
         return simpleSysUserMapStruct.sourceToTarget(sysUserList);
     }
 
+    @Cacheable(sync = true)
     @Override
     public SimpleSysUserVO searchSimpleUserByEmail(@Valid @NotBlank String email) {
         QueryWrapper<SysUser> queryWrapper = buildSimpleSysUserVOSelectQueryWrapper();
@@ -133,6 +150,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDAO, SysUser> impleme
         return this.queryOneEntityToSimpleSysUserVO(queryWrapper);
     }
 
+    @Cacheable(sync = true)
     @Override
     public List<SimpleSysUserVO> searchSimpleUserByEmails(@Valid @NotEmpty Collection<String> emailColl) {
         QueryWrapper<SysUser> queryWrapper = buildSimpleSysUserVOSelectQueryWrapper();
@@ -165,6 +183,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDAO, SysUser> impleme
         return sysUser;
     }
 
+    @Cacheable(sync = true)
     @Override
     public void editPasswordById(@Valid @NotNull EditPasswordDTO editPasswordDTO) {
         SysUser sysUser = this.validateUserExists(editPasswordDTO.getId());
@@ -179,6 +198,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDAO, SysUser> impleme
         this.updateById(entity);
     }
 
+    @Cacheable(sync = true)
     @Override
     public void editPasswordByEmail(@Valid @NotNull ForgetPasswordDTO forgetPasswordDTO) {
 

@@ -1,12 +1,12 @@
 package org.pzy.archetypesystem.acl.user.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import org.pzy.archetypesystem.acl.user.domain.dto.EditPasswordDTO;
 import org.pzy.archetypesystem.acl.user.domain.dto.ForgetPasswordDTO;
 import org.pzy.archetypesystem.acl.user.domain.dto.SysUserAddDTO;
 import org.pzy.archetypesystem.acl.user.domain.dto.SysUserEditDTO;
 import org.pzy.archetypesystem.acl.user.domain.entity.SysUser;
 import org.pzy.archetypesystem.acl.user.domain.vo.SimpleSysUserVO;
+import org.pzy.opensource.mybatisplus.service.ServiceTemplate;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -24,10 +24,10 @@ import java.util.Map;
  * @since 2020-03-24 16:49:38
  */
 @Validated
-public interface SysUserService extends IService<SysUser> {
+public interface SysUserService extends ServiceTemplate<SysUser> {
 
     /**
-     * 新增
+     * 新增, 并清除缓存
      *
      * @param dto 待新增数据
      * @return 新增数据id
@@ -37,7 +37,7 @@ public interface SysUserService extends IService<SysUser> {
     Long add(@Valid @NotNull SysUserAddDTO dto);
 
     /**
-     * 编辑
+     * 编辑, 并清除缓存
      *
      * @param dto 待更新数据
      * @return 是否编辑成功
@@ -47,7 +47,7 @@ public interface SysUserService extends IService<SysUser> {
     boolean edit(@Valid @NotNull SysUserEditDTO dto);
 
     /**
-     * 根据id查找简单的用户信息
+     * 根据id查找简单的用户信息, 并放入缓存
      *
      * @param id 主键
      * @return 简单用户信息
@@ -55,7 +55,7 @@ public interface SysUserService extends IService<SysUser> {
     SimpleSysUserVO searchSimpleUserById(@Valid @NotNull Long id);
 
     /**
-     * 根据id集合查找简单的用户信息
+     * 根据id集合查找简单的用户信息, 并放入缓存
      *
      * @param idColl 主键集合
      * @return 简单用户信息
@@ -63,7 +63,7 @@ public interface SysUserService extends IService<SysUser> {
     List<SimpleSysUserVO> searchSimpleUserByIds(@Valid @NotEmpty Collection<Long> idColl);
 
     /**
-     * 根据id集合查找简单的用户信息
+     * 根据id集合查找简单的用户信息, 并放入缓存
      *
      * @param idColl 主键集合
      * @return key为用户id
@@ -71,7 +71,7 @@ public interface SysUserService extends IService<SysUser> {
     Map<Long, SimpleSysUserVO> searchSimpleUserByIdsMap(@Valid @NotEmpty Collection<Long> idColl);
 
     /**
-     * 根据邮箱查找简单的用户信息
+     * 根据邮箱查找简单的用户信息, 并放入缓存
      *
      * @param email 邮箱
      * @return 简单用户信息
@@ -79,7 +79,7 @@ public interface SysUserService extends IService<SysUser> {
     SimpleSysUserVO searchSimpleUserByEmail(@Valid @NotBlank String email);
 
     /**
-     * 根据id集合查找简单的用户信息
+     * 根据id集合查找简单的用户信息, 并放入缓存
      *
      * @param emailColl 邮箱集合
      * @return 简单用户信息
@@ -87,14 +87,14 @@ public interface SysUserService extends IService<SysUser> {
     List<SimpleSysUserVO> searchSimpleUserByEmails(@Valid @NotEmpty Collection<String> emailColl);
 
     /**
-     * 通过id修改密码
+     * 通过id修改密码, 并清除缓存
      *
      * @param editPasswordDTO 密码相关信息
      */
     void editPasswordById(@Valid @NotNull EditPasswordDTO editPasswordDTO);
 
     /**
-     * 通过邮件修改密码
+     * 通过邮件修改密码, 并清除缓存
      *
      * @param forgetPasswordDTO 密码相关信息
      */
