@@ -11,5 +11,17 @@
 
     <artifactId>pzy-acl-rest</artifactId>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.pzy.opensource</groupId>
+            <artifactId>pzy-springboot-web-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.pzy.opensource.system</groupId>
+            <artifactId>pzy-acl-service</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>

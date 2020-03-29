@@ -22,6 +22,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.pzy.opensource.system</groupId>
+                <artifactId>pzy-acl-service</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.pzy.opensource</groupId>
                 <artifactId>pzy-email</artifactId>
                 <version>${project.parent.version}</version>

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 用户新增事件监听
