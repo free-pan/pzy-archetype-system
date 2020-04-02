@@ -1,8 +1,8 @@
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.pzy.archetypesystem.acl.user.domain.entity.SysUser;
-import org.pzy.archetypesystem.acl.user.service.SysUserService;
+import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
+import org.pzy.archetypesystem.acl.sysuser.service.SysUserService;
 import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.domain.ResultT;
 import org.pzy.opensource.domain.vo.PageVO;

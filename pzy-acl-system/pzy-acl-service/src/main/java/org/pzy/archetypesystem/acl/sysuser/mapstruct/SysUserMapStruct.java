@@ -1,10 +1,10 @@
-package org.pzy.archetypesystem.acl.user.mapstruct;
+package org.pzy.archetypesystem.acl.sysuser.mapstruct;
 
 import org.mapstruct.Mapper;
-import org.pzy.archetypesystem.acl.user.domain.dto.SysUserAddDTO;
-import org.pzy.archetypesystem.acl.user.domain.dto.SysUserEditDTO;
-import org.pzy.archetypesystem.acl.user.domain.entity.SysUser;
-import org.pzy.archetypesystem.acl.user.domain.vo.SysUserVO;
+import org.pzy.archetypesystem.acl.sysuser.dto.SysUserAddDTO;
+import org.pzy.archetypesystem.acl.sysuser.dto.SysUserEditDTO;
+import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
+import org.pzy.archetypesystem.acl.sysuser.vo.SysUserVO;
 import org.pzy.opensource.comm.mapstruct.BaseMapStruct;
 import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 

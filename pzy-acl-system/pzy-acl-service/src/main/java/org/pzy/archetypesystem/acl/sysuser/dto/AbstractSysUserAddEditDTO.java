@@ -1,4 +1,4 @@
-package org.pzy.archetypesystem.acl.user.domain.dto;
+package org.pzy.archetypesystem.acl.sysuser.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

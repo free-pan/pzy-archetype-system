@@ -1,4 +1,4 @@
-package org.pzy.archetypesystem.acl.user.domain.dto;
+package org.pzy.archetypesystem.acl.sysuser.dto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

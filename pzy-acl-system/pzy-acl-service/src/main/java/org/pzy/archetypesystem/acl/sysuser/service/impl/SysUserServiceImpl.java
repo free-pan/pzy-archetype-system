@@ -1,19 +1,21 @@
-package org.pzy.archetypesystem.acl.user.service.impl;
+package org.pzy.archetypesystem.acl.sysuser.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.pzy.archetypesystem.acl.support.spring.event.UserAddEvent;
-import org.pzy.archetypesystem.acl.user.dao.SysUserDAO;
-import org.pzy.archetypesystem.acl.user.domain.dto.*;
-import org.pzy.archetypesystem.acl.user.domain.entity.SysUser;
-import org.pzy.archetypesystem.acl.user.domain.vo.SimpleSysUserVO;
-import org.pzy.archetypesystem.acl.user.mapstruct.SimpleSysUserMapStruct;
-import org.pzy.archetypesystem.acl.user.mapstruct.SysUserMapStruct;
-import org.pzy.archetypesystem.acl.user.service.SysUserService;
+import org.pzy.archetypesystem.acl.sysuser.dao.SysUserDAO;
+import org.pzy.archetypesystem.acl.sysuser.dto.*;
+import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
+import org.pzy.archetypesystem.acl.sysuser.mapstruct.SimpleSysUserMapStruct;
+import org.pzy.archetypesystem.acl.sysuser.mapstruct.SysUserMapStruct;
+import org.pzy.archetypesystem.acl.sysuser.service.SysUserService;
+import org.pzy.archetypesystem.acl.sysuser.vo.SimpleSysUserVO;
 import org.pzy.opensource.comm.exception.ValidateException;
 import org.pzy.opensource.comm.util.RandomPasswordUtil;
 import org.pzy.opensource.mybatisplus.service.ServiceTemplateImpl;
 import org.pzy.opensource.mybatisplus.util.SpringUtil;
+import org.pzy.opensource.redis.support.springboot.annotation.LockBuilder;
+import org.pzy.opensource.redis.support.springboot.annotation.WinterLock;
 import org.pzy.opensource.security.shiro.matcher.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -43,7 +45,7 @@ import java.util.stream.Collectors;
 @Service
 @Validated
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-@CacheConfig(cacheNames = "test-")
+@CacheConfig(cacheNames = "SysUserServiceImpl")
 public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser> implements SysUserService {
 
     @Autowired
@@ -54,9 +56,14 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
     private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @CacheEvict(allEntries = true, beforeInvocation = true)
+    @WinterLock(lockBuilder = @LockBuilder(condition = "[0].email!=null"))
     @Override
     public Long add(@Valid @NotNull SysUserAddDTO dto) {
-        // TODO 邮箱是否唯一检测
+        // 检测邮箱是否唯一
+        int emailCount = super.getBaseMapper().selectEmailCount(dto.getEmail());
+        if (emailCount > 0) {
+            throw new ValidateException("该邮箱已使用!");
+        }
         // 对象转换
         SysUser entity = mapStruct.addSourceToEntity(dto);
         // 生成6位随机密码
@@ -89,7 +96,7 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
     @Override
     public SimpleSysUserVO searchSimpleUserById(@Valid @NotNull Long id) {
         SysUserService proxy = (SysUserService) this.getCurrentBeanProxy();
-        System.out.println("代理对象:"+proxy);
+        System.out.println("代理对象:" + proxy);
         QueryWrapper<SysUser> queryWrapper = buildSimpleSysUserVOSelectQueryWrapper();
         queryWrapper.eq(SysUser.ID, id);
         return queryOneEntityToSimpleSysUserVO(queryWrapper);

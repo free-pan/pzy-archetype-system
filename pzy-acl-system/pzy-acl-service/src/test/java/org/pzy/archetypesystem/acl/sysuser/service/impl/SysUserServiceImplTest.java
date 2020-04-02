@@ -1,9 +1,9 @@
-package org.pzy.archetypesystem.acl.user.service.impl;
+package org.pzy.archetypesystem.acl.sysuser.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.pzy.archetypesystem.acl.AclTestApp;
-import org.pzy.archetypesystem.acl.user.domain.dto.SysUserAddDTO;
-import org.pzy.archetypesystem.acl.user.service.SysUserService;
+import org.pzy.archetypesystem.acl.sysuser.dto.SysUserAddDTO;
+import org.pzy.archetypesystem.acl.sysuser.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -69,7 +69,7 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
     @Test
     public void testAdd04() {
         SysUserAddDTO sysUserAddDTO = new SysUserAddDTO();
-        sysUserAddDTO.setEmail("sd4015700@126.com");
+//        sysUserAddDTO.setEmail("sd4015700@126.com");
         sysUserAddDTO.setName("潘志勇");
         sysUserAddDTO.setRemark("备注信息!");
         Long id = null;

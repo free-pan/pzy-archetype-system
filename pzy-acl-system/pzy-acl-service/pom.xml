@@ -14,6 +14,11 @@
     <dependencies>
         <dependency>
             <groupId>org.pzy.opensource</groupId>
+            <artifactId>pzy-code-generator</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.pzy.opensource</groupId>
             <artifactId>pzy-email</artifactId>
         </dependency>
         <dependency>

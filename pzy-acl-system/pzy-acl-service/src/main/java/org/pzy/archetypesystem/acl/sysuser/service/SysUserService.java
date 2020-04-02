@@ -1,11 +1,11 @@
-package org.pzy.archetypesystem.acl.user.service;
+package org.pzy.archetypesystem.acl.sysuser.service;
 
-import org.pzy.archetypesystem.acl.user.domain.dto.EditPasswordDTO;
-import org.pzy.archetypesystem.acl.user.domain.dto.ForgetPasswordDTO;
-import org.pzy.archetypesystem.acl.user.domain.dto.SysUserAddDTO;
-import org.pzy.archetypesystem.acl.user.domain.dto.SysUserEditDTO;
-import org.pzy.archetypesystem.acl.user.domain.entity.SysUser;
-import org.pzy.archetypesystem.acl.user.domain.vo.SimpleSysUserVO;
+import org.pzy.archetypesystem.acl.sysuser.dto.EditPasswordDTO;
+import org.pzy.archetypesystem.acl.sysuser.dto.ForgetPasswordDTO;
+import org.pzy.archetypesystem.acl.sysuser.dto.SysUserAddDTO;
+import org.pzy.archetypesystem.acl.sysuser.dto.SysUserEditDTO;
+import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
+import org.pzy.archetypesystem.acl.sysuser.vo.SimpleSysUserVO;
 import org.pzy.opensource.mybatisplus.service.ServiceTemplate;
 import org.springframework.validation.annotation.Validated;
 
@@ -99,4 +99,5 @@ public interface SysUserService extends ServiceTemplate<SysUser> {
      * @param forgetPasswordDTO 密码相关信息
      */
     void editPasswordByEmail(@Valid @NotNull ForgetPasswordDTO forgetPasswordDTO);
+
 }

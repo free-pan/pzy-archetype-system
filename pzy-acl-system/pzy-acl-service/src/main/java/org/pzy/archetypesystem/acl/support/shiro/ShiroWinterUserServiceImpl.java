@@ -1,8 +1,8 @@
 package org.pzy.archetypesystem.acl.support.shiro;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.pzy.archetypesystem.acl.user.domain.entity.SysUser;
-import org.pzy.archetypesystem.acl.user.service.SysUserService;
+import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
+import org.pzy.archetypesystem.acl.sysuser.service.SysUserService;
 import org.pzy.opensource.security.domain.bo.PermissionInfoBO;
 import org.pzy.opensource.security.domain.bo.ShiroUserBO;
 import org.pzy.opensource.security.service.ShiroWinterUserService;

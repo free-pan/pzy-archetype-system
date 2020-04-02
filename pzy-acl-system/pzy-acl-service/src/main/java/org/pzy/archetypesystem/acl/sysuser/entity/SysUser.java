@@ -1,11 +1,11 @@
-package org.pzy.archetypesystem.acl.user.domain.entity;
+package org.pzy.archetypesystem.acl.sysuser.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.pzy.opensource.mybatisplus.model.entity.BaseEntity;
+import org.pzy.opensource.mybatisplus.model.entity.LogicDelBaseEntity;
 
 /**
  * (sys_user)表实体类
@@ -17,40 +17,31 @@ import org.pzy.opensource.mybatisplus.model.entity.BaseEntity;
 @Data
 @Accessors(chain = true)
 @TableName(value = "sys_user")
-public class SysUser extends BaseEntity {
+public class SysUser extends LogicDelBaseEntity {
 
     /**
-    * 姓名
-    * 对应列: name
+    * <p>姓名
+    * <p>对应列: name
     */
     @TableField(value="name")
     @ApiModelProperty(value="姓名")
     private String name;
 
     /**
-    * 邮箱
-    * 对应列: email
+    * <p>邮箱
+    * <p>对应列: email
     */
     @TableField(value="email")
     @ApiModelProperty(value="邮箱")
     private String email;
 
     /**
-    * 密码
-    * 对应列: password
+    * <p>密码
+    * <p>对应列: password
     */
     @TableField(value="password")
     @ApiModelProperty(value="密码")
     private String password;
-
-    /**
-    * 备注信息
-    * 对应列: remark
-    */
-    @TableField(value="remark")
-    @ApiModelProperty(value="备注信息")
-    private String remark;
-
 
     /**
     * 姓名
@@ -64,9 +55,5 @@ public class SysUser extends BaseEntity {
     * 密码
     */
     public static final String PASSWORD = "password";
-    /**
-    * 备注信息
-    */
-    public static final String REMARK = "remark";
 
 }

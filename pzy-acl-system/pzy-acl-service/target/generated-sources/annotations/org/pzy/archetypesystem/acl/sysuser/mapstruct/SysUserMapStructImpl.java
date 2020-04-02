@@ -1,21 +1,20 @@
-package org.pzy.archetypesystem.acl.user.mapstruct;
+package org.pzy.archetypesystem.acl.sysuser.mapstruct;
 
-import org.pzy.archetypesystem.acl.user.domain.dto.SysUserAddDTO;
-import org.pzy.archetypesystem.acl.user.domain.dto.SysUserEditDTO;
-import org.pzy.archetypesystem.acl.user.domain.entity.SysUser;
-import org.pzy.archetypesystem.acl.user.domain.vo.SysUserVO;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import javax.annotation.Generated;
+import org.pzy.archetypesystem.acl.sysuser.dto.SysUserAddDTO;
+import org.pzy.archetypesystem.acl.sysuser.dto.SysUserEditDTO;
+import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
+import org.pzy.archetypesystem.acl.sysuser.vo.SysUserVO;
 import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Generated;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-03-27T11:29:50+0800",
+    date = "2020-03-30T22:40:27+0800",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_181 (Oracle Corporation)"
 )
 @Component
@@ -34,7 +33,6 @@ public class SysUserMapStructImpl implements SysUserMapStruct {
 
         sysUser.setName( stringDataMapper.stringMapper( source.getName() ) );
         sysUser.setEmail( stringDataMapper.stringMapper( source.getEmail() ) );
-        sysUser.setRemark( stringDataMapper.stringMapper( source.getRemark() ) );
 
         return sysUser;
     }
@@ -64,7 +62,6 @@ public class SysUserMapStructImpl implements SysUserMapStruct {
         sysUser.setId( source.getId() );
         sysUser.setName( stringDataMapper.stringMapper( source.getName() ) );
         sysUser.setEmail( stringDataMapper.stringMapper( source.getEmail() ) );
-        sysUser.setRemark( stringDataMapper.stringMapper( source.getRemark() ) );
 
         return sysUser;
     }
@@ -100,7 +97,6 @@ public class SysUserMapStructImpl implements SysUserMapStruct {
         sysUserVO.setEditTime( source.getEditTime() );
         sysUserVO.setEditorId( source.getEditorId() );
         sysUserVO.setEditorName( stringDataMapper.stringMapper( source.getEditorName() ) );
-        sysUserVO.setRemark( stringDataMapper.stringMapper( source.getRemark() ) );
 
         return sysUserVO;
     }

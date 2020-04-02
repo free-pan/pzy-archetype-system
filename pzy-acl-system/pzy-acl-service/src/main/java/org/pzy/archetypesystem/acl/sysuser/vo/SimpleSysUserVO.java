@@ -1,4 +1,4 @@
-package org.pzy.archetypesystem.acl.user.domain.vo;
+package org.pzy.archetypesystem.acl.sysuser.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

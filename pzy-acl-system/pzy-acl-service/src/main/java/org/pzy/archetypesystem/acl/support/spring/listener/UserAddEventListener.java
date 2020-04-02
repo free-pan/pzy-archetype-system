@@ -2,8 +2,8 @@ package org.pzy.archetypesystem.acl.support.spring.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.pzy.archetypesystem.acl.support.spring.event.UserAddEvent;
-import org.pzy.archetypesystem.acl.user.domain.entity.SysUser;
-import org.pzy.archetypesystem.acl.user.service.SysUserService;
+import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
+import org.pzy.archetypesystem.acl.sysuser.service.SysUserService;
 import org.pzy.opensource.email.domain.bo.EmailMessageBO;
 import org.pzy.opensource.email.domain.bo.EmailServerPropertiesBO;
 import org.pzy.opensource.email.support.util.EmailUtil;
