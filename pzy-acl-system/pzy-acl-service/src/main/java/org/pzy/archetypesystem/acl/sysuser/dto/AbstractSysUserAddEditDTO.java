@@ -2,7 +2,6 @@ package org.pzy.archetypesystem.acl.sysuser.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -17,7 +16,6 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 @Data
-@Accessors(chain = true)
 public abstract class AbstractSysUserAddEditDTO implements Serializable {
 
     /**

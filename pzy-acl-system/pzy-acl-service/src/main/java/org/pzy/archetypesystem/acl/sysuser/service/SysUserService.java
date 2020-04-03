@@ -1,11 +1,8 @@
 package org.pzy.archetypesystem.acl.sysuser.service;
 
-import org.pzy.archetypesystem.acl.sysuser.dto.EditPasswordDTO;
-import org.pzy.archetypesystem.acl.sysuser.dto.ForgetPasswordDTO;
-import org.pzy.archetypesystem.acl.sysuser.dto.SysUserAddDTO;
-import org.pzy.archetypesystem.acl.sysuser.dto.SysUserEditDTO;
 import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
-import org.pzy.archetypesystem.acl.sysuser.vo.SimpleSysUserVO;
+import org.pzy.archetypesystem.acl.sysuser.dto.*;
+import org.pzy.archetypesystem.acl.sysuser.vo.*;
 import org.pzy.opensource.mybatisplus.service.ServiceTemplate;
 import org.springframework.validation.annotation.Validated;
 
