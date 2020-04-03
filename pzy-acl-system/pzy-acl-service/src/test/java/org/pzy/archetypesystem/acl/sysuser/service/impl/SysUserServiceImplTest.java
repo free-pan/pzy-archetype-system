@@ -69,7 +69,7 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
     @Test
     public void testAdd04() {
         SysUserAddDTO sysUserAddDTO = new SysUserAddDTO();
-//        sysUserAddDTO.setEmail("sd4015700@126.com");
+        sysUserAddDTO.setEmail("sd4015700@126.com");
         sysUserAddDTO.setName("潘志勇");
         sysUserAddDTO.setRemark("备注信息!");
         Long id = null;
