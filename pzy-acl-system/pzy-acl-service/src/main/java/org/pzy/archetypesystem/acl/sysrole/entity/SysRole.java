@@ -1,13 +1,15 @@
 package org.pzy.archetypesystem.acl.sysrole.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
+import org.pzy.opensource.mybatisplus.model.entity.LogicDelBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import java.time.*;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.pzy.opensource.mybatisplus.model.entity.LogicDelBaseEntity;
 
 /**
  * sys_role 表实体类:角色

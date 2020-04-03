@@ -1,13 +1,14 @@
 package org.pzy.archetypesystem.acl.sysrole.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import org.pzy.opensource.mybatisplus.model.entity.LogicDelBaseEntity;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
 import java.io.Serializable;
+import java.time.*;
 
 /**
  * sys_role 表DTO类: 用于新增操作时接收客户端参数
@@ -18,7 +19,6 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("sys_role")
 @ApiModel
 public class SysRoleAddDTO implements Serializable {
 
