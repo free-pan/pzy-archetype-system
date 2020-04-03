@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.pzy.archetypesystem.acl.sysuser.dto.SysUserAddDTO;
 import org.pzy.archetypesystem.acl.sysuser.dto.SysUserEditDTO;
 import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
-import org.pzy.archetypesystem.acl.sysuser.vo.SysUserVO;
+import org.pzy.archetypesystem.acl.sysuser.vo.*;
 import org.pzy.opensource.comm.mapstruct.BaseMapStruct;
 import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 

@@ -2,12 +2,11 @@ package org.pzy.archetypesystem.acl.sysuser.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.pzy.archetypesystem.acl.support.spring.event.UserAddEvent;
-import org.pzy.archetypesystem.acl.sysuser.dao.SysUserDAO;
+import org.pzy.archetypesystem.acl.support.spring.event.*;
+import org.pzy.archetypesystem.acl.sysuser.dao.*;
 import org.pzy.archetypesystem.acl.sysuser.dto.*;
 import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
-import org.pzy.archetypesystem.acl.sysuser.mapstruct.SimpleSysUserMapStruct;
-import org.pzy.archetypesystem.acl.sysuser.mapstruct.SysUserMapStruct;
+import org.pzy.archetypesystem.acl.sysuser.mapstruct.*;
 import org.pzy.archetypesystem.acl.sysuser.service.SysUserService;
 import org.pzy.archetypesystem.acl.sysuser.vo.SimpleSysUserVO;
 import org.pzy.opensource.comm.exception.ValidateException;
@@ -52,6 +51,10 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
     private SysUserMapStruct mapStruct;
     @Autowired
     private SimpleSysUserMapStruct simpleSysUserMapStruct;
+
+    public SysUserServiceImpl() {
+        System.out.println("SysUserServiceImpl初始化...");
+    }
 
     private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
