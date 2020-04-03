@@ -1,7 +1,5 @@
 package org.pzy.archetypesystem.acl.sysrole.vo;
 
-import org.pzy.opensource.mybatisplus.model.entity.LogicDelBaseEntity;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
