@@ -1,7 +1,7 @@
 package org.pzy.archetypesystem.acl.sysrole.dao;
 
-import org.pzy.archetypesystem.acl.sysrole.entity.SysRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.pzy.archetypesystem.acl.sysrole.entity.SysRole;
 import org.springframework.stereotype.Repository;
 
 /**
