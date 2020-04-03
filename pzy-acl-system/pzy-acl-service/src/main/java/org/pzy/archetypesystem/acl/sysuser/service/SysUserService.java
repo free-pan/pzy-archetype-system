@@ -1,7 +1,7 @@
 package org.pzy.archetypesystem.acl.sysuser.service;
 
-import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
 import org.pzy.archetypesystem.acl.sysuser.dto.*;
+import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
 import org.pzy.archetypesystem.acl.sysuser.vo.*;
 import org.pzy.opensource.mybatisplus.service.ServiceTemplate;
 import org.springframework.validation.annotation.Validated;
