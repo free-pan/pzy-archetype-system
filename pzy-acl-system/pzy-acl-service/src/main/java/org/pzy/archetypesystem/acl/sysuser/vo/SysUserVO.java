@@ -53,10 +53,4 @@ public class SysUserVO extends SimpleSysUserVO {
     @ApiModelProperty(value="编辑人姓名")
     private String editorName;
 
-    /**
-    * 备注信息
-    */
-    @ApiModelProperty(value="备注信息")
-    private String remark;
-
 }

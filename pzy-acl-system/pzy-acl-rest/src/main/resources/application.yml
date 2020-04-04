@@ -79,5 +79,9 @@ component:
       - "org.pzy.archetypesystem.acl.sysrole.controller"
       - "org.pzy.archetypesystem.acl.sysuser.controller"
     contact-info:
+      name: "潘志勇"
+      email: "sd4015700@126.com"
+    version: "1.0"
+    title: "基础权限系统"
   cache:
     cache-key-namespace: winter-cache
