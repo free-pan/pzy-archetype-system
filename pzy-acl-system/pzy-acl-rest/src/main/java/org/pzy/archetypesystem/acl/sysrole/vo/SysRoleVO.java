@@ -1,4 +1,4 @@
-package org.pzy.archetypesystem.acl.vo;
+package org.pzy.archetypesystem.acl.sysrole.vo;
 
 import org.pzy.opensource.mybatisplus.model.entity.LogicDelBaseEntity;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.time.*;
 
 /**
- * sys_user 表VO类: 用于服务端返回客户端数据
+ * sys_role 表VO类: 用于服务端返回客户端数据
  *
  * @author pan
  * @since 2020-04-04
@@ -21,16 +21,16 @@ import java.time.*;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel
-public class SysUserVO implements Serializable {
+public class SysRoleVO implements Serializable {
 
     private static final long serialVersionUID=1L;
 
-    @ApiModelProperty(value = "姓名")
+    @ApiModelProperty(value = "角色名")
     private String name;
-    @ApiModelProperty(value = "邮箱")
-    private String email;
-    @ApiModelProperty(value = "密码")
-    private String password;
+    @ApiModelProperty(value = "角色编码. 必须唯一")
+    private String code;
+    @ApiModelProperty(value = "备注信息")
+    private String remark;
 
 
     @ApiModelProperty(value = "主键")

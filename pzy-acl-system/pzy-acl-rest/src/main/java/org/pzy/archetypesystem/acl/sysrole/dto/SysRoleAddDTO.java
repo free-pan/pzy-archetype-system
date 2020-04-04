@@ -1,4 +1,4 @@
-package org.pzy.archetypesystem.acl.dto;
+package org.pzy.archetypesystem.acl.sysrole.dto;
 
 import org.pzy.opensource.mybatisplus.model.entity.LogicDelBaseEntity;
 

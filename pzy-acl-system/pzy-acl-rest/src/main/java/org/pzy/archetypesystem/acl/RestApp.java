@@ -1,4 +1,4 @@
-package org.pzy.archetypesystem;
+package org.pzy.archetypesystem.acl;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.pzy.opensource.domain.GlobalConstant;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableCaching(order = GlobalConstant.AOP_ORDER_CACHE)
 @EnableTransactionManagement(order = GlobalConstant.AOP_ORDER_TRANSACTIONAL)
 @EnableConfigurationProperties
-@MapperScan(value = "org.pzy.archetypesystem.**.dao", annotationClass = Repository.class)
+@MapperScan(value = "org.pzy.archetypesystem.acl.**.dao", annotationClass = Repository.class)
 public class RestApp {
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(RestApp.class);

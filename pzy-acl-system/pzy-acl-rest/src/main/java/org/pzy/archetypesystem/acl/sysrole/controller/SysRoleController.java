@@ -1,12 +1,12 @@
-package org.pzy.archetypesystem.acl.controller;
+package org.pzy.archetypesystem.acl.sysrole.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiImplicitParam;
-import org.pzy.archetypesystem.acl.service.SysRoleService;
-import org.pzy.archetypesystem.acl.entity.*;
+import org.pzy.archetypesystem.acl.sysrole.service.SysRoleService;
+import org.pzy.archetypesystem.acl.sysrole.entity.*;
 import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.domain.ResultT;
 import org.pzy.opensource.domain.vo.PageVO;
@@ -18,7 +18,7 @@ import org.pzy.opensource.domain.vo.PageVO;
  * @since 2020-04-04
  */
 @RestController
-@RequestMapping("/acl/sys-role")
+@RequestMapping("/sys/role")
 @Api(tags = "SysRole的rest服务")
 public class SysRoleController {
 
@@ -32,7 +32,7 @@ public class SysRoleController {
         return ResultT.success(pageResult);
     }
 
-    @GetMapping("${id}")
+    @GetMapping("{id}")
     @ApiOperation(value = "SysRole详细查找")
     @ApiImplicitParam(name = "id", value = "唯一标识", dataType = "Long", paramType = "path", required = true)
     public ResultT<SysRole> searchById(@PathVariable("id") Long id) {

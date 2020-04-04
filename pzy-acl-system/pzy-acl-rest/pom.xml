@@ -35,6 +35,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.pzy.opensource</groupId>
+            <artifactId>pzy-swagger-ui</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
 </project>
