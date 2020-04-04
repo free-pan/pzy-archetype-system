@@ -52,6 +52,10 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
     @Autowired
     private SimpleSysUserMapStruct simpleSysUserMapStruct;
 
+    public SysUserServiceImpl() {
+        System.out.println("无参构造方法");
+    }
+
     private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @CacheEvict(allEntries = true, beforeInvocation = true)

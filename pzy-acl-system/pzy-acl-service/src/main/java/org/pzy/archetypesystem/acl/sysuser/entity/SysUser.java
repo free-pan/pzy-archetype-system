@@ -44,6 +44,14 @@ public class SysUser extends LogicDelBaseEntity {
     private String password;
 
     /**
+     * <p>是否激活. 0.未激活 1.已激活
+     * <p>对应列: active
+     */
+    @TableField(value="active")
+    @ApiModelProperty(value="是否激活")
+    private Short active;
+
+    /**
     * 姓名
     */
     public static final String NAME = "name";
@@ -55,5 +63,9 @@ public class SysUser extends LogicDelBaseEntity {
     * 密码
     */
     public static final String PASSWORD = "password";
+    /**
+     * 是否激活. 0.未激活 1.已激活
+     */
+    public static final String ACTIVE = "active";
 
 }

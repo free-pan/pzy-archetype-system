@@ -1,5 +1,6 @@
 package org.pzy.archetypesystem.acl.support.spring.listener;
 
+import cn.hutool.core.lang.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.pzy.archetypesystem.acl.support.spring.event.UserAddEvent;
 import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
@@ -7,6 +8,7 @@ import org.pzy.archetypesystem.acl.sysuser.service.SysUserService;
 import org.pzy.opensource.email.domain.bo.EmailMessageBO;
 import org.pzy.opensource.email.domain.bo.EmailServerPropertiesBO;
 import org.pzy.opensource.email.support.util.EmailUtil;
+import org.pzy.opensource.redis.support.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
@@ -14,7 +16,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 用户新增事件监听
@@ -58,18 +60,22 @@ public class UserAddEventListener {
         if (null == sysUser) {
             log.error(String.format("用户信息不存在!id=%s", event.getUserId()));
         } else {
-            String uuid = UUID.randomUUID().toString();
+            String uuid = UUID.fastUUID().toString(true);
             EmailMessageBO emailMessageBO = new EmailMessageBO();
             emailMessageBO.setTitle("账号激活");
             emailMessageBO.setToAddr(Arrays.asList(sysUser.getEmail()));
-            emailMessageBO.setContent("你好" + sysUser.getName() + "邮件内容:" + uuid);
+            emailMessageBO.setContent("你好" + sysUser.getName() + "请使用该激活码激活(有效时间1分钟):" + uuid);
             EmailServerPropertiesBO emailServerProperties = new EmailServerPropertiesBO();
             emailServerProperties.setPassword(password);
             emailServerProperties.setMailSenderAddress(mailSenderAddress);
             emailServerProperties.setMailSenderUsername(mailSenderUsername);
             emailServerProperties.setMailServerHost(mailServerHost);
             EmailUtil.send(emailServerProperties, emailMessageBO);
-            System.err.println("给邮箱[" + sysUser.getEmail() + "]发送邮件成功!");
+            // redis中存放存放uuid,有效时间为1分钟
+            RedisUtil.put(uuid, 0, TimeUnit.MINUTES.toSeconds(1));
+            if (log.isDebugEnabled()) {
+                log.debug("给邮箱[" + sysUser.getEmail() + "]发送邮件成功!激活码(1分钟内有效):" + uuid);
+            }
         }
     }
 }

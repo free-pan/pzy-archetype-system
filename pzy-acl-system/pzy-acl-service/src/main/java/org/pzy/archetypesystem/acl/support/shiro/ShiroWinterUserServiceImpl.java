@@ -3,6 +3,7 @@ package org.pzy.archetypesystem.acl.support.shiro;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
 import org.pzy.archetypesystem.acl.sysuser.service.SysUserService;
+import org.pzy.opensource.domain.GlobalConstant;
 import org.pzy.opensource.security.domain.bo.PermissionInfoBO;
 import org.pzy.opensource.security.domain.bo.ShiroUserBO;
 import org.pzy.opensource.security.service.ShiroWinterUserService;
@@ -33,6 +34,7 @@ public class ShiroWinterUserServiceImpl implements ShiroWinterUserService {
             shiroUserBO.setUkFlag(String.valueOf(sysUser.getId()));
             shiroUserBO.setUsername(username);
             shiroUserBO.setPassword(sysUser.getPassword());
+            shiroUserBO.setEnabled(sysUser.getActive() == GlobalConstant.LOGIC_DEL_YES);
         }
         return shiroUserBO;
     }
