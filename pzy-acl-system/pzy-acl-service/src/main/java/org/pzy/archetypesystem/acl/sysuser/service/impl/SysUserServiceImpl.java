@@ -3,6 +3,7 @@ package org.pzy.archetypesystem.acl.sysuser.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.pzy.archetypesystem.acl.support.spring.event.*;
+import org.pzy.archetypesystem.acl.support.spring.listener.CustomEventListener;
 import org.pzy.archetypesystem.acl.sysuser.dao.*;
 import org.pzy.archetypesystem.acl.sysuser.dto.*;
 import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
@@ -25,6 +26,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -64,7 +66,7 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
     @CacheEvict(allEntries = true, beforeInvocation = true)
     @WinterLock(lockBuilder = @LockBuilder(condition = "[0].email!=null"))
     @Override
-    public Long add(@Valid @NotNull SysUserAddDTO dto) {
+    public Long addClearCache(@Valid @NotNull SysUserAddDTO dto) {
         // 检测邮箱是否唯一
         int emailCount = super.getBaseMapper().selectEmailCount(dto.getEmail());
         if (emailCount > 0) {
@@ -130,7 +132,7 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
 
     @CacheEvict(allEntries = true, beforeInvocation = true)
     @Override
-    public boolean edit(@Valid @NotNull SysUserEditDTO dto) {
+    public boolean editClearCache(@Valid @NotNull SysUserEditDTO dto) {
         // 验证用户信息是否存在
         this.validateUserExists(dto.getId());
         // 对象转换
@@ -141,7 +143,7 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
 
     @Cacheable(sync = true)
     @Override
-    public SimpleSysUserVO searchSimpleUserById(@Valid @NotNull Long id) {
+    public SimpleSysUserVO searchSimpleUserByIdAndCache(@Valid @NotNull Long id) {
         SysUserService proxy = (SysUserService) this.getCurrentBeanProxy();
         System.out.println("代理对象:" + proxy);
         QueryWrapper<SysUser> queryWrapper = buildSimpleSysUserVOSelectQueryWrapper();
@@ -171,7 +173,7 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
 
     @Cacheable(sync = true)
     @Override
-    public List<SimpleSysUserVO> searchSimpleUserByIds(@Valid @NotEmpty Collection<Long> idColl) {
+    public List<SimpleSysUserVO> searchSimpleUserByIdsAndCache(@Valid @NotEmpty Collection<Long> idColl) {
         QueryWrapper<SysUser> queryWrapper = buildSimpleSysUserVOSelectQueryWrapper();
         queryWrapper.in(SysUser.ID, idColl);
         return queryListEntityToSimpleSysUserVO(queryWrapper);
@@ -179,8 +181,8 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
 
     @Cacheable(sync = true)
     @Override
-    public Map<Long, SimpleSysUserVO> searchSimpleUserByIdsMap(@Valid @NotEmpty Collection<Long> idColl) {
-        List<SimpleSysUserVO> simpleSysUserList = this.searchSimpleUserByIds(idColl);
+    public Map<Long, SimpleSysUserVO> searchSimpleUserByIdsMapAndCache(@Valid @NotEmpty Collection<Long> idColl) {
+        List<SimpleSysUserVO> simpleSysUserList = this.searchSimpleUserByIdsAndCache(idColl);
         // list转map
         return simpleSysUserList.parallelStream().collect(Collectors.toMap(SimpleSysUserVO::getId, item -> item, (k1, k2) -> k1));
     }
@@ -198,7 +200,7 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
 
     @Cacheable(sync = true)
     @Override
-    public SimpleSysUserVO searchSimpleUserByEmail(@Valid @NotBlank String email) {
+    public SimpleSysUserVO searchSimpleUserByEmailAndCache(@Valid @NotBlank String email) {
         QueryWrapper<SysUser> queryWrapper = buildSimpleSysUserVOSelectQueryWrapper();
         queryWrapper.eq(SysUser.EMAIL, email);
         return this.queryOneEntityToSimpleSysUserVO(queryWrapper);
@@ -206,7 +208,7 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
 
     @Cacheable(sync = true)
     @Override
-    public List<SimpleSysUserVO> searchSimpleUserByEmails(@Valid @NotEmpty Collection<String> emailColl) {
+    public List<SimpleSysUserVO> searchSimpleUserByEmailsAndCache(@Valid @NotEmpty Collection<String> emailColl) {
         QueryWrapper<SysUser> queryWrapper = buildSimpleSysUserVOSelectQueryWrapper();
         queryWrapper.in(SysUser.EMAIL, emailColl);
         return this.queryListEntityToSimpleSysUserVO(queryWrapper);
@@ -237,9 +239,9 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
         return sysUser;
     }
 
-    @Cacheable(sync = true)
+    @CacheEvict(allEntries = true, beforeInvocation = true)
     @Override
-    public void editPasswordById(@Valid @NotNull EditPasswordDTO editPasswordDTO) {
+    public void editPasswordByIdAndClearCache(@Valid @NotNull EditPasswordDTO editPasswordDTO) {
         SysUser sysUser = this.validateUserExists(editPasswordDTO.getId());
         if (!PASSWORD_ENCODER.matches(editPasswordDTO.getOldPwd(), sysUser.getPassword())) {
             throw new ValidateException("原始密码错误!");
@@ -263,9 +265,22 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
         }
     }
 
-    @Cacheable(sync = true)
+    @CacheEvict(allEntries = true, beforeInvocation = true)
     @Override
-    public void editPasswordByEmail(@Valid @NotNull ForgetPasswordDTO forgetPasswordDTO) {
-
+    public void editPasswordByEmailAndClearCache(@Valid @NotNull ForgetPasswordDTO forgetPasswordDTO) {
+        this.validateNewPwd(forgetPasswordDTO);
+        String key = CustomEventListener.buildPasswordModifyVerifyCodeRedisKey(forgetPasswordDTO.getEmail());
+        String verifyCode = (String) RedisUtil.get(key);
+        if (StringUtils.isEmpty(verifyCode)) {
+            throw new ValidateException("无效的邮箱地址!");
+        } else if (!forgetPasswordDTO.getCode().equalsIgnoreCase(verifyCode)) {
+            throw new ValidateException("无效的验证码!");
+        }
+        // 根据邮箱修改密码
+        SysUser entity = new SysUser();
+        entity.setPassword(PASSWORD_ENCODER.encode(forgetPasswordDTO.getNewPwd()));
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(SysUser.EMAIL, forgetPasswordDTO.getEmail());
+        super.update(entity, queryWrapper);
     }
 }

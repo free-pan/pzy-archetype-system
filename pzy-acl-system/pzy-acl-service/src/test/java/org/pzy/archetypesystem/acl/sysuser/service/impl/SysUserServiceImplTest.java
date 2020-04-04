@@ -27,7 +27,7 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
     @Test
     public void testAdd01() {
         try {
-            sysUserService.add(null);
+            sysUserService.addClearCache(null);
         } catch (ConstraintViolationException e) {
             e.printStackTrace();
             log.error("发生异常", e);
@@ -43,7 +43,7 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
         sysUserAddDTO.setRemark("备注信息!");
         Long id = null;
         try {
-            id = sysUserService.add(sysUserAddDTO);
+            id = sysUserService.addClearCache(sysUserAddDTO);
         } catch (ConstraintViolationException e) {
             e.printStackTrace();
             log.error("发生异常", e);
@@ -58,7 +58,7 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
         sysUserAddDTO.setRemark("备注信息!");
         Long id = null;
         try {
-            id = sysUserService.add(sysUserAddDTO);
+            id = sysUserService.addClearCache(sysUserAddDTO);
         } catch (ConstraintViolationException e) {
             e.printStackTrace();
             log.error("发生异常", e);
@@ -73,7 +73,7 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
         sysUserAddDTO.setName("潘志勇");
         sysUserAddDTO.setRemark("备注信息!");
         Long id = null;
-        id = sysUserService.add(sysUserAddDTO);
+        id = sysUserService.addClearCache(sysUserAddDTO);
         System.err.println("主业务执行完毕...");
         try {
             TimeUnit.SECONDS.sleep(15);
@@ -90,7 +90,7 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
         sysUserAddDTO.setRemark("备注信息!");
         Long id = null;
         try {
-            id = sysUserService.add(sysUserAddDTO);
+            id = sysUserService.addClearCache(sysUserAddDTO);
         } catch (ConstraintViolationException e) {
             e.printStackTrace();
             log.error("发生异常", e);
@@ -100,6 +100,6 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testEdit() {
-        System.out.println(sysUserService.searchSimpleUserById(1243552216950902784L));
+        System.out.println(sysUserService.searchSimpleUserByIdAndCache(1243552216950902784L));
     }
 }

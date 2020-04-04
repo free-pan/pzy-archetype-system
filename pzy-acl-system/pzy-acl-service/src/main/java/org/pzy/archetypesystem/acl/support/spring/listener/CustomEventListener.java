@@ -6,6 +6,7 @@ import org.pzy.archetypesystem.acl.support.spring.event.ChangePasswordSendValida
 import org.pzy.archetypesystem.acl.support.spring.event.UserAddEvent;
 import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
 import org.pzy.archetypesystem.acl.sysuser.service.SysUserService;
+import org.pzy.opensource.comm.util.RandomPasswordUtil;
 import org.pzy.opensource.email.domain.bo.EmailMessageBO;
 import org.pzy.opensource.email.domain.bo.EmailServerPropertiesBO;
 import org.pzy.opensource.email.support.util.EmailUtil;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -53,6 +55,16 @@ public class CustomEventListener {
     @Autowired
     private SysUserService sysUserService;
 
+    /**
+     * 根据邮箱构建密码修改验证码存储key
+     *
+     * @param email
+     * @return
+     */
+    public static final String buildPasswordModifyVerifyCodeRedisKey(String email) {
+        return email;
+    }
+
     @EventListener
     @Async
     public void onUserAddEvent(UserAddEvent event) {
@@ -62,13 +74,14 @@ public class CustomEventListener {
             log.error(String.format("用户信息不存在!id=%s", event.getUserId()));
         } else {
             String uuid = UUID.fastUUID().toString(true);
+            String key = uuid;
             EmailMessageBO emailMessageBO = new EmailMessageBO();
             emailMessageBO.setTitle("账号激活");
             emailMessageBO.setToAddr(Arrays.asList(sysUser.getEmail()));
             emailMessageBO.setContent("你好" + sysUser.getName() + "请使用该激活码激活(有效时间1分钟):" + uuid);
             sendEmail(emailMessageBO);
             // redis中存放存放uuid,有效时间为1分钟
-            RedisUtil.put(uuid, event.getUserId(), TimeUnit.MINUTES.toSeconds(1));
+            RedisUtil.put(key, event.getUserId(), TimeUnit.MINUTES.toSeconds(1));
             if (log.isDebugEnabled()) {
                 log.debug("给邮箱[" + sysUser.getEmail() + "]发送邮件成功!激活码(1分钟内有效):" + uuid);
             }
@@ -92,13 +105,29 @@ public class CustomEventListener {
     @EventListener
     @Async
     public void onChangePasswordValidateCodeEvent(ChangePasswordSendValidateCodeEvent event) {
-        log.debug("发送密码修改验证码事件:{}", event.getUserId());
+        if (log.isDebugEnabled()) {
+            log.debug("发送密码修改验证码事件:{}", event.getUserId());
+        }
+        // 存储key
+        String key = buildPasswordModifyVerifyCodeRedisKey(event.getEmail());
+        // 生成验证码
+        String verifyCode = (String) RedisUtil.get(key);
+        boolean hasOldVerifyCode = true;
+        if (StringUtils.isEmpty(verifyCode)) {
+            hasOldVerifyCode = false;
+            verifyCode = RandomPasswordUtil.generateSixRandomNumberWordVerifyCode();
+        }
         EmailMessageBO emailMessageBO = new EmailMessageBO();
         emailMessageBO.setTitle("密码修改验证码");
         emailMessageBO.setToAddr(Arrays.asList(event.getEmail()));
-//        RandomPasswordUtil.generateSixRandomPassword();
-        String verifyCode = null;
         emailMessageBO.setContent("秒修改验证码(有效时间1分钟):" + verifyCode);
         sendEmail(emailMessageBO);
+        if (!hasOldVerifyCode) {
+            // 验证码有效时间1分钟
+            RedisUtil.put(key, verifyCode, TimeUnit.MINUTES.toSeconds(1));
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("发送给[{}]的密码修改验证码为[{}]", event.getEmail(), verifyCode);
+        }
     }
 }

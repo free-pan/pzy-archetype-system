@@ -32,7 +32,7 @@ public interface SysUserService extends ServiceTemplate<SysUser> {
      * @author pan
      * @since 2020-03-24 16:49:38
      */
-    Long add(@Valid @NotNull SysUserAddDTO dto);
+    Long addClearCache(@Valid @NotNull SysUserAddDTO dto);
 
     /**
      * 激活账号
@@ -56,7 +56,7 @@ public interface SysUserService extends ServiceTemplate<SysUser> {
      * @author pan
      * @since 2020-03-24 16:49:38
      */
-    boolean edit(@Valid @NotNull SysUserEditDTO dto);
+    boolean editClearCache(@Valid @NotNull SysUserEditDTO dto);
 
     /**
      * 根据id查找简单的用户信息, 并放入缓存
@@ -64,7 +64,7 @@ public interface SysUserService extends ServiceTemplate<SysUser> {
      * @param id 主键
      * @return 简单用户信息
      */
-    SimpleSysUserVO searchSimpleUserById(@Valid @NotNull Long id);
+    SimpleSysUserVO searchSimpleUserByIdAndCache(@Valid @NotNull Long id);
 
     /**
      * 根据id集合查找简单的用户信息, 并放入缓存
@@ -72,7 +72,7 @@ public interface SysUserService extends ServiceTemplate<SysUser> {
      * @param idColl 主键集合
      * @return 简单用户信息
      */
-    List<SimpleSysUserVO> searchSimpleUserByIds(@Valid @NotEmpty Collection<Long> idColl);
+    List<SimpleSysUserVO> searchSimpleUserByIdsAndCache(@Valid @NotEmpty Collection<Long> idColl);
 
     /**
      * 根据id集合查找简单的用户信息, 并放入缓存
@@ -80,7 +80,7 @@ public interface SysUserService extends ServiceTemplate<SysUser> {
      * @param idColl 主键集合
      * @return key为用户id
      */
-    Map<Long, SimpleSysUserVO> searchSimpleUserByIdsMap(@Valid @NotEmpty Collection<Long> idColl);
+    Map<Long, SimpleSysUserVO> searchSimpleUserByIdsMapAndCache(@Valid @NotEmpty Collection<Long> idColl);
 
     /**
      * 根据邮箱查找简单的用户信息, 并放入缓存
@@ -88,7 +88,7 @@ public interface SysUserService extends ServiceTemplate<SysUser> {
      * @param email 邮箱
      * @return 简单用户信息
      */
-    SimpleSysUserVO searchSimpleUserByEmail(@Valid @NotBlank String email);
+    SimpleSysUserVO searchSimpleUserByEmailAndCache(@Valid @NotBlank String email);
 
     /**
      * 根据id集合查找简单的用户信息, 并放入缓存
@@ -96,14 +96,14 @@ public interface SysUserService extends ServiceTemplate<SysUser> {
      * @param emailColl 邮箱集合
      * @return 简单用户信息
      */
-    List<SimpleSysUserVO> searchSimpleUserByEmails(@Valid @NotEmpty Collection<String> emailColl);
+    List<SimpleSysUserVO> searchSimpleUserByEmailsAndCache(@Valid @NotEmpty Collection<String> emailColl);
 
     /**
      * 通过id修改密码, 并清除缓存
      *
      * @param editPasswordDTO 密码相关信息
      */
-    void editPasswordById(@Valid @NotNull EditPasswordDTO editPasswordDTO);
+    void editPasswordByIdAndClearCache(@Valid @NotNull EditPasswordDTO editPasswordDTO);
 
     /**
      * 给指定邮箱发送修改密码时用到的验证码
@@ -117,6 +117,6 @@ public interface SysUserService extends ServiceTemplate<SysUser> {
      *
      * @param forgetPasswordDTO 密码相关信息
      */
-    void editPasswordByEmail(@Valid @NotNull ForgetPasswordDTO forgetPasswordDTO);
+    void editPasswordByEmailAndClearCache(@Valid @NotNull ForgetPasswordDTO forgetPasswordDTO);
 
 }
