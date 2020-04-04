@@ -1,14 +1,15 @@
 package org.pzy.archetypesystem.acl.sysuser.mapstruct;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.annotation.Generated;
 import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
 import org.pzy.archetypesystem.acl.sysuser.vo.SimpleSysUserVO;
 import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Generated;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",

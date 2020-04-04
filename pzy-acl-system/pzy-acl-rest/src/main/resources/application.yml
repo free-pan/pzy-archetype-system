@@ -80,8 +80,8 @@ component:
   swagger:
     enable: true
     match-packages:
-      - "org.pzy.archetypesystem.acl.sysrole.controller"
-      - "org.pzy.archetypesystem.acl.sysuser.controller"
+      - "org.pzy.archetypesystem.acl.controller"
+      - "org.pzy.archetypesystem.acl.controller"
     contact-info:
       name: "潘志勇"
       email: "sd4015700@126.com"

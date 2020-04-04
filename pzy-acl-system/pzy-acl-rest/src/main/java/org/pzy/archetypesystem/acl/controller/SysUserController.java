@@ -26,6 +26,13 @@ public class SysUserController {
     @Autowired
     private SysUserService service;
 
+    @DeleteMapping("clear-cache")
+    @ApiOperation(value = "SysUser清除缓存")
+    public ResultT clearCache() {
+        service.clearCache();
+        return ResultT.success();
+    }
+
     @GetMapping
     @ApiOperation(value = "SysUser分页查找")
     public ResultT<PageT<SysUserVO>> searchPage(SysUserSearchDTO dto) {
