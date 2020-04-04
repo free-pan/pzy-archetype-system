@@ -1,13 +1,15 @@
 package org.pzy.archetypesystem.acl.sysuser.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
-import org.pzy.archetypesystem.acl.support.spring.event.*;
+import org.pzy.archetypesystem.acl.support.spring.event.UserAddEvent;
 import org.pzy.archetypesystem.acl.support.spring.listener.CustomEventListener;
-import org.pzy.archetypesystem.acl.sysuser.dao.*;
+import org.pzy.archetypesystem.acl.sysuser.dao.SysUserDAO;
 import org.pzy.archetypesystem.acl.sysuser.dto.*;
 import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
-import org.pzy.archetypesystem.acl.sysuser.mapstruct.*;
+import org.pzy.archetypesystem.acl.sysuser.mapstruct.SimpleSysUserMapStruct;
+import org.pzy.archetypesystem.acl.sysuser.mapstruct.SysUserMapStruct;
 import org.pzy.archetypesystem.acl.sysuser.service.SysUserService;
 import org.pzy.archetypesystem.acl.sysuser.vo.SimpleSysUserVO;
 import org.pzy.archetypesystem.acl.sysuser.vo.SysUserVO;
@@ -16,6 +18,7 @@ import org.pzy.opensource.comm.util.RandomPasswordUtil;
 import org.pzy.opensource.domain.GlobalConstant;
 import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.mybatisplus.service.ServiceTemplateImpl;
+import org.pzy.opensource.mybatisplus.util.PageUtil;
 import org.pzy.opensource.mybatisplus.util.SpringUtil;
 import org.pzy.opensource.redis.support.springboot.annotation.LockBuilder;
 import org.pzy.opensource.redis.support.springboot.annotation.WinterLock;
@@ -288,6 +291,12 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
 
     @Override
     public PageT<SysUserVO> searchPageAndCache(SysUserSearchDTO dto) {
+        SysUserSearchDTO cdt = mapStruct.searchDtoToSearchDTO(dto);
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(SysUser.NAME, cdt.getKw()).or().like(SysUser.EMAIL, cdt.getKw());
+        IPage<SysUser> mybatisPlusPageCondition = PageUtil.pageVO2MybatisPlusPage(dto.getPage());
+        IPage<SysUser> mybatisPlusPageResult = super.page(mybatisPlusPageCondition,queryWrapper);
+
         return null;
     }
 }
