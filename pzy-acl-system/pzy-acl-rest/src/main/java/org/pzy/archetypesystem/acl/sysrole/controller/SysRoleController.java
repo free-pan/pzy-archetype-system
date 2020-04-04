@@ -1,15 +1,15 @@
 package org.pzy.archetypesystem.acl.sysrole.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import org.pzy.archetypesystem.acl.sysrole.entity.SysRole;
 import org.pzy.archetypesystem.acl.sysrole.service.SysRoleService;
-import org.pzy.archetypesystem.acl.sysrole.entity.*;
 import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.domain.ResultT;
 import org.pzy.opensource.domain.vo.PageVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * SysRole 的rest服务

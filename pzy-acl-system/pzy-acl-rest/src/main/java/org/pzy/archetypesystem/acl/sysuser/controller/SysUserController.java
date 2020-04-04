@@ -1,15 +1,15 @@
 package org.pzy.archetypesystem.acl.sysuser.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
 import org.pzy.archetypesystem.acl.sysuser.service.SysUserService;
-import org.pzy.archetypesystem.acl.sysuser.entity.*;
 import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.domain.ResultT;
 import org.pzy.opensource.domain.vo.PageVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * SysUser 的rest服务
