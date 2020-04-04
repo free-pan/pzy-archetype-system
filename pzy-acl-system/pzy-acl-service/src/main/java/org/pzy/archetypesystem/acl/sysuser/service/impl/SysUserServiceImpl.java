@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.pzy.archetypesystem.acl.sysuser.service.impl.SysUserServiceImpl.CACHE_NAME;
+
 /**
  * (sys_user)表服务实现
  *
@@ -54,9 +56,10 @@ import java.util.stream.Collectors;
 @Service
 @Validated
 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-@CacheConfig(cacheNames = "SysUserServiceImpl")
+@CacheConfig(cacheNames = CACHE_NAME)
 public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser> implements SysUserService {
 
+    public static final String CACHE_NAME = "ACL";
     @Autowired
     private SysUserMapStruct mapStruct;
     @Autowired
@@ -67,6 +70,14 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
     }
 
     private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+
+    @CacheEvict(allEntries = true, beforeInvocation = true)
+    @Override
+    public void clearCache() {
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("清除[%s]服务类缓存!", this.getClass().getName()));
+        }
+    }
 
     @CacheEvict(allEntries = true, beforeInvocation = true)
     @WinterLock(lockBuilder = @LockBuilder(condition = "[0].email!=null"))

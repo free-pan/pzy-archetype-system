@@ -22,5 +22,5 @@ import org.springframework.validation.annotation.Validated;
 @CacheConfig(cacheNames = SysRoleServiceImpl.CACHE_NAME)
 public class SysRoleServiceImpl extends ServiceTemplateImpl<SysRoleDAO, SysRole> implements SysRoleService {
 
-    public static final String CACHE_NAME = "SysRoleServiceImpl";
+    public static final String CACHE_NAME = "ACL";
 }
