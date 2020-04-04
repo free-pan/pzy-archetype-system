@@ -11,10 +11,12 @@ import org.pzy.archetypesystem.acl.sysuser.service.SysUserService;
 import org.pzy.archetypesystem.acl.sysuser.vo.SimpleSysUserVO;
 import org.pzy.opensource.comm.exception.ValidateException;
 import org.pzy.opensource.comm.util.RandomPasswordUtil;
+import org.pzy.opensource.domain.GlobalConstant;
 import org.pzy.opensource.mybatisplus.service.ServiceTemplateImpl;
 import org.pzy.opensource.mybatisplus.util.SpringUtil;
 import org.pzy.opensource.redis.support.springboot.annotation.LockBuilder;
 import org.pzy.opensource.redis.support.springboot.annotation.WinterLock;
+import org.pzy.opensource.redis.support.util.RedisUtil;
 import org.pzy.opensource.security.shiro.matcher.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -26,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -82,6 +85,47 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
             SpringUtil.publishEventOnAfterCommitIfNecessary(new UserAddEvent(this, entity.getId()));
         }
         return entity.getId();
+    }
+
+    @Override
+    public void activeAccount(String activeCode) {
+        Long id = (Long) RedisUtil.get(activeCode);
+        if (null == id) {
+            throw new ValidateException("无效的激活码!");
+        }
+        RedisUtil.remove(activeCode);
+        SysUser sysUser = new SysUser();
+        sysUser.setId(id);
+        sysUser.setActive(GlobalConstant.ACTIVE);
+        SysUserService serviceProxy = (SysUserService) super.getCurrentBeanProxy();
+        serviceProxy.editAndClearCache(sysUser);
+    }
+
+    @Override
+    public void sendActiveEmailRetry(@Valid @Email(message = "请输入有效的邮箱地址!") @NotBlank(message = "请输入有效的邮箱地址!") String toEmail) {
+        SysUser entity = this.getSysUserByEmail(toEmail);
+        if (null != entity) {
+            if (entity.getActive() == GlobalConstant.ACTIVE) {
+                throw new ValidateException("账号已激活,无需再次激活!");
+            } else {
+                SpringUtil.publishEventOnAfterCommitIfNecessary(new UserAddEvent(this, entity.getId()));
+            }
+        } else {
+            log.warn("邮箱[{}]尚未注册或使用该邮箱注册的账号已不可用!", toEmail);
+            throw new ValidateException("无效的邮件接收地址, 无法发送激活邮件!");
+        }
+    }
+
+    /**
+     * 通过邮箱查找用户信息
+     *
+     * @param toEmail
+     * @return
+     */
+    private SysUser getSysUserByEmail(String toEmail) {
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(SysUser.EMAIL, toEmail);
+        return super.getOne(queryWrapper);
     }
 
     @CacheEvict(allEntries = true, beforeInvocation = true)
@@ -206,6 +250,17 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
         entity.setId(editPasswordDTO.getId());
         entity.setPassword(PASSWORD_ENCODER.encode(editPasswordDTO.getNewPwd()));
         this.updateById(entity);
+    }
+
+    @Override
+    public void sendChangePasswordValidateCodeEmail(@Valid @Email(message = "请输入有效的邮箱地址!") @NotBlank(message = "请输入有效的邮箱地址!") String toEmail) {
+        SysUser entity = this.getSysUserByEmail(toEmail);
+        if (null != entity) {
+            SpringUtil.publishEventOnAfterCommitIfNecessary(new UserAddEvent(this, entity.getId()));
+        } else {
+            log.warn("邮箱[{}]尚未注册或使用该邮箱注册的账号已不可用!", toEmail);
+            throw new ValidateException("邮箱对应的账号不存在或不可用!");
+        }
     }
 
     @Cacheable(sync = true)

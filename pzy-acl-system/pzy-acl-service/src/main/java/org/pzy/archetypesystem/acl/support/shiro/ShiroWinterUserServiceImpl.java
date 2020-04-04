@@ -34,7 +34,11 @@ public class ShiroWinterUserServiceImpl implements ShiroWinterUserService {
             shiroUserBO.setUkFlag(String.valueOf(sysUser.getId()));
             shiroUserBO.setUsername(username);
             shiroUserBO.setPassword(sysUser.getPassword());
-            shiroUserBO.setEnabled(sysUser.getActive() == GlobalConstant.ACTIVE);
+            Boolean enable = GlobalConstant.ENABLE.equals(sysUser.getDisabled());
+            if (enable) {
+                enable = GlobalConstant.ACTIVE.equals(sysUser.getActive());
+            }
+            shiroUserBO.setEnabled(enable);
         }
         return shiroUserBO;
     }
