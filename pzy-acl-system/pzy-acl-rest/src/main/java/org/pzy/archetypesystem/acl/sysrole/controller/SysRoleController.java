@@ -9,6 +9,7 @@ import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.domain.ResultT;
 import org.pzy.opensource.domain.vo.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * SysRole 的rest服务
@@ -33,7 +34,7 @@ public class SysRoleController {
 
     @GetMapping("{id}")
     @ApiOperation(value = "SysRole详细查找")
-    @ApiImplicitParam(name = "id", value = "唯一标识", dataType = "Long", paramType = "path", required = true)
+    @ApiImplicitParam(name = "id", value = "唯一标识", dataType = "Long", paramType = "path", required = true, example = "1")
     public ResultT<SysRole> searchById(@PathVariable("id") Long id) {
         SysRole result = service.getById(id);
         return ResultT.success(result);

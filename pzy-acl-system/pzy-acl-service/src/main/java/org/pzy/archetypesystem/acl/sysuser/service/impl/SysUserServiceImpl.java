@@ -289,11 +289,15 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
         super.update(entity, queryWrapper);
     }
 
+    @Cacheable(sync = true)
     @Override
     public PageT<SysUserVO> searchPageAndCache(SysUserSearchDTO dto) {
         SysUserSearchDTO cdt = mapStruct.searchDtoToSearchDTO(dto);
+        if (null == cdt) {
+            cdt = new SysUserSearchDTO();
+        }
         QueryWrapper<SysUser> queryWrapper = buildQueryWrapper().like(SysUser.NAME, cdt.getKw()).or().like(SysUser.EMAIL, cdt.getKw());
-        IPage<SysUser> mybatisPlusPageResult = super.page(toMybatisPlusPage(dto.getPage()), queryWrapper);
+        IPage<SysUser> mybatisPlusPageResult = super.searchPageVO(cdt.getPage(), queryWrapper);
         List<SysUserVO> voList = mapStruct.entityToDTO(mybatisPlusPageResult.getRecords());
         return PageUtil.mybatisPlusPage2PageT(mybatisPlusPageResult, voList);
     }

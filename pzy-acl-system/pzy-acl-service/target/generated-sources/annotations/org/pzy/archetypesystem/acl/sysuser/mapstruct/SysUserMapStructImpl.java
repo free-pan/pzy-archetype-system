@@ -1,21 +1,21 @@
 package org.pzy.archetypesystem.acl.sysuser.mapstruct;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import javax.annotation.Generated;
 import org.pzy.archetypesystem.acl.sysuser.dto.SysUserAddDTO;
 import org.pzy.archetypesystem.acl.sysuser.dto.SysUserEditDTO;
+import org.pzy.archetypesystem.acl.sysuser.dto.SysUserSearchDTO;
 import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
 import org.pzy.archetypesystem.acl.sysuser.vo.SysUserVO;
 import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Generated;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-04-03T15:40:59+0800",
+    date = "2020-04-04T16:46:49+0800",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_181 (Oracle Corporation)"
 )
 @Component
@@ -114,5 +114,21 @@ public class SysUserMapStructImpl implements SysUserMapStruct {
         }
 
         return list;
+    }
+
+    @Override
+    public SysUserSearchDTO searchDtoToSearchDTO(SysUserSearchDTO searchDTO) {
+        if ( searchDTO == null ) {
+            return null;
+        }
+
+        SysUserSearchDTO sysUserSearchDTO = new SysUserSearchDTO();
+
+        sysUserSearchDTO.setBeginDate( searchDTO.getBeginDate() );
+        sysUserSearchDTO.setEndDate( searchDTO.getEndDate() );
+        sysUserSearchDTO.setKw( stringDataMapper.stringMapper( searchDTO.getKw() ) );
+        sysUserSearchDTO.setPage( searchDTO.getPage() );
+
+        return sysUserSearchDTO;
     }
 }
