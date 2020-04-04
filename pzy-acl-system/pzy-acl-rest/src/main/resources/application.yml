@@ -85,3 +85,5 @@ component:
     title: "基础权限系统"
   cache:
     cache-key-namespace: winter-cache
+  cross:
+    enable: true
