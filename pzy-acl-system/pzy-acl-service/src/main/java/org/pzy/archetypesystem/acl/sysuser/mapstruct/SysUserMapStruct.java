@@ -3,9 +3,10 @@ package org.pzy.archetypesystem.acl.sysuser.mapstruct;
 import org.mapstruct.Mapper;
 import org.pzy.archetypesystem.acl.sysuser.dto.SysUserAddDTO;
 import org.pzy.archetypesystem.acl.sysuser.dto.SysUserEditDTO;
+import org.pzy.archetypesystem.acl.sysuser.dto.SysUserSearchDTO;
 import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
-import org.pzy.archetypesystem.acl.sysuser.vo.*;
-import org.pzy.opensource.comm.mapstruct.BaseMapStruct;
+import org.pzy.archetypesystem.acl.sysuser.vo.SysUserVO;
+import org.pzy.opensource.comm.mapstruct.ComplexMapStruct;
 import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 
 /**
@@ -15,7 +16,7 @@ import org.pzy.opensource.comm.mapstruct.StringDataMapper;
  * @since 2020-03-24 16:49:38
  */
 @Mapper(componentModel = "spring", uses = {StringDataMapper.class})
-public interface SysUserMapStruct extends BaseMapStruct<SysUserAddDTO, SysUserEditDTO, SysUser, SysUserVO> {
+public interface SysUserMapStruct extends ComplexMapStruct<SysUserSearchDTO, SysUserAddDTO, SysUserEditDTO, SysUser, SysUserVO> {
 
 
 }

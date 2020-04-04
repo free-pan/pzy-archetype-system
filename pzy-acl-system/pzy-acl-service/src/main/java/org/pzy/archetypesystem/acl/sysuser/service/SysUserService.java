@@ -3,6 +3,7 @@ package org.pzy.archetypesystem.acl.sysuser.service;
 import org.pzy.archetypesystem.acl.sysuser.dto.*;
 import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
 import org.pzy.archetypesystem.acl.sysuser.vo.*;
+import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.mybatisplus.service.ServiceTemplate;
 import org.springframework.validation.annotation.Validated;
 
@@ -119,4 +120,11 @@ public interface SysUserService extends ServiceTemplate<SysUser> {
      */
     void editPasswordByEmailAndClearCache(@Valid @NotNull ForgetPasswordDTO forgetPasswordDTO);
 
+    /**
+     * 分页查询并将结果缓存
+     *
+     * @param dto 查询条件
+     * @return 查询结果
+     */
+    PageT<SysUserVO> searchPageAndCache(SysUserSearchDTO dto);
 }

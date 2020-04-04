@@ -10,9 +10,11 @@ import org.pzy.archetypesystem.acl.sysuser.entity.SysUser;
 import org.pzy.archetypesystem.acl.sysuser.mapstruct.*;
 import org.pzy.archetypesystem.acl.sysuser.service.SysUserService;
 import org.pzy.archetypesystem.acl.sysuser.vo.SimpleSysUserVO;
+import org.pzy.archetypesystem.acl.sysuser.vo.SysUserVO;
 import org.pzy.opensource.comm.exception.ValidateException;
 import org.pzy.opensource.comm.util.RandomPasswordUtil;
 import org.pzy.opensource.domain.GlobalConstant;
+import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.mybatisplus.service.ServiceTemplateImpl;
 import org.pzy.opensource.mybatisplus.util.SpringUtil;
 import org.pzy.opensource.redis.support.springboot.annotation.LockBuilder;
@@ -282,5 +284,10 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(SysUser.EMAIL, forgetPasswordDTO.getEmail());
         super.update(entity, queryWrapper);
+    }
+
+    @Override
+    public PageT<SysUserVO> searchPageAndCache(SysUserSearchDTO dto) {
+        return null;
     }
 }

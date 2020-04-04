@@ -4,9 +4,9 @@
 package org.pzy.archetypesystem.acl.sysuser.dto;
 
 import io.swagger.annotations.ApiModelProperty;
-
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Data;
+import org.pzy.opensource.domain.dto.KeywordDateRangeSearchDTO;
+import org.pzy.opensource.domain.vo.PageVO;
 
 /**
  * 用户查询条件
@@ -14,12 +14,13 @@ import java.util.Date;
  * @author pan
  * @date 2020/4/4 15:35
  */
-public class SysUserSearchDTO implements Serializable {
+@Data
+public class SysUserSearchDTO extends KeywordDateRangeSearchDTO {
 
-    @ApiModelProperty(value = "查询关键词")
-    private String kw;
+    @ApiModelProperty(value = "分页条件")
+    private PageVO page;
 
-    private Date createDateBegin;
-
-    private Date createDateEnd;
+    public SysUserSearchDTO() {
+        this.page = new PageVO();
+    }
 }
