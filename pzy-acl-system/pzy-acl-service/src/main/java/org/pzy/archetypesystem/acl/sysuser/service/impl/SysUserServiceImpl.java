@@ -296,7 +296,10 @@ public class SysUserServiceImpl extends ServiceTemplateImpl<SysUserDAO, SysUser>
         if (null == cdt) {
             cdt = new SysUserSearchDTO();
         }
-        QueryWrapper<SysUser> queryWrapper = buildQueryWrapper().like(SysUser.NAME, cdt.getKw()).or().like(SysUser.EMAIL, cdt.getKw());
+        QueryWrapper<SysUser> queryWrapper = buildQueryWrapper();
+        if (!StringUtils.isEmpty(cdt.getKw())) {
+            queryWrapper.like(SysUser.NAME, cdt.getKw()).or().like(SysUser.EMAIL, cdt.getKw());
+        }
         queryWrapper = between(queryWrapper, SysUser.CREATE_TIME, dto);
         IPage<SysUser> mybatisPlusPageResult = super.searchPageVO(cdt.getPage(), queryWrapper);
         List<SysUserVO> voList = mapStruct.entityToDTO(mybatisPlusPageResult.getRecords());

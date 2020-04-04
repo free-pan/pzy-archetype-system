@@ -1,4 +1,4 @@
-package org.pzy.archetypesystem.acl.sysrole.controller;
+package org.pzy.archetypesystem.acl.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -24,6 +24,13 @@ public class SysRoleController {
 
     @Autowired
     private SysRoleService service;
+
+    @DeleteMapping("clear-cache")
+    @ApiOperation(value = "SysRole清除缓存")
+    public ResultT clearCache() {
+        service.clearCache();
+        return ResultT.success();
+    }
 
     @GetMapping
     @ApiOperation(value = "SysRole分页查找")

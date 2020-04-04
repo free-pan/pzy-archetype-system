@@ -102,4 +102,9 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
     public void testEdit() {
         System.out.println(sysUserService.searchSimpleUserByIdAndCache(1243552216950902784L));
     }
+
+    @Test
+    public void test(){
+        System.out.println(sysUserService.searchPageAndCache(null));
+    }
 }

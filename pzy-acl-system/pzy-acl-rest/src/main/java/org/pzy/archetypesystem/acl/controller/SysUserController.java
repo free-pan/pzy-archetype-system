@@ -1,4 +1,4 @@
-package org.pzy.archetypesystem.acl.sysuser.controller;
+package org.pzy.archetypesystem.acl.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
