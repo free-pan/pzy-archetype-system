@@ -47,7 +47,7 @@ public class SysRoleServiceImpl extends ServiceTemplate<SysRoleDAO, SysRole> imp
     @Override
     public void clearCache() {
         if (log.isDebugEnabled()) {
-            log.debug(String.format("清除[%s]服务类缓存!", this.getClass().getName()));
+            log.debug("清除[{}]服务类缓存!", this.getClass().getName());
         }
     }
 
@@ -81,6 +81,9 @@ public class SysRoleServiceImpl extends ServiceTemplate<SysRoleDAO, SysRole> imp
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly=true)
     @Override
     public SysRoleVO getByIdAndCache(Serializable id){
+        if (null == id) {
+            return null;
+        }
         SysRole entity = super.getById(id);
         return this.mapStruct.entityToDTO(entity);
     }
