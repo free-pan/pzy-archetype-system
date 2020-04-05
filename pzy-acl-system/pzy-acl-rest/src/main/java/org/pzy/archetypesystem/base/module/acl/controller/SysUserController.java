@@ -11,6 +11,8 @@ import org.pzy.archetypesystem.base.module.acl.vo.SysUserVO;
 import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.domain.ResultT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * SysUser 的rest服务
@@ -23,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Api(tags = "SysUser的rest服务")
 public class SysUserController {
 
+    RedisTemplate redisTemplate;
     @Autowired
     private SysUserService service;
 

@@ -1,5 +1,9 @@
 package org.pzy.archetypesystem.base.module.acl.mapstruct;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import javax.annotation.Generated;
 import org.pzy.archetypesystem.base.module.acl.dto.SysUserAddDTO;
 import org.pzy.archetypesystem.base.module.acl.dto.SysUserEditDTO;
 import org.pzy.archetypesystem.base.module.acl.dto.SysUserSearchDTO;
@@ -9,14 +13,9 @@ import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Generated;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-04-05T17:44:40+0800",
+    date = "2020-04-05T18:27:48+0800",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_181 (Oracle Corporation)"
 )
 @Component
@@ -96,21 +95,12 @@ public class SysUserMapStructImpl implements SysUserMapStruct {
 
         sysUserVO.setName( stringDataMapper.stringMapper( source.getName() ) );
         sysUserVO.setEmail( stringDataMapper.stringMapper( source.getEmail() ) );
-        sysUserVO.setPassword( stringDataMapper.stringMapper( source.getPassword() ) );
         sysUserVO.setActive( source.getActive() );
         sysUserVO.setId( source.getId() );
-        if ( source.getDisabled() != null ) {
-            sysUserVO.setDisabled( source.getDisabled().intValue() );
-        }
-        sysUserVO.setDisabledTime( source.getDisabledTime() );
-        sysUserVO.setCreateTime( source.getCreateTime() );
-        sysUserVO.setEditTime( source.getEditTime() );
         sysUserVO.setCreatorId( source.getCreatorId() );
         sysUserVO.setEditorId( source.getEditorId() );
         sysUserVO.setCreatorName( stringDataMapper.stringMapper( source.getCreatorName() ) );
         sysUserVO.setEditorName( stringDataMapper.stringMapper( source.getEditorName() ) );
-        sysUserVO.setDisabledOptId( source.getDisabledOptId() );
-        sysUserVO.setDisabledOptName( stringDataMapper.stringMapper( source.getDisabledOptName() ) );
 
         return sysUserVO;
     }
