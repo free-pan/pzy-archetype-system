@@ -1,7 +1,3 @@
-/**
- * Copyright (C): 恒大集团版权所有 Evergrande Group
- */
-
 import org.junit.Test;
 import org.pzy.opensource.codegenerator.domain.bo.DbConnectionInfo;
 import org.pzy.opensource.codegenerator.domain.bo.TableInfoBO;

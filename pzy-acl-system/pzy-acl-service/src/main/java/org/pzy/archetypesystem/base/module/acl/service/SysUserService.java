@@ -1,9 +1,9 @@
 package org.pzy.archetypesystem.base.module.acl.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import org.pzy.archetypesystem.base.module.acl.dto.*;
 import org.pzy.archetypesystem.base.module.acl.entity.SysUser;
+import org.pzy.archetypesystem.base.module.acl.dto.*;
 import org.pzy.archetypesystem.base.module.acl.vo.*;
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.pzy.opensource.domain.PageT;
 
 import javax.validation.Valid;
@@ -18,6 +18,11 @@ import java.io.Serializable;
  * @since 2020-04-05
  */
 public interface SysUserService extends IService<SysUser> {
+
+    /**
+     * 清除该服务相关的缓存
+     */
+    void clearCache() ;
 
     /**
      * 分页查询并将结果缓存

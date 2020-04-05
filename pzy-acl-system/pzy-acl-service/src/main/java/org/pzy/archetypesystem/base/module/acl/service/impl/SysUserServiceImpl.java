@@ -54,13 +54,14 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
     }
 
     @Cacheable(sync = true)
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly=true)
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly = true)
     @Override
-    public PageT<SysUserVO> pageAndCache(SysUserSearchDTO dto){
+    public PageT<SysUserVO> pageAndCache(SysUserSearchDTO dto) {
         // 系统的分页条件转换为mybatis plus的分页条件
         IPage<SysUser> mybatisPlusPageCondition = toMybatisPlusPage(dto.getPg());
         // 构建mybatis plus查询条件
         QueryWrapper<SysUser> queryWrapper = buildQueryWrapper();
+        between(queryWrapper, SysUser.CREATE_TIME, dto);
         // mybatis plus分页查询
         IPage<SysUser> mybatisPlusPageResult = super.page(mybatisPlusPageCondition, queryWrapper);
         // mybatis plus分页结果, 转系统分页结果
@@ -71,7 +72,7 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
     @CacheEvict(allEntries = true, beforeInvocation = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
-    public Long saveAndClearCache(@Valid @NotNull SysUserAddDTO dto){
+    public Long saveAndClearCache(@Valid @NotNull SysUserAddDTO dto) {
         // 对象转换
         SysUser entity = mapStruct.addSourceToEntity(dto);
         // 持久化
@@ -80,9 +81,9 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
     }
 
     @Cacheable(sync = true)
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly=true)
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly = true)
     @Override
-    public SysUserVO getByIdAndCache(Serializable id){
+    public SysUserVO getByIdAndCache(Serializable id) {
         SysUser entity = super.getById(id);
         return this.mapStruct.entityToDTO(entity);
     }
@@ -90,7 +91,7 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
     @CacheEvict(allEntries = true, beforeInvocation = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
-    public boolean updateByIdAndClearCache(@Valid @NotNull SysUserEditDTO dto){
+    public boolean updateByIdAndClearCache(@Valid @NotNull SysUserEditDTO dto) {
         // 对象转换
         SysUser entity = this.mapStruct.editSourceToEntity(dto);
         return super.updateById(entity);
@@ -99,7 +100,7 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
     @CacheEvict(allEntries = true, beforeInvocation = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
-    public boolean removeByIdAndClearCache(Serializable id){
+    public boolean removeByIdAndClearCache(Serializable id) {
         return super.removeById(id);
     }
 }
