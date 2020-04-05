@@ -1,11 +1,5 @@
 package org.pzy.archetypesystem.base.module.acl.mapstruct;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.annotation.Generated;
 import org.pzy.archetypesystem.base.module.acl.dto.SysUserAddDTO;
 import org.pzy.archetypesystem.base.module.acl.dto.SysUserEditDTO;
 import org.pzy.archetypesystem.base.module.acl.dto.SysUserSearchDTO;
@@ -14,6 +8,13 @@ import org.pzy.archetypesystem.base.module.acl.vo.SysUserVO;
 import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Generated;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
