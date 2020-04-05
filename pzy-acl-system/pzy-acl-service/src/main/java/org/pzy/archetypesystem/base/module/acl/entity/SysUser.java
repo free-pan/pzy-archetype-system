@@ -1,19 +1,13 @@
 package org.pzy.archetypesystem.base.module.acl.entity;
 
-import org.pzy.opensource.mybatisplus.model.entity.LogicDelBaseEntity;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.time.*;
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
+import org.pzy.opensource.mybatisplus.model.entity.LogicDelBaseEntity;
 
 /**
  * sys_user 表实体类:用户
