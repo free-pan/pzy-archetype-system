@@ -27,11 +27,11 @@ public class CodeGeneratorTest {
         String url = "jdbc:mysql://localhost:3306/pzy-acl?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&useSSL=false";
         DbConnectionInfo dbConnectionInfo = new DbConnectionInfo(driverName, username, password, url);
 
-        String moduleName = "sysrole";
-        String parentPackage = "org.pzy.archetypesystem.acl";
+        String moduleName = "acl";
+        String parentPackage = "org.pzy.archetypesystem.base.module";
         String projectPath = "/Users/pan/workspace/idea/pzy-opensource/pzy-archetype-system/pzy-acl-system/pzy-acl-service";
         WinterStyleSuperEntityEnum superEntityInfoBO = WinterStyleSuperEntityEnum.LogicDelBaseEntity;
-        TableInfoBO tableInfoBO = new TableInfoBO(new String[]{"sys_role"});
+        TableInfoBO tableInfoBO = new TableInfoBO(new String[]{"sys_role","sys_user"});
 
         WinterCodeGeneratorConfigBO winterCodeGeneratorConfigBO = new WinterCodeGeneratorConfigBO(dbConnectionInfo, moduleName, parentPackage, projectPath, superEntityInfoBO, tableInfoBO);
         CodeGeneratorUtil.generateWinterStyle(winterCodeGeneratorConfigBO);

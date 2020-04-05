@@ -22,7 +22,6 @@
     <logger name="org.springframework.cache" level="Debug"/>
     <logger name="org.springframework.jdbc.datasource" level="Debug"/>
     <logger name="org.hibernate" level="Info"/>
-    <logger name="org.springframework.aop" level="Debug"/>
     <!--
         该类打印的Debug日志类似:
         com.baomidou.mybatisplus.core.MybatisConfiguration - addMappedStatement: com.pzy.winter.tx.dao.PersonDao.delete

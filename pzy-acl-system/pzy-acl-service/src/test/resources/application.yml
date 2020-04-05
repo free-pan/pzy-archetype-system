@@ -1,8 +1,7 @@
-##################### 数据库连接池配置:开始 #######################
 # JDBC 配置(驱动类自动从url的mysql识别,数据源类型自动识别)
 spring:
   cache:
-    type: none
+    type: none # 开发时禁用缓存,测试时需要启用redis缓存. 将值改为redis即可
   datasource:
     druid:
       driver-class-name: com.p6spy.engine.spy.P6SpyDriver # com.mysql.cj.jdbc.Driver
@@ -33,10 +32,16 @@ spring:
           statement-close-after-log-enabled: false
           result-set-open-after-log-enabled: false
           result-set-close-after-log-enabled: false
+  jackson:
+    time-zone: "GMT+8" # 设置默认时区(东八区)
+    date-format: "yyyy-MM-dd HH:mm:ss" #设置日期格式
+    # JsonInclude.Include.ALWAYS            默认(所有属性都输出,无论是否为null或空)
+    # JsonInclude.Include.NON_DEFAULT       属性为默认值不序列化
+    # JsonInclude.Include.NON_EMPTY         属性为 空（””） 或者为 NULL 都不序列化
+    # JsonInclude.Include.NON_NULL          属性为NULL不序列化
+    default-property-inclusion: ALWAYS
 
-##################### 数据库连接池配置:结束 #######################
 
-##################### mybatis配置:开始 #######################
 mybatis:
   mapper-locations: classpath*:mapper/**/*.xml
   configuration:
@@ -58,20 +63,10 @@ mybatis:
 mybatis-plus:
   global-config:
     banner: false #关闭mybatis plus的banner打印
-    db-config:
-      logic-delete-field: disabled
-      logic-delete-value: 0
-      logic-not-delete-value: 1
   mapper-locations: classpath*:mapper/**/*.xml
-##################### mybatis配置:结束 #######################
-
-
-email:
-  mailServerHost: smtp.126.com
-  mailSenderAddress: pan_test_2020@126.com
-  mailSenderUsername: pan_test_2020@126.com
-  password: ZMPMXLYELXFVEKQY
 
 component:
-  cache:
-    cache-key-namespace: winter-cache
+  swagger:
+    enable: true
+  cache: # 缓存详细配置
+    cache-key-namespace: winter-cache # 缓存统一前缀

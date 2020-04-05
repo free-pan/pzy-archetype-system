@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.pzy.archetypesystem.acl.sysrole.dao.SysRoleDAO">
+<mapper namespace="org.pzy.archetypesystem.base.module.acl.dao.SysRoleDAO">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="org.pzy.archetypesystem.acl.sysrole.entity.SysRole">
+    <resultMap id="BaseResultMap" type="org.pzy.archetypesystem.base.module.acl.entity.SysRole">
     <result column="id" property="id" />
     <result column="disabled" property="disabled" />
     <result column="disabled_time" property="disabledTime" />
