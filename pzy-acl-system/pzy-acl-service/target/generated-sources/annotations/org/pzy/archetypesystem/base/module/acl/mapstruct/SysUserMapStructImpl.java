@@ -16,7 +16,7 @@ import java.util.List;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-04-05T15:36:48+0800",
+    date = "2020-04-05T17:44:40+0800",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_181 (Oracle Corporation)"
 )
 @Component
@@ -139,6 +139,7 @@ public class SysUserMapStructImpl implements SysUserMapStruct {
 
         sysUserSearchDTO.setBeginDate( searchDTO.getBeginDate() );
         sysUserSearchDTO.setEndDate( searchDTO.getEndDate() );
+        sysUserSearchDTO.setTargetFieldIsDatetime( searchDTO.getTargetFieldIsDatetime() );
         sysUserSearchDTO.setKw( stringDataMapper.stringMapper( searchDTO.getKw() ) );
         sysUserSearchDTO.setPg( searchDTO.getPg() );
 

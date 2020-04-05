@@ -16,7 +16,7 @@ import java.util.List;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-04-05T15:36:48+0800",
+    date = "2020-04-05T17:44:39+0800",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_181 (Oracle Corporation)"
 )
 @Component
@@ -136,6 +136,7 @@ public class SysRoleMapStructImpl implements SysRoleMapStruct {
 
         sysRoleSearchDTO.setBeginDate( searchDTO.getBeginDate() );
         sysRoleSearchDTO.setEndDate( searchDTO.getEndDate() );
+        sysRoleSearchDTO.setTargetFieldIsDatetime( searchDTO.getTargetFieldIsDatetime() );
         sysRoleSearchDTO.setKw( stringDataMapper.stringMapper( searchDTO.getKw() ) );
         sysRoleSearchDTO.setPg( searchDTO.getPg() );
 

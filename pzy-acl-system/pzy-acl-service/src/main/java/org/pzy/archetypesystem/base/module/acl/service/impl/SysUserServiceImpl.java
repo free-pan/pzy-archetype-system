@@ -11,6 +11,7 @@ import org.pzy.archetypesystem.base.module.acl.entity.SysUser;
 import org.pzy.archetypesystem.base.module.acl.mapstruct.SysUserMapStruct;
 import org.pzy.archetypesystem.base.module.acl.service.SysUserService;
 import org.pzy.archetypesystem.base.module.acl.vo.SysUserVO;
+import org.pzy.opensource.comm.util.MySqlUtil;
 import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.mybatisplus.service.ServiceTemplate;
 import org.pzy.opensource.mybatisplus.util.PageUtil;
@@ -21,6 +22,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -62,6 +64,8 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
         // 构建mybatis plus查询条件
         QueryWrapper<SysUser> queryWrapper = buildQueryWrapper();
         between(queryWrapper, SysUser.CREATE_TIME, dto);
+        String kw = MySqlUtil.escape(dto.getKw());
+        queryWrapper.like(!StringUtils.isEmpty(dto.getKw()), SysUser.EMAIL, kw).or().like(!StringUtils.isEmpty(dto.getKw()), SysUser.NAME, kw);
         // mybatis plus分页查询
         IPage<SysUser> mybatisPlusPageResult = super.page(mybatisPlusPageCondition, queryWrapper);
         // mybatis plus分页结果, 转系统分页结果

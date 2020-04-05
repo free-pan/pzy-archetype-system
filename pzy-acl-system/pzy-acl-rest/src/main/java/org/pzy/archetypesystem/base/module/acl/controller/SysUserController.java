@@ -36,7 +36,6 @@ public class SysUserController {
     @GetMapping
     @ApiOperation(value = "SysUser分页查找", notes = "未找到匹配数据,结果数据为空集合")
     public ResultT<PageT<SysUserVO>> searchPage(SysUserSearchDTO dto) {
-        dto.setTargetFieldIsDatetime(false);
         PageT<SysUserVO> result = service.pageAndCache(dto);
         return ResultT.success(result);
     }
