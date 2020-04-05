@@ -1,4 +1,4 @@
-package org.pzy.archetypesystem.base.module;
+package org.pzy.archetypesystem.base;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.pzy.opensource.domain.GlobalConstant;

@@ -12,6 +12,7 @@ import org.pzy.archetypesystem.base.module.acl.entity.SysUser;
 import org.pzy.archetypesystem.base.module.acl.mapstruct.SysUserMapStruct;
 import org.pzy.archetypesystem.base.module.acl.service.SysUserService;
 import org.pzy.archetypesystem.base.module.acl.vo.SysUserVO;
+import org.pzy.archetypesystem.base.support.spring.event.UserAddEvent;
 import org.pzy.opensource.comm.util.RandomPasswordUtil;
 import org.pzy.opensource.domain.GlobalConstant;
 import org.pzy.opensource.domain.PageT;
@@ -66,6 +67,9 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly = true)
     @Override
     public PageT<SysUserVO> pageAndCache(SysUserSearchDTO dto) {
+        if(null==dto){
+
+        }
         // 系统的分页条件转换为mybatis plus的分页条件
         IPage<SysUser> mybatisPlusPageCondition = toMybatisPlusPage(dto.getPg());
         // 构建mybatis plus查询条件
@@ -98,7 +102,9 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
         entity.setActive(GlobalConstant.NOT_ACTIVE);
         // 持久化
         boolean optSuc = super.save(entity);
-        super.pu
+        if (optSuc) {
+            super.publishEventOnAfterCommitIfNecessary(new UserAddEvent(this, entity.getId()));
+        }
         return entity.getId();
     }
 

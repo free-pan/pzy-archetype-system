@@ -1,5 +1,9 @@
 package org.pzy.archetypesystem.base.module.acl.mapstruct;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import javax.annotation.Generated;
 import org.pzy.archetypesystem.base.module.acl.dto.SysUserAddDTO;
 import org.pzy.archetypesystem.base.module.acl.dto.SysUserEditDTO;
 import org.pzy.archetypesystem.base.module.acl.dto.SysUserSearchDTO;
@@ -9,14 +13,9 @@ import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Generated;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-04-05T18:30:53+0800",
+    date = "2020-04-05T19:28:10+0800",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_181 (Oracle Corporation)"
 )
 @Component
@@ -35,8 +34,6 @@ public class SysUserMapStructImpl implements SysUserMapStruct {
 
         sysUser.setName( stringDataMapper.stringMapper( source.getName() ) );
         sysUser.setEmail( stringDataMapper.stringMapper( source.getEmail() ) );
-        sysUser.setPassword( stringDataMapper.stringMapper( source.getPassword() ) );
-        sysUser.setActive( source.getActive() );
 
         return sysUser;
     }
@@ -65,9 +62,6 @@ public class SysUserMapStructImpl implements SysUserMapStruct {
 
         sysUser.setId( source.getId() );
         sysUser.setName( stringDataMapper.stringMapper( source.getName() ) );
-        sysUser.setEmail( stringDataMapper.stringMapper( source.getEmail() ) );
-        sysUser.setPassword( stringDataMapper.stringMapper( source.getPassword() ) );
-        sysUser.setActive( source.getActive() );
 
         return sysUser;
     }
@@ -96,7 +90,9 @@ public class SysUserMapStructImpl implements SysUserMapStruct {
 
         sysUserVO.setName( stringDataMapper.stringMapper( source.getName() ) );
         sysUserVO.setEmail( stringDataMapper.stringMapper( source.getEmail() ) );
-        sysUserVO.setActive( source.getActive() );
+        if ( source.getActive() != null ) {
+            sysUserVO.setActive( source.getActive().intValue() );
+        }
         sysUserVO.setId( source.getId() );
         sysUserVO.setCreatorId( source.getCreatorId() );
         sysUserVO.setEditorId( source.getEditorId() );

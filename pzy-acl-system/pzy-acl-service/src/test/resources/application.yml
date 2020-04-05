@@ -1,7 +1,7 @@
 # JDBC 配置(驱动类自动从url的mysql识别,数据源类型自动识别)
 spring:
   cache:
-    type: none # 开发时禁用缓存,测试时需要启用redis缓存. 将值改为redis即可
+    type: redis # 开发时禁用缓存,测试时需要启用redis缓存. 将值改为redis即可
   datasource:
     druid:
       driver-class-name: com.p6spy.engine.spy.P6SpyDriver # com.mysql.cj.jdbc.Driver
@@ -63,10 +63,23 @@ mybatis:
 mybatis-plus:
   global-config:
     banner: false #关闭mybatis plus的banner打印
+    db-config:
+      logic-not-delete-value: 1
+      logic-delete-value: 0
+      logic-delete-field: "disabled"
   mapper-locations: classpath*:mapper/**/*.xml
+
+
+email:
+  mailServerHost: smtp.126.com
+  mailSenderAddress: pan_test_2020@126.com
+  mailSenderUsername: pan_test_2020@126.com
+  password: ZMPMXLYELXFVEKQY
 
 component:
   swagger:
     enable: true
+    match-packages:
+      - "org.pzy.archetypesystem.base.module.acl.controller"
   cache: # 缓存详细配置
     cache-key-namespace: winter-cache # 缓存统一前缀

@@ -1,5 +1,3 @@
-package org.pzy.archetypesystem.acl;
-
 import org.junit.Test;
 import org.pzy.opensource.codegenerator.domain.bo.DbConnectionInfo;
 import org.pzy.opensource.codegenerator.domain.bo.TableInfoBO;
