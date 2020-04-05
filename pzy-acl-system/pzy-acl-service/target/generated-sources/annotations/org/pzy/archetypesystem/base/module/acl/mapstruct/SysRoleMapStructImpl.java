@@ -1,7 +1,5 @@
 package org.pzy.archetypesystem.base.module.acl.mapstruct;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-04-05T14:56:52+0800",
+    date = "2020-04-05T15:14:29+0800",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_181 (Oracle Corporation)"
 )
 @Component
@@ -100,15 +98,9 @@ public class SysRoleMapStructImpl implements SysRoleMapStruct {
         if ( source.getDisabled() != null ) {
             sysRoleVO.setDisabled( source.getDisabled().intValue() );
         }
-        if ( source.getDisabledTime() != null ) {
-            sysRoleVO.setDisabledTime( LocalDateTime.ofInstant( source.getDisabledTime().toInstant(), ZoneId.of( "UTC" ) ) );
-        }
-        if ( source.getCreateTime() != null ) {
-            sysRoleVO.setCreateTime( LocalDateTime.ofInstant( source.getCreateTime().toInstant(), ZoneId.of( "UTC" ) ) );
-        }
-        if ( source.getEditTime() != null ) {
-            sysRoleVO.setEditTime( LocalDateTime.ofInstant( source.getEditTime().toInstant(), ZoneId.of( "UTC" ) ) );
-        }
+        sysRoleVO.setDisabledTime( source.getDisabledTime() );
+        sysRoleVO.setCreateTime( source.getCreateTime() );
+        sysRoleVO.setEditTime( source.getEditTime() );
         sysRoleVO.setCreatorId( source.getCreatorId() );
         sysRoleVO.setEditorId( source.getEditorId() );
         sysRoleVO.setCreatorName( stringDataMapper.stringMapper( source.getCreatorName() ) );
