@@ -68,7 +68,7 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
     @Override
     public PageT<SysUserVO> pageAndCache(SysUserSearchDTO dto) {
         if(null==dto){
-
+            return PageT.EMPTY();
         }
         // 系统的分页条件转换为mybatis plus的分页条件
         IPage<SysUser> mybatisPlusPageCondition = toMybatisPlusPage(dto.getPg());
