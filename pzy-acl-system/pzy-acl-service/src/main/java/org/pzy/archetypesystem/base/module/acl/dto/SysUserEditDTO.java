@@ -25,15 +25,6 @@ public class SysUserEditDTO implements Serializable {
     @ApiModelProperty(value = "姓名")
     private String name;
 
-    @ApiModelProperty(value = "邮箱")
-    private String email;
-
-    @ApiModelProperty(value = "密码")
-    private String password;
-
-    @ApiModelProperty(value = "是否激活. 0.未激活  1.已激活")
-    private Integer active;
-
     @ApiModelProperty(value = "主键")
     private Long id;
 

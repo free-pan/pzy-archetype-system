@@ -28,10 +28,4 @@ public class SysUserAddDTO implements Serializable {
     @ApiModelProperty(value = "邮箱")
     private String email;
 
-    @ApiModelProperty(value = "密码")
-    private String password;
-
-    @ApiModelProperty(value = "是否激活. 0.未激活  1.已激活")
-    private Integer active;
-
 }

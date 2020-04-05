@@ -12,9 +12,12 @@ import org.pzy.archetypesystem.base.module.acl.mapstruct.SysUserMapStruct;
 import org.pzy.archetypesystem.base.module.acl.service.SysUserService;
 import org.pzy.archetypesystem.base.module.acl.vo.SysUserVO;
 import org.pzy.opensource.comm.util.MySqlUtil;
+import org.pzy.opensource.comm.util.RandomPasswordUtil;
+import org.pzy.opensource.domain.GlobalConstant;
 import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.mybatisplus.service.ServiceTemplate;
 import org.pzy.opensource.mybatisplus.util.PageUtil;
+import org.pzy.opensource.security.shiro.matcher.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -46,6 +49,8 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
 
     @Autowired
     private SysUserMapStruct mapStruct;
+
+    private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @CacheEvict(allEntries = true, beforeInvocation = true)
     @Override
@@ -79,6 +84,10 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
     public Long saveAndClearCache(@Valid @NotNull SysUserAddDTO dto) {
         // 对象转换
         SysUser entity = mapStruct.addSourceToEntity(dto);
+        // 生成6位随机密码
+        String pwd = RandomPasswordUtil.generateSixRandomPassword();
+        entity.setPassword(PASSWORD_ENCODER.encode(pwd));
+        entity.setActive(GlobalConstant.NOT_ACTIVE);
         // 持久化
         boolean optSuc = super.save(entity);
         return entity.getId();
@@ -88,6 +97,9 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly = true)
     @Override
     public SysUserVO getByIdAndCache(Serializable id) {
+        if (null == id) {
+            return null;
+        }
         SysUser entity = super.getById(id);
         return this.mapStruct.entityToDTO(entity);
     }

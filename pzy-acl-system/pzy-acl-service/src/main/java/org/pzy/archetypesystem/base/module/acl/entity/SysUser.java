@@ -38,7 +38,7 @@ public class SysUser extends LogicDelBaseEntity {
 
     @ApiModelProperty(value = "是否激活. 0.未激活  1.已激活")
     @TableField("active")
-    private Integer active;
+    private Short active;
 
     public static final String NAME = "name";
 
