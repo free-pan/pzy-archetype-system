@@ -66,11 +66,11 @@ public interface SysUserService extends IService<SysUser> {
     void modifyPasswordAndClearCache(@Valid @NotNull ModifyPasswordDTO dto);
 
     /**
-     * 发送修改密码所需的验证码
+     * 发送重置密码所需的验证码
      *
      * @param email 接收验证码的邮箱
      */
-    void sendModifyPasswordValidCode(@Valid @NotBlank @Email String email);
+    void sendResetPasswordValidCode(@Valid @NotBlank @Email String email);
 
     /**
      * 重置密码并清除缓存(用于忘记密码之后, 客户自己进行密码重置)

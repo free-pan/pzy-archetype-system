@@ -275,17 +275,17 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
 
     @Test(expectedExceptions = ConstraintViolationException.class, expectedExceptionsMessageRegExp = "sendModifyPasswordValidCode.email: 不能为空")
     public void testSendModifyPasswordValidCode() {
-        this.sysUserService.sendModifyPasswordValidCode(null);
+        this.sysUserService.sendResetPasswordValidCode(null);
     }
 
     @Test(expectedExceptions = ConstraintViolationException.class, expectedExceptionsMessageRegExp = "sendModifyPasswordValidCode.email: 不能为空, sendModifyPasswordValidCode.email: 不是一个合法的电子邮件地址")
     public void testSendModifyPasswordValidCode01() {
-        this.sysUserService.sendModifyPasswordValidCode(" ");
+        this.sysUserService.sendResetPasswordValidCode(" ");
     }
 
     @Test
     public void testSendModifyPasswordValidCode02() {
-        this.sysUserService.sendModifyPasswordValidCode("sd4015700@126.com");
+        this.sysUserService.sendResetPasswordValidCode("sd4015700@126.com");
         try {
             TimeUnit.SECONDS.sleep(10);
         } catch (InterruptedException e) {

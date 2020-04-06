@@ -172,7 +172,7 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
     }
 
     @Override
-    public void sendModifyPasswordValidCode(@Valid @NotBlank @Email String email) {
+    public void sendResetPasswordValidCode(@Valid @NotBlank @Email String email) {
         String tmpEmail = email.trim();
         int count = super.count(super.buildQueryWrapper().eq(SysUser.EMAIL, tmpEmail));
         if (count == 0) {
