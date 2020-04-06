@@ -37,4 +37,8 @@
         name, email, password, active
     </sql>
 
+    <select id="getEmailCount" resultType="java.lang.Integer">
+        select count(id) from sys_user where email=#{email} <if test="null!=id">and id!=#{id}</if>
+    </select>
+
 </mapper>

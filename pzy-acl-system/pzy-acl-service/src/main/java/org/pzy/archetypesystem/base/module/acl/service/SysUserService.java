@@ -7,6 +7,7 @@ import org.pzy.archetypesystem.base.module.acl.vo.*;
 import org.pzy.opensource.domain.PageT;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -22,7 +23,7 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 清除该服务相关的缓存
      */
-    void clearCache() ;
+    void clearCache();
 
     /**
      * 分页查询并将结果缓存
@@ -33,12 +34,26 @@ public interface SysUserService extends IService<SysUser> {
     PageT<SysUserVO> pageAndCache(SysUserSearchDTO dto);
 
     /**
-    * 新增, 并清除缓存
-    *
-    * @param dto 待新增数据
-    * @return 新增数据id
-    */
+     * 新增, 并清除缓存
+     *
+     * @param dto 待新增数据
+     * @return 新增数据id
+     */
     Long saveAndClearCache(@Valid @NotNull SysUserAddDTO dto);
+
+    /**
+     * 再次发送激活邮件
+     *
+     * @param email 接收邮件的邮箱地址
+     */
+    void sendActiveEmailAgain(@Valid @NotNull String email);
+
+    /**
+     * 激活账号
+     *
+     * @param validateCount 激活码
+     */
+    void activeAccount(@Valid @NotBlank String validateCount);
 
     /**
      * 根据id查询, 并缓存
@@ -48,11 +63,11 @@ public interface SysUserService extends IService<SysUser> {
     SysUserVO getByIdAndCache(Serializable id);
 
     /**
-    * 根据id更新, 并清除缓存
-    *
-    * @param dto 待更新对象
-    * @return 是否更新成功
-    */
+     * 根据id更新, 并清除缓存
+     *
+     * @param dto 待更新对象
+     * @return 是否更新成功
+     */
     boolean updateByIdAndClearCache(@Valid @NotNull SysUserEditDTO dto);
 
     /**

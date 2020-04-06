@@ -20,6 +20,7 @@ import org.pzy.opensource.mybatisplus.service.ServiceTemplate;
 import org.pzy.opensource.mybatisplus.util.PageUtil;
 import org.pzy.opensource.redis.support.springboot.annotation.LockBuilder;
 import org.pzy.opensource.redis.support.springboot.annotation.WinterLock;
+import org.pzy.opensource.redis.support.util.RedisUtil;
 import org.pzy.opensource.security.shiro.matcher.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -32,6 +33,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
@@ -85,13 +87,12 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
         return PageUtil.mybatisPlusPage2PageT(mybatisPlusPageResult, voList);
     }
 
-    @CacheEvict(allEntries = true, beforeInvocation = true)
+    @CacheEvict(allEntries = true)
     @WinterLock(lockBuilder = @LockBuilder(condition = "[0].email!=null"))
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
     public Long saveAndClearCache(@Valid @NotNull SysUserAddDTO dto) {
-        QueryWrapper<SysUser> queryWrapper = buildQueryWrapper().eq(SysUser.EMAIL, dto.getEmail());
-        int emailCount = super.count(queryWrapper);
+        int emailCount = super.baseMapper.getEmailCount(dto.getEmail(), null);
         if (emailCount > 0) {
             throw new ValidateException(String.format("邮箱[%s]已使用!", dto.getEmail()));
         }
@@ -109,6 +110,34 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
         return entity.getId();
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly = true)
+    public void sendActiveEmailAgain(@Valid @NotNull String email) {
+        SysUser entity = super.getOne(super.buildQueryWrapper().eq(SysUser.EMAIL, email));
+        if (null == entity) {
+            if (log.isWarnEnabled()) {
+                log.warn("邮箱[{}]对应的账号不存在或已被删除!", email);
+            }
+            throw new ValidateException("无效的邮箱地址!");
+        }
+        super.publishEventOnAfterCommitIfNecessary(new UserAddEvent(this, entity.getId()));
+    }
+
+    @Override
+    public void activeAccount(@Valid @NotBlank String validateCount) {
+        Long id = (Long) RedisUtil.get(validateCount);
+        if (null == id) {
+            throw new ValidateException("无效的激活码或激活码已过期!");
+        }
+        SysUser sysUser = new SysUser();
+        sysUser.setActive(GlobalConstant.ACTIVE);
+        sysUser.setId(id);
+        super.updateById(sysUser);
+        // 清除相关缓存
+        SysUserService proxy = (SysUserService) super.getCurrentBeanProxy();
+        proxy.clearCache();
+    }
+
     @Cacheable(sync = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly = true)
     @Override
@@ -120,7 +149,7 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
         return this.mapStruct.entityToDTO(entity);
     }
 
-    @CacheEvict(allEntries = true, beforeInvocation = true)
+    @CacheEvict(allEntries = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
     public boolean updateByIdAndClearCache(@Valid @NotNull SysUserEditDTO dto) {
@@ -129,7 +158,7 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
         return super.updateById(entity);
     }
 
-    @CacheEvict(allEntries = true, beforeInvocation = true)
+    @CacheEvict(allEntries = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
     public boolean removeByIdAndClearCache(Serializable id) {
