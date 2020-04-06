@@ -80,6 +80,6 @@ component:
   swagger:
     enable: true
     match-packages:
-      - "org.pzy.archetypesystem.base.module.acl.controller"
+      - "org.pzy.archetypesystem.base.module.*.controller"
   cache: # 缓存详细配置
     cache-key-namespace: winter-cache # 缓存统一前缀

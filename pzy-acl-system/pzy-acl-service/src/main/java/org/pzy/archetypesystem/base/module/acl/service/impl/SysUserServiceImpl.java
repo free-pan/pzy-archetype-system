@@ -173,11 +173,12 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
 
     @Override
     public void sendModifyPasswordValidCode(@Valid @NotBlank @Email String email) {
-        int count = super.count(super.buildQueryWrapper().eq(SysUser.EMAIL, email));
+        String tmpEmail = email.trim();
+        int count = super.count(super.buildQueryWrapper().eq(SysUser.EMAIL, tmpEmail));
         if (count == 0) {
             throw new ValidateException("邮箱未注册或对应账号已被删除!");
         }
-        super.publishEventOnAfterCommitIfNecessary(new ChangePasswordSendValidateCodeEvent(this, email));
+        super.publishEventOnAfterCommitIfNecessary(new ChangePasswordSendValidateCodeEvent(this, tmpEmail));
     }
 
     @Override

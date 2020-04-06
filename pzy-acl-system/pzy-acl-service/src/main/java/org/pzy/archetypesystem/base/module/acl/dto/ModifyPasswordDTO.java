@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * ModifyPasswordDTO
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotBlank;
 public class ModifyPasswordDTO extends AbstractModifyPasswordDTO {
 
     @ApiModelProperty(hidden = true, value = "用户id,由后台自动填充")
+    @NotNull
     private Long id;
 
     @ApiModelProperty(value = "原始密码", required = true)
