@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.pzy.archetypesystem.base.module.comm.dao.CommLogDAO">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.pzy.archetypesystem.base.module.comm.entity.CommLog">
+    <result column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="creator_id" property="creatorId" />
+        <result column="creator_name" property="creatorName" />
+        <result column="fun_code" property="funCode" />
+        <result column="fun_name" property="funName" />
+        <result column="create_time" property="createTime" />
+        <result column="opt_result" property="optResult" />
+        <result column="exp_info" property="expInfo" />
+        <result column="use_time" property="useTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        type, creator_id, creator_name, fun_code, fun_name, create_time, opt_result, exp_info, use_time
+    </sql>
+
+</mapper>
