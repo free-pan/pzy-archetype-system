@@ -3,6 +3,7 @@ package org.pzy.archetypesystem.base.module.acl.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.pzy.archetypesystem.base.ApiTestApp;
 import org.pzy.archetypesystem.base.module.acl.dto.SysUserAddDTO;
+import org.pzy.archetypesystem.base.module.acl.dto.SysUserEditDTO;
 import org.pzy.archetypesystem.base.module.acl.service.SysUserService;
 import org.pzy.archetypesystem.base.module.acl.vo.SysUserVO;
 import org.pzy.opensource.domain.PageT;
@@ -146,13 +147,47 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testGetByIdAndCache() {
+        assert null == this.sysUserService.getByIdAndCache(null);
     }
 
     @Test
+    public void testGetByIdAndCache01() {
+        assert null != this.sysUserService.getByIdAndCache(1246960484633153536L);
+    }
+
+    @Test(expectedExceptions = ConstraintViolationException.class, expectedExceptionsMessageRegExp = "updateByIdAndClearCache.dto: 不能为null")
     public void testUpdateByIdAndClearCache() {
+        this.sysUserService.updateByIdAndClearCache(null);
+    }
+
+    @Test(expectedExceptions = ConstraintViolationException.class, expectedExceptionsMessageRegExp = "updateByIdAndClearCache.dto.name: 请输入姓名!, updateByIdAndClearCache.dto.id: 不能为null")
+    public void testUpdateByIdAndClearCache01() {
+        SysUserEditDTO dto = new SysUserEditDTO();
+        this.sysUserService.updateByIdAndClearCache(dto);
+    }
+
+    @Test(expectedExceptions = ConstraintViolationException.class, expectedExceptionsMessageRegExp = "updateByIdAndClearCache.dto.name: 请输入姓名!")
+    public void testUpdateByIdAndClearCache02() {
+        SysUserEditDTO dto = new SysUserEditDTO().setId(1246960484633153536L);
+        this.sysUserService.updateByIdAndClearCache(dto);
+    }
+
+    @Test
+    public void testUpdateByIdAndClearCache03() {
+        Long id = 1246960484633153536L;
+        String name = "   张三   ";
+        SysUserEditDTO dto = new SysUserEditDTO().setId(1246960484633153536L).setName(name);
+        this.sysUserService.updateByIdAndClearCache(dto);
+        SysUserVO sysUserVO = this.sysUserService.getByIdAndCache(id);
+        assert null != sysUserVO;
+        assert name.trim().equals(sysUserVO.getName());
     }
 
     @Test
     public void testRemoveByIdAndClearCache() {
+        Long id = 1246960484633153536L;
+        SysUserVO sysUserVO = this.sysUserService.getByIdAndCache(id);
+        assert null != sysUserVO;
+        this.sysUserService.removeByIdAndClearCache(id);
     }
 }

@@ -25,12 +25,12 @@ public class SysUserAddDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "姓名")
+    @ApiModelProperty(value = "姓名. 长度:200", required = true)
     @NotBlank(message = "请输入姓名!")
     @Length(max = 200, message = "请输入{max}字符以内的姓名!")
     private String name;
 
-    @ApiModelProperty(value = "邮箱")
+    @ApiModelProperty(value = "邮箱. 长度:200", required = true)
     @NotBlank(message = "请输入邮箱!")
     @Email(message = "请输入正确的邮箱地址!")
     @Length(max = 200, message = "请输入{max}字符以内的邮箱!")
