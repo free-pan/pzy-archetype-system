@@ -67,16 +67,17 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly = true)
     @Override
     public PageT<SysUserVO> pageAndCache(SysUserSearchDTO dto) {
-        if(null==dto){
+        if (null == dto) {
             return PageT.EMPTY();
         }
+        SysUserSearchDTO condition = mapStruct.searchDtoToSearchDTO(dto);
         // 系统的分页条件转换为mybatis plus的分页条件
-        IPage<SysUser> mybatisPlusPageCondition = toMybatisPlusPage(dto.getPg());
+        IPage<SysUser> mybatisPlusPageCondition = toMybatisPlusPage(condition.getPg());
         // 构建mybatis plus查询条件
         QueryWrapper<SysUser> queryWrapper = buildQueryWrapper();
-        between(queryWrapper, SysUser.CREATE_TIME, dto);
-        String kw = super.keywordEscape(dto.getKw());
-        queryWrapper.like(!StringUtils.isEmpty(dto.getKw()), SysUser.EMAIL, kw).or().like(!StringUtils.isEmpty(dto.getKw()), SysUser.NAME, kw);
+        between(queryWrapper, SysUser.CREATE_TIME, condition);
+        String kw = super.keywordEscape(condition.getKw());
+        queryWrapper.like(!StringUtils.isEmpty(kw), SysUser.EMAIL, kw).or().like(!StringUtils.isEmpty(kw), SysUser.NAME, kw);
         // mybatis plus分页查询
         IPage<SysUser> mybatisPlusPageResult = super.page(mybatisPlusPageCondition, queryWrapper);
         // mybatis plus分页结果, 转系统分页结果
@@ -92,7 +93,7 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
         QueryWrapper<SysUser> queryWrapper = buildQueryWrapper().eq(SysUser.EMAIL, dto.getEmail());
         int emailCount = super.count(queryWrapper);
         if (emailCount > 0) {
-            throw new ValidateException("该邮箱已使用!");
+            throw new ValidateException(String.format("邮箱[%s]已使用!", dto.getEmail()));
         }
         // 对象转换
         SysUser entity = mapStruct.addSourceToEntity(dto);

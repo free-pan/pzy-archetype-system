@@ -55,8 +55,12 @@ public class SysRoleServiceImpl extends ServiceTemplate<SysRoleDAO, SysRole> imp
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly=true)
     @Override
     public PageT<SysRoleVO> pageAndCache(SysRoleSearchDTO dto){
+        if (null == dto) {
+            return PageT.EMPTY();
+        }
+        SysRoleSearchDTO condition = mapStruct.searchDtoToSearchDTO(dto);
         // 系统的分页条件转换为mybatis plus的分页条件
-        IPage<SysRole> mybatisPlusPageCondition = toMybatisPlusPage(dto.getPg());
+        IPage<SysRole> mybatisPlusPageCondition = toMybatisPlusPage(condition.getPg());
         // 构建mybatis plus查询条件
         QueryWrapper<SysRole> queryWrapper = buildQueryWrapper();
         // mybatis plus分页查询
