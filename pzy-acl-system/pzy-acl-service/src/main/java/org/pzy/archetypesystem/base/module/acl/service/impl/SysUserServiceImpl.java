@@ -14,6 +14,7 @@ import org.pzy.archetypesystem.base.module.acl.service.SysUserService;
 import org.pzy.archetypesystem.base.module.acl.vo.SysUserVO;
 import org.pzy.archetypesystem.base.support.spring.event.UserAddEvent;
 import org.pzy.opensource.comm.util.RandomPasswordUtil;
+import org.pzy.opensource.currentuser.CurrentUserInfo;
 import org.pzy.opensource.domain.GlobalConstant;
 import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.mybatisplus.service.ServiceTemplate;
@@ -117,6 +118,7 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
             return null;
         }
         SysUser entity = super.getById(id);
+        entity.setDisabledOptId(CurrentUserInfo.getUserId().orElse(0L));
         return this.mapStruct.entityToDTO(entity);
     }
 

@@ -105,6 +105,9 @@ public class SysRoleServiceImpl extends ServiceTemplate<SysRoleDAO, SysRole> imp
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
     public boolean removeByIdAndClearCache(Serializable id){
+        if(null==id){
+            return false;
+        }
         return super.removeById(id);
     }
 }

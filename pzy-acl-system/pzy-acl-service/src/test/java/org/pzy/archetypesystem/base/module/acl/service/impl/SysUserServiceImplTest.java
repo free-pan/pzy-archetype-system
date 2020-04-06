@@ -189,5 +189,7 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
         SysUserVO sysUserVO = this.sysUserService.getByIdAndCache(id);
         assert null != sysUserVO;
         this.sysUserService.removeByIdAndClearCache(id);
+        sysUserVO = this.sysUserService.getByIdAndCache(id);
+        assert null == sysUserVO;
     }
 }
