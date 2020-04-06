@@ -1,20 +1,15 @@
 package org.pzy.archetypesystem.base.module.comm.entity;
 
-import java.time.LocalDateTime;
-import org.pzy.opensource.mybatisplus.model.entity.SimpleBaseEntity;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.time.*;
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.pzy.opensource.mybatisplus.model.entity.SimpleBaseEntity;
+
 import java.time.LocalDateTime;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
 
 /**
  * comm_online_user 表实体类:在线用户
