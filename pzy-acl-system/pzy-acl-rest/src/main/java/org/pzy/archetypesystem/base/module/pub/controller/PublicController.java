@@ -4,20 +4,27 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.pzy.archetypesystem.base.module.acl.dto.ResetPasswordDTO;
 import org.pzy.archetypesystem.base.module.acl.service.SysUserService;
+import org.pzy.archetypesystem.base.module.acl.vo.SysUserVO;
 import org.pzy.archetypesystem.base.module.comm.dto.CommOnlineUserAddDTO;
 import org.pzy.archetypesystem.base.module.comm.service.CommOnlineUserService;
 import org.pzy.archetypesystem.base.support.shiro.LoginParamsDTO;
 import org.pzy.archetypesystem.base.support.shiro.ShiroMapStruct;
+import org.pzy.opensource.domain.GlobalConstant;
 import org.pzy.opensource.domain.ResultT;
 import org.pzy.opensource.domain.enums.GlobalSystemErrorCodeEnum;
-import org.pzy.opensource.security.domain.bo.ShiroUserBO;
+import org.pzy.opensource.security.domain.bo.SimpleShiroUserBO;
+import org.pzy.opensource.security.properties.WinterShiroProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 /**
@@ -38,6 +45,8 @@ public class PublicController {
     private SysUserService sysUserService;
     @Autowired
     private CommOnlineUserService onlineUserService;
+    @Autowired
+    private WinterShiroProperties winterShiroProperties;
 
     @PostMapping("login")
     @ApiOperation(value = "登录")
@@ -53,15 +62,44 @@ public class PublicController {
         if (subject.isAuthenticated()) {
             // 登录成功
             log.debug("登录成功,登录凭证:[{}]", subject.getPrincipal());
-            ShiroUserBO shiroUserBO = (ShiroUserBO) subject.getPrincipal();
-
-            CommOnlineUserAddDTO onlineUserAddDTO = new CommOnlineUserAddDTO();
-//            onlineUserService.saveAndClearCache(onlineUserAddDTO);
+            try {
+                saveOnlineUserInfo(subject);
+            } catch (Exception e) {
+                subject.logout();
+                log.error("保存在线用户时发生异常!", e);
+                throw e;
+            }
+            return ResultT.success();
         } else {
             // 登录失败
-            log.debug("登录失败!");
+            if (log.isDebugEnabled()) {
+                log.debug("登录失败!");
+            }
+            return ResultT.success().setSuccess(false);
         }
-        return ResultT.success();
+    }
+
+    /**
+     * 保存在线用户信息
+     *
+     * @param subject
+     */
+    private void saveOnlineUserInfo(Subject subject) {
+        SimpleShiroUserBO shiroUserBO = (SimpleShiroUserBO) subject.getPrincipal();
+        Long id = Long.parseLong(shiroUserBO.getUkFlag());
+        SysUserVO sysUser = sysUserService.getByIdAndCache(id);
+
+        CommOnlineUserAddDTO onlineUserAddDTO = new CommOnlineUserAddDTO();
+        onlineUserAddDTO.setSingleUserMaxSession(this.winterShiroProperties.getSingleUserMaxSession());
+        onlineUserAddDTO.setKickoutAfter(this.winterShiroProperties.getKickoutAfter());
+        onlineUserAddDTO.setEmail(sysUser.getEmail());
+        onlineUserAddDTO.setLoginTime(LocalDateTime.now());
+        onlineUserAddDTO.setUserId(id);
+        onlineUserAddDTO.setName(sysUser.getName());
+        onlineUserAddDTO.setSessionId(SecurityUtils.getSubject().getSession(true).getId().toString());
+        onlineUserService.saveAndClearCache(onlineUserAddDTO);
+        SecurityUtils.getSubject().getSession().setAttribute(GlobalConstant.SESSION_LOGIN_USER_ID_KEY, id);
+        SecurityUtils.getSubject().getSession().setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, shiroUserBO.getUkFlag());
     }
 
     @PostMapping("logout")
@@ -69,6 +107,10 @@ public class PublicController {
     public ResultT logout() {
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated()) {
+            Session session = subject.getSession();
+            if (null != session) {
+                this.onlineUserService.deleteBySessionIdAndClearCache(session.getId().toString());
+            }
             subject.logout();
         }
         return ResultT.success();

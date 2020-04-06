@@ -11,6 +11,7 @@ import org.pzy.archetypesystem.base.module.comm.vo.CommLogVO;
 import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.domain.ResultT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * CommLog 的rest服务

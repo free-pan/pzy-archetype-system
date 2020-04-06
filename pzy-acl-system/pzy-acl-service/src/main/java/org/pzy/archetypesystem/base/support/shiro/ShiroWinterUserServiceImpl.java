@@ -6,6 +6,7 @@ import org.pzy.archetypesystem.base.module.acl.service.SysUserService;
 import org.pzy.opensource.domain.GlobalConstant;
 import org.pzy.opensource.security.domain.bo.PermissionInfoBO;
 import org.pzy.opensource.security.domain.bo.ShiroUserBO;
+import org.pzy.opensource.security.domain.bo.SimpleShiroUserBO;
 import org.pzy.opensource.security.service.ShiroWinterUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,12 +42,12 @@ public class ShiroWinterUserServiceImpl implements ShiroWinterUserService {
     }
 
     @Override
-    public List<String> loadRoleByUsername(ShiroUserBO shiroUser) {
+    public List<String> loadRoleByUsername(SimpleShiroUserBO shiroUser) {
         return Collections.EMPTY_LIST;
     }
 
     @Override
-    public List<PermissionInfoBO> loadPermissionByUsername(ShiroUserBO shiroUser) {
+    public List<PermissionInfoBO> loadPermissionByUsername(SimpleShiroUserBO shiroUser) {
         return Collections.EMPTY_LIST;
     }
 }

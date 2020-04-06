@@ -22,7 +22,7 @@ public interface CommOnlineUserService extends IService<CommOnlineUser> {
     /**
      * 清除该服务相关的缓存
      */
-    void clearCache() ;
+    void clearCache();
 
     /**
      * 分页查询并将结果缓存
@@ -33,11 +33,11 @@ public interface CommOnlineUserService extends IService<CommOnlineUser> {
     PageT<CommOnlineUserVO> pageAndCache(CommOnlineUserSearchDTO dto);
 
     /**
-    * 新增, 并清除缓存
-    *
-    * @param dto 待新增数据
-    * @return 新增数据id
-    */
+     * 新增, 并清除缓存
+     *
+     * @param dto 待新增数据
+     * @return 新增数据id
+     */
     Long saveAndClearCache(@Valid @NotNull CommOnlineUserAddDTO dto);
 
     /**
@@ -48,11 +48,11 @@ public interface CommOnlineUserService extends IService<CommOnlineUser> {
     CommOnlineUserVO getByIdAndCache(Serializable id);
 
     /**
-    * 根据id更新, 并清除缓存
-    *
-    * @param dto 待更新对象
-    * @return 是否更新成功
-    */
+     * 根据id更新, 并清除缓存
+     *
+     * @param dto 待更新对象
+     * @return 是否更新成功
+     */
     boolean updateByIdAndClearCache(@Valid @NotNull CommOnlineUserEditDTO dto);
 
     /**
@@ -61,4 +61,11 @@ public interface CommOnlineUserService extends IService<CommOnlineUser> {
      * @param id 主键ID
      */
     boolean removeByIdAndClearCache(Serializable id);
+
+    /**
+     * 根据sessionid删除在线用户, 并清除缓存
+     *
+     * @param sessionId
+     */
+    void deleteBySessionIdAndClearCache(String sessionId);
 }

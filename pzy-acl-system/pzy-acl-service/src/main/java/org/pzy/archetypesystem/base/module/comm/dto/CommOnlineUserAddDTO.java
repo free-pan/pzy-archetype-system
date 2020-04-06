@@ -21,7 +21,16 @@ import java.time.LocalDateTime;
 @ApiModel
 public class CommOnlineUserAddDTO implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 自定义配置:单个用户允许的最大session数量
+     */
+    private Integer singleUserMaxSession;
+    /**
+     * 自定义配置:当单个用户的session数量超过singleUserMaxSession时,是踢出后登录的用户还是先登录的用户. true表示系统后登录的用户,false表示踢出先登录的用户
+     */
+    private Boolean kickoutAfter;
 
     @ApiModelProperty(value = "会话id")
     private String sessionId;
