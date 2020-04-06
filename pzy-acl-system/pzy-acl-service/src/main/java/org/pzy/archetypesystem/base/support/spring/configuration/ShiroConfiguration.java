@@ -1,6 +1,3 @@
-/**
- * Copyright (C): 恒大集团版权所有 Evergrande Group
- */
 package org.pzy.archetypesystem.base.support.spring.configuration;
 
 import org.pzy.archetypesystem.base.support.shiro.BaseWinterRealm;
