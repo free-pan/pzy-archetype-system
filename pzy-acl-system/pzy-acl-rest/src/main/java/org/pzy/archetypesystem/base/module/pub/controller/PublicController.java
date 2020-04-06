@@ -13,9 +13,11 @@ import org.pzy.archetypesystem.base.support.shiro.LoginParamsDTO;
 import org.pzy.archetypesystem.base.support.shiro.ShiroMapStruct;
 import org.pzy.opensource.domain.ResultT;
 import org.pzy.opensource.domain.enums.GlobalSystemErrorCodeEnum;
+import org.pzy.opensource.security.domain.bo.ShiroUserBO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 
@@ -52,6 +54,8 @@ public class PublicController {
         if (subject.isAuthenticated()) {
             // 登录成功
             log.debug("登录成功,登录凭证:[{}]", subject.getPrincipal());
+            ShiroUserBO shiroUserBO = (ShiroUserBO) subject.getPrincipal();
+
             CommOnlineUserAddDTO onlineUserAddDTO = new CommOnlineUserAddDTO();
 //            onlineUserService.saveAndClearCache(onlineUserAddDTO);
         } else {
@@ -65,7 +69,9 @@ public class PublicController {
     @ApiOperation(value = "登出")
     public ResultT logout() {
         Subject subject = SecurityUtils.getSubject();
-        subject.logout();
+        if (subject.isAuthenticated()) {
+            subject.logout();
+        }
         return ResultT.success();
     }
 
