@@ -7,13 +7,16 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.pzy.archetypesystem.base.module.acl.dto.ResetPasswordDTO;
 import org.pzy.archetypesystem.base.module.acl.service.SysUserService;
+import org.pzy.archetypesystem.base.module.comm.dto.CommOnlineUserAddDTO;
+import org.pzy.archetypesystem.base.module.comm.service.CommOnlineUserService;
 import org.pzy.archetypesystem.base.support.shiro.LoginParamsDTO;
 import org.pzy.archetypesystem.base.support.shiro.ShiroMapStruct;
 import org.pzy.opensource.domain.ResultT;
+import org.pzy.opensource.domain.enums.GlobalSystemErrorCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 
@@ -31,9 +34,10 @@ public class PublicController {
 
     @Autowired
     private ShiroMapStruct shiroMapStruct;
-
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private CommOnlineUserService onlineUserService;
 
     @PostMapping("login")
     @ApiOperation(value = "登录")
@@ -49,6 +53,8 @@ public class PublicController {
         if (subject.isAuthenticated()) {
             // 登录成功
             log.debug("登录成功,登录凭证:[{}]", subject.getPrincipal());
+            CommOnlineUserAddDTO onlineUserAddDTO = new CommOnlineUserAddDTO();
+//            onlineUserService.saveAndClearCache(onlineUserAddDTO);
         } else {
             // 登录失败
             log.debug("登录失败!");
@@ -66,11 +72,10 @@ public class PublicController {
 
     @RequestMapping("unauthorized")
     @ApiOperation(value = "未登录直接访问受保护的资源,则转入此接口")
-    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     public ResultT forbidden() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        return ResultT.success().setMsgList(Arrays.asList("请先登录!"));
+        return ResultT.success().setMsgList(Arrays.asList("您尚未登录或登录已过期!")).setCode(GlobalSystemErrorCodeEnum.SECURITY_UNAUTHORIZED_EXCEPTION.getErrorCode());
     }
 
     @PostMapping(value = "send-reset-pwd-verify-code", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

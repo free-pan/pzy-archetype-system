@@ -29,6 +29,5 @@
     -->
     <logger name="com.baomidou.mybatisplus.core.MybatisConfiguration" level="Warn"/>
     <logger name="druid.sql.Statement" level="Info"/>
-    <logger name="org.springframework.cache" level="Debug"/>
 
 </configuration>

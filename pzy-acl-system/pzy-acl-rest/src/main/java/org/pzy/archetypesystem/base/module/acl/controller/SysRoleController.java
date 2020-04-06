@@ -10,14 +10,14 @@ import org.pzy.archetypesystem.base.module.acl.service.SysRoleService;
 import org.pzy.archetypesystem.base.module.acl.vo.SysRoleVO;
 import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.domain.ResultT;
-import org.pzy.opensource.redis.support.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * SysRole 的rest服务
  *
  * @author pan
- * @since 2020-04-05
+ * @since 2020-04-06
  */
 @RestController
 @RequestMapping("/acl/sys-role")
@@ -31,7 +31,6 @@ public class SysRoleController {
     @ApiOperation(value = "SysRole清除缓存")
     public ResultT clearCache() {
         service.clearCache();
-        System.err.println(RedisUtil.removeByKeyPrefix("winter-cache*"));
         return ResultT.success();
     }
 
