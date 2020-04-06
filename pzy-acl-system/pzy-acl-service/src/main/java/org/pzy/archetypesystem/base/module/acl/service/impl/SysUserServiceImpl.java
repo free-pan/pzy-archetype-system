@@ -1,18 +1,19 @@
 package org.pzy.archetypesystem.base.module.acl.service.impl;
 
-import cn.hutool.core.exceptions.ValidateException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
 import org.pzy.archetypesystem.base.module.acl.dao.SysUserDAO;
-import org.pzy.archetypesystem.base.module.acl.dto.SysUserAddDTO;
-import org.pzy.archetypesystem.base.module.acl.dto.SysUserEditDTO;
-import org.pzy.archetypesystem.base.module.acl.dto.SysUserSearchDTO;
+import org.pzy.archetypesystem.base.module.acl.dto.*;
 import org.pzy.archetypesystem.base.module.acl.entity.SysUser;
 import org.pzy.archetypesystem.base.module.acl.mapstruct.SysUserMapStruct;
 import org.pzy.archetypesystem.base.module.acl.service.SysUserService;
 import org.pzy.archetypesystem.base.module.acl.vo.SysUserVO;
+import org.pzy.archetypesystem.base.module.acl.vo.UserEmailAndPwdVO;
+import org.pzy.archetypesystem.base.support.spring.event.ChangePasswordSendValidateCodeEvent;
 import org.pzy.archetypesystem.base.support.spring.event.UserAddEvent;
+import org.pzy.archetypesystem.base.support.spring.listener.CustomEventListener;
+import org.pzy.opensource.comm.exception.ValidateException;
 import org.pzy.opensource.comm.util.RandomPasswordUtil;
 import org.pzy.opensource.domain.GlobalConstant;
 import org.pzy.opensource.domain.PageT;
@@ -33,6 +34,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -112,7 +114,7 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
 
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly = true)
-    public void sendActiveEmailAgain(@Valid @NotNull String email) {
+    public void sendActiveEmailAgain(@Valid @NotNull @Email String email) {
         SysUser entity = super.getOne(super.buildQueryWrapper().eq(SysUser.EMAIL, email));
         if (null == entity) {
             if (log.isWarnEnabled()) {
@@ -120,22 +122,85 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
             }
             throw new ValidateException("无效的邮箱地址!");
         }
+        if (GlobalConstant.ACTIVE.equals(entity.getActive())) {
+            throw new ValidateException("该账号已激活!");
+        }
         super.publishEventOnAfterCommitIfNecessary(new UserAddEvent(this, entity.getId()));
     }
 
     @Override
-    public void activeAccount(@Valid @NotBlank String validateCount) {
-        Long id = (Long) RedisUtil.get(validateCount);
+    @CacheEvict(allEntries = true)
+    public UserEmailAndPwdVO activeAccountAndClearCache(@Valid @NotBlank String validateCode) {
+        Long id = (Long) RedisUtil.get(validateCode);
         if (null == id) {
             throw new ValidateException("无效的激活码或激活码已过期!");
         }
-        SysUser sysUser = new SysUser();
-        sysUser.setActive(GlobalConstant.ACTIVE);
-        sysUser.setId(id);
+        RedisUtil.remove(validateCode);
+        SysUser sysUser = super.getById(id);
+        if (GlobalConstant.ACTIVE.equals(sysUser.getActive())) {
+            throw new ValidateException("账号已激活无需重复激活!");
+        }
+        String pwd = RandomPasswordUtil.generateSixRandomPassword();
+        SysUser entity = new SysUser();
+        entity.setActive(GlobalConstant.ACTIVE);
+        // 生成随机密码
+        entity.setPassword(PASSWORD_ENCODER.encode(pwd));
+        entity.setId(id);
+        super.updateById(entity);
+        return new UserEmailAndPwdVO().setEmail(sysUser.getEmail()).setPwd(pwd);
+    }
+
+    @CacheEvict(allEntries = true)
+    @Override
+    public void modifyPasswordAndClearCache(@Valid @NotNull ModifyPasswordDTO dto) {
+        String oldPwd = dto.getOldPwd().trim();
+        String newPwd = dto.getNewPwd().trim();
+        String confirmPwd = dto.getConfirmPwd().trim();
+        if (!newPwd.equals(confirmPwd)) {
+            throw new ValidateException("确认密码与新密码不一致!");
+        }
+        String encodedPassword = PASSWORD_ENCODER.encode(oldPwd);
+        SysUser sysUser = super.getById(dto.getId());
+        if (!PASSWORD_ENCODER.matches(sysUser.getPassword(), encodedPassword)) {
+            throw new ValidateException("原始密码错误!");
+        }
+        // 设置为新密码
+        sysUser = new SysUser();
+        sysUser.setId(dto.getId());
+        sysUser.setPassword(PASSWORD_ENCODER.encode(newPwd));
         super.updateById(sysUser);
-        // 清除相关缓存
-        SysUserService proxy = (SysUserService) super.getCurrentBeanProxy();
-        proxy.clearCache();
+    }
+
+    @Override
+    public void sendModifyPasswordValidCode(@Valid @NotBlank @Email String email) {
+        int count = super.count(super.buildQueryWrapper().eq(SysUser.EMAIL, email));
+        if (count == 0) {
+            throw new ValidateException("邮箱未注册或对应账号已被删除!");
+        }
+        super.publishEventOnAfterCommitIfNecessary(new ChangePasswordSendValidateCodeEvent(this, email));
+    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    public void resetPasswordAndClearCache(@Valid @NotNull ResetPasswordDTO dto) {
+        String newPwd = dto.getNewPwd().trim();
+        String confirmPwd = dto.getConfirmPwd().trim();
+        if (!newPwd.equals(confirmPwd)) {
+            throw new ValidateException("确认密码与新密码不一致!");
+        }
+        String redisKey = CustomEventListener.buildPasswordModifyVerifyCodeRedisKey(dto.getEmail());
+        String verifyCode = (String) RedisUtil.get(redisKey);
+        if (null == verifyCode) {
+            throw new ValidateException("验证码已失效!");
+        }
+        if (!dto.getVerifyCode().trim().equalsIgnoreCase(verifyCode)) {
+            throw new ValidateException("验证码错误!");
+        }
+        // 设置为新密码
+        String encodedPassword = PASSWORD_ENCODER.encode(newPwd);
+        SysUser sysUser = new SysUser();
+        sysUser.setPassword(encodedPassword);
+        super.update(sysUser, buildQueryWrapper().eq(SysUser.EMAIL, dto.getEmail()));
     }
 
     @Cacheable(sync = true)

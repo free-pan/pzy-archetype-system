@@ -70,7 +70,7 @@ public class SysRoleServiceImpl extends ServiceTemplate<SysRoleDAO, SysRole> imp
         return PageUtil.mybatisPlusPage2PageT(mybatisPlusPageResult, voList);
     }
 
-    @CacheEvict(allEntries = true, beforeInvocation = true)
+    @CacheEvict(allEntries = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
     public Long saveAndClearCache(@Valid @NotNull SysRoleAddDTO dto) {
@@ -92,7 +92,7 @@ public class SysRoleServiceImpl extends ServiceTemplate<SysRoleDAO, SysRole> imp
         return this.mapStruct.entityToDTO(entity);
     }
 
-    @CacheEvict(allEntries = true, beforeInvocation = true)
+    @CacheEvict(allEntries = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
     public boolean updateByIdAndClearCache(@Valid @NotNull SysRoleEditDTO dto) {
@@ -101,7 +101,7 @@ public class SysRoleServiceImpl extends ServiceTemplate<SysRoleDAO, SysRole> imp
         return super.updateById(entity);
     }
 
-    @CacheEvict(allEntries = true, beforeInvocation = true)
+    @CacheEvict(allEntries = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
     public boolean removeByIdAndClearCache(Serializable id) {

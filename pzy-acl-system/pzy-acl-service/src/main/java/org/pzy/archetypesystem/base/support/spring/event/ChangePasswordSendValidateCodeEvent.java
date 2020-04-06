@@ -11,10 +11,6 @@ import org.springframework.context.ApplicationEvent;
 public class ChangePasswordSendValidateCodeEvent extends ApplicationEvent {
 
     /**
-     * 用户id
-     */
-    private Long userId;
-    /**
      * 用户邮箱
      */
     private String email;
@@ -23,21 +19,11 @@ public class ChangePasswordSendValidateCodeEvent extends ApplicationEvent {
      * 构造函数
      *
      * @param source 事件源
-     * @param userId 用户id
      * @param email  用户邮件
      */
-    public ChangePasswordSendValidateCodeEvent(Object source, Long userId, String email) {
+    public ChangePasswordSendValidateCodeEvent(Object source, String email) {
         super(source);
-        this.userId = userId;
         this.email = email;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getEmail() {

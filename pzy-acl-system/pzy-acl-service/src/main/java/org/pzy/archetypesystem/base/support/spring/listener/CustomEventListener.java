@@ -106,7 +106,7 @@ public class CustomEventListener {
     @Async
     public void onChangePasswordValidateCodeEvent(ChangePasswordSendValidateCodeEvent event) {
         if (log.isDebugEnabled()) {
-            log.debug("发送密码修改验证码事件:{}", event.getUserId());
+            log.debug("发送密码修改验证码事件:{}", event.getEmail());
         }
         // 存储key
         String key = buildPasswordModifyVerifyCodeRedisKey(event.getEmail());

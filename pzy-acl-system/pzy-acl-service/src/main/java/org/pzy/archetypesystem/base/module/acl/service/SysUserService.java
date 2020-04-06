@@ -3,10 +3,12 @@ package org.pzy.archetypesystem.base.module.acl.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.pzy.archetypesystem.base.module.acl.dto.*;
 import org.pzy.archetypesystem.base.module.acl.entity.SysUser;
-import org.pzy.archetypesystem.base.module.acl.vo.*;
+import org.pzy.archetypesystem.base.module.acl.vo.SysUserVO;
+import org.pzy.archetypesystem.base.module.acl.vo.UserEmailAndPwdVO;
 import org.pzy.opensource.domain.PageT;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -46,14 +48,36 @@ public interface SysUserService extends IService<SysUser> {
      *
      * @param email 接收邮件的邮箱地址
      */
-    void sendActiveEmailAgain(@Valid @NotNull String email);
+    void sendActiveEmailAgain(@Valid @NotNull @Email String email);
 
     /**
-     * 激活账号
+     * 激活账号然后生成随机密码, 并清除缓存
      *
-     * @param validateCount 激活码
+     * @param validateCode 激活码
+     * @return 生成的随机密码以及对应的邮箱
      */
-    void activeAccount(@Valid @NotBlank String validateCount);
+    UserEmailAndPwdVO activeAccountAndClearCache(@Valid @NotBlank String validateCode);
+
+    /**
+     * 修改密码,并清除缓存(用于用户登录之后, 自己修改密码)
+     *
+     * @param dto
+     */
+    void modifyPasswordAndClearCache(@Valid @NotNull ModifyPasswordDTO dto);
+
+    /**
+     * 发送修改密码所需的验证码
+     *
+     * @param email 接收验证码的邮箱
+     */
+    void sendModifyPasswordValidCode(@Valid @NotBlank @Email String email);
+
+    /**
+     * 重置密码并清除缓存(用于忘记密码之后, 客户自己进行密码重置)
+     *
+     * @param dto
+     */
+    void resetPasswordAndClearCache(@Valid @NotNull ResetPasswordDTO dto);
 
     /**
      * 根据id查询, 并缓存
