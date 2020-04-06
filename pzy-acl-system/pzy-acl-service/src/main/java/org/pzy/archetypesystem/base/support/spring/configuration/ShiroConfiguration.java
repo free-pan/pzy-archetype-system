@@ -24,7 +24,7 @@ public class ShiroConfiguration {
     @Bean
     CustomShiroFilterBoxTemplate customShiroFilterBoxTemplate(){
         CustomShiroFilterBoxTemplate customShiroFilterBoxTemplate = new CustomShiroFilterBoxTemplate();
-        customShiroFilterBoxTemplate.addCustomShiroFilter(new CrossFormAuthenticationFilter("/pu/forbidden"));
+        customShiroFilterBoxTemplate.addCustomShiroFilter(new CrossFormAuthenticationFilter("/pu/unauthorized"));
         return customShiroFilterBoxTemplate;
     }
 }

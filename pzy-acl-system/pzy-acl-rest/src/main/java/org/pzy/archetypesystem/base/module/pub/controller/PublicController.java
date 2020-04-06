@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 
@@ -64,13 +65,13 @@ public class PublicController {
         return ResultT.success();
     }
 
-    @RequestMapping("forbidden")
-    @ApiOperation(value = "shiro检测到权限不足时转入该接口")
-    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    @RequestMapping("unauthorized")
+    @ApiOperation(value = "未登录直接访问受保护的资源,则转入此接口")
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     public ResultT forbidden() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        return ResultT.success().setMsgList(Arrays.asList("权限不足禁止访问!"));
+        return ResultT.success().setMsgList(Arrays.asList("请先登录!"));
     }
 
     @PostMapping(value = "send-reset-pwd-verify-code", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
