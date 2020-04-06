@@ -174,9 +174,9 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testUpdateByIdAndClearCache03() {
-        Long id = 1246960484633153536L;
+        Long id = 1246997930569764864L;
         String name = "   张三   ";
-        SysUserEditDTO dto = new SysUserEditDTO().setId(1246960484633153536L).setName(name);
+        SysUserEditDTO dto = new SysUserEditDTO().setId(id).setName(name);
         this.sysUserService.updateByIdAndClearCache(dto);
         SysUserVO sysUserVO = this.sysUserService.getByIdAndCache(id);
         assert null != sysUserVO;
@@ -185,7 +185,7 @@ public class SysUserServiceImplTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testRemoveByIdAndClearCache() {
-        Long id = 1246960484633153536L;
+        Long id = 1246997930569764864L;
         SysUserVO sysUserVO = this.sysUserService.getByIdAndCache(id);
         assert null != sysUserVO;
         this.sysUserService.removeByIdAndClearCache(id);

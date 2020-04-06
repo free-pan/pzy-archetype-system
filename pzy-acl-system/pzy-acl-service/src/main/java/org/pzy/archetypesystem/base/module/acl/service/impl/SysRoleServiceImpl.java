@@ -52,9 +52,9 @@ public class SysRoleServiceImpl extends ServiceTemplate<SysRoleDAO, SysRole> imp
     }
 
     @Cacheable(sync = true)
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly=true)
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly = true)
     @Override
-    public PageT<SysRoleVO> pageAndCache(SysRoleSearchDTO dto){
+    public PageT<SysRoleVO> pageAndCache(SysRoleSearchDTO dto) {
         if (null == dto) {
             return PageT.EMPTY();
         }
@@ -73,7 +73,7 @@ public class SysRoleServiceImpl extends ServiceTemplate<SysRoleDAO, SysRole> imp
     @CacheEvict(allEntries = true, beforeInvocation = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
-    public Long saveAndClearCache(@Valid @NotNull SysRoleAddDTO dto){
+    public Long saveAndClearCache(@Valid @NotNull SysRoleAddDTO dto) {
         // 对象转换
         SysRole entity = mapStruct.addSourceToEntity(dto);
         // 持久化
@@ -82,9 +82,9 @@ public class SysRoleServiceImpl extends ServiceTemplate<SysRoleDAO, SysRole> imp
     }
 
     @Cacheable(sync = true)
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly=true)
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly = true)
     @Override
-    public SysRoleVO getByIdAndCache(Serializable id){
+    public SysRoleVO getByIdAndCache(Serializable id) {
         if (null == id) {
             return null;
         }
@@ -95,7 +95,7 @@ public class SysRoleServiceImpl extends ServiceTemplate<SysRoleDAO, SysRole> imp
     @CacheEvict(allEntries = true, beforeInvocation = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
-    public boolean updateByIdAndClearCache(@Valid @NotNull SysRoleEditDTO dto){
+    public boolean updateByIdAndClearCache(@Valid @NotNull SysRoleEditDTO dto) {
         // 对象转换
         SysRole entity = this.mapStruct.editSourceToEntity(dto);
         return super.updateById(entity);
@@ -104,10 +104,10 @@ public class SysRoleServiceImpl extends ServiceTemplate<SysRoleDAO, SysRole> imp
     @CacheEvict(allEntries = true, beforeInvocation = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
-    public boolean removeByIdAndClearCache(Serializable id){
-        if(null==id){
+    public boolean removeByIdAndClearCache(Serializable id) {
+        if (null == id) {
             return false;
         }
-        return super.removeById(id);
+        return super.baseMapper.logicDeleteById(id) > 0;
     }
 }
