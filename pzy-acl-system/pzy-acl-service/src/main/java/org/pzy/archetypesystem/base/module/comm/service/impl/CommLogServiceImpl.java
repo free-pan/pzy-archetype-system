@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
 import org.pzy.archetypesystem.base.module.comm.dao.CommLogDAO;
 import org.pzy.archetypesystem.base.module.comm.dto.CommLogAddDTO;
-import org.pzy.archetypesystem.base.module.comm.dto.CommLogEditDTO;
 import org.pzy.archetypesystem.base.module.comm.dto.CommLogSearchDTO;
 import org.pzy.archetypesystem.base.module.comm.entity.CommLog;
 import org.pzy.archetypesystem.base.module.comm.mapstruct.CommLogMapStruct;
@@ -18,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,6 +76,7 @@ public class CommLogServiceImpl extends ServiceTemplate<CommLogDAO, CommLog> imp
     @CacheEvict(allEntries = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
+    @Async
     public Long saveAndClearCache(@Valid @NotNull CommLogAddDTO dto){
         // 对象转换
         CommLog entity = mapStruct.addSourceToEntity(dto);
@@ -95,23 +96,4 @@ public class CommLogServiceImpl extends ServiceTemplate<CommLogDAO, CommLog> imp
         return this.mapStruct.entityToDTO(entity);
     }
 
-    @CacheEvict(allEntries = true)
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    @Override
-    public boolean updateByIdAndClearCache(@Valid @NotNull CommLogEditDTO dto){
-        // 对象转换
-        CommLog entity = this.mapStruct.editSourceToEntity(dto);
-        return super.updateById(entity);
-    }
-
-    @CacheEvict(allEntries = true)
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    @Override
-    public boolean removeByIdAndClearCache(Serializable id){
-        if(null==id){
-            return false;
-        }
-        // 如果表和实体符合系统的逻辑删除规范, 请调用 super.baseMapper.logicDeleteById(id) 方法进行逻辑删除
-        return super.removeById(id);
-    }
 }

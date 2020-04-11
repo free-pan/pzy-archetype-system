@@ -9,7 +9,10 @@ import org.apache.shiro.subject.Subject;
 import org.pzy.archetypesystem.base.module.acl.dto.ResetPasswordDTO;
 import org.pzy.archetypesystem.base.module.acl.service.SysUserService;
 import org.pzy.archetypesystem.base.module.acl.vo.SysUserVO;
+import org.pzy.archetypesystem.base.module.comm.annotation.WinterLog;
 import org.pzy.archetypesystem.base.module.comm.dto.CommOnlineUserAddDTO;
+import org.pzy.archetypesystem.base.module.comm.enums.FunCodeEnum;
+import org.pzy.archetypesystem.base.module.comm.enums.WinterLogType;
 import org.pzy.archetypesystem.base.module.comm.service.CommOnlineUserService;
 import org.pzy.archetypesystem.base.support.shiro.LoginParamsDTO;
 import org.pzy.archetypesystem.base.support.shiro.ShiroMapStruct;
@@ -18,6 +21,7 @@ import org.pzy.opensource.domain.ResultT;
 import org.pzy.opensource.domain.enums.GlobalSystemErrorCodeEnum;
 import org.pzy.opensource.security.domain.bo.SimpleShiroUserBO;
 import org.pzy.opensource.security.properties.WinterShiroProperties;
+import org.pzy.opensource.web.util.HttpClientInfoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.session.FindByIndexNameSessionRepository;
@@ -48,6 +52,7 @@ public class PublicController {
     @Autowired
     private WinterShiroProperties winterShiroProperties;
 
+    @WinterLog(type = WinterLogType.Login, code = FunCodeEnum.LOGIN)
     @PostMapping("login")
     @ApiOperation(value = "登录")
     public ResultT<Integer> login(@RequestBody @Validated LoginParamsDTO dto) {
@@ -85,23 +90,40 @@ public class PublicController {
      * @param subject
      */
     private void saveOnlineUserInfo(Subject subject) {
+        // 获取登录主体信息
         SimpleShiroUserBO shiroUserBO = (SimpleShiroUserBO) subject.getPrincipal();
+        // 获取用户id
         Long id = Long.parseLong(shiroUserBO.getUkFlag());
+        // 根据id获取用户信息
         SysUserVO sysUser = sysUserService.getByIdAndCache(id);
 
         CommOnlineUserAddDTO onlineUserAddDTO = new CommOnlineUserAddDTO();
+        onlineUserAddDTO.setClientIp(HttpClientInfoUtil.getClientIp());
+        onlineUserAddDTO.setClientBrowser(HttpClientInfoUtil.getClientBrowser());
+        onlineUserAddDTO.setClientOs(HttpClientInfoUtil.getClientOS());
+        // 填充单个用户允许的最大session个数
         onlineUserAddDTO.setSingleUserMaxSession(this.winterShiroProperties.getSingleUserMaxSession());
+        // 单个用户session个数超过允许的上限时, 是否优先踢出后登录的那个session
         onlineUserAddDTO.setKickoutAfter(this.winterShiroProperties.getKickoutAfter());
+        // 用户email
         onlineUserAddDTO.setEmail(sysUser.getEmail());
+        // 登录时间
         onlineUserAddDTO.setLoginTime(LocalDateTime.now());
+        // 用户id
         onlineUserAddDTO.setUserId(id);
+        // 用户姓名
         onlineUserAddDTO.setName(sysUser.getName());
+        // 当前的会话id
         onlineUserAddDTO.setSessionId(SecurityUtils.getSubject().getSession(true).getId().toString());
+        // 保存在线用户信息
         onlineUserService.saveAndClearCache(onlineUserAddDTO);
+        // 在会话中保存唯一标识
         SecurityUtils.getSubject().getSession().setAttribute(GlobalConstant.SESSION_LOGIN_USER_ID_KEY, id);
+        //
         SecurityUtils.getSubject().getSession().setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, shiroUserBO.getUkFlag());
     }
 
+    @WinterLog(code = FunCodeEnum.LOGOUT)
     @PostMapping("logout")
     @ApiOperation(value = "登出")
     public ResultT logout() {
@@ -124,6 +146,15 @@ public class PublicController {
         return ResultT.success().setMsgList(Arrays.asList("您尚未登录或登录已过期!")).setCode(GlobalSystemErrorCodeEnum.SECURITY_UNAUTHORIZED_EXCEPTION.getErrorCode());
     }
 
+    @RequestMapping("/pu/force-kickout")
+    @ApiOperation(value = "单用户会话数量超过系统上限,转入此接口")
+    public ResultT forceKickout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return ResultT.success().setMsgList(Arrays.asList("您的账号已达登录上限,您被自动退出!")).setCode(GlobalSystemErrorCodeEnum.SECURITY_UNAUTHORIZED_EXCEPTION.getErrorCode());
+    }
+
+    @WinterLog(code = FunCodeEnum.SEND_RESET_PWD_VERIFY_CODE)
     @PostMapping(value = "send-reset-pwd-verify-code", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ApiOperation(value = "发送重置密码需要的验证码")
     public ResultT sendResetPwdVerifyCode(String email) {
@@ -132,6 +163,7 @@ public class PublicController {
     }
 
     @PutMapping(value = "reset-pwd")
+    @WinterLog(code = FunCodeEnum.RESET_PWD, saveInputParam = false)
     @ApiOperation(value = "重置密码")
     public ResultT resetPassword(@RequestBody ResetPasswordDTO dto) {
         sysUserService.resetPasswordAndClearCache(dto);

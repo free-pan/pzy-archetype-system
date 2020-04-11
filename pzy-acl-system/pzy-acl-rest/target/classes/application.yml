@@ -89,7 +89,7 @@ component:
       - "/pu/**"
     shiro-filter-chain:
       - path: "/**"
-        filters: "crossAuthc"
+        filters: "crossAuthc, crossKickout"
   swagger:
     enable: true
     match-packages:

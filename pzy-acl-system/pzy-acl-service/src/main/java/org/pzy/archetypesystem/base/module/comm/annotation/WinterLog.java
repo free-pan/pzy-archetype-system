@@ -31,4 +31,11 @@ public @interface WinterLog {
      * @return
      */
     FunCodeEnum code();
+
+    /**
+     * 日志中是否记录输入参数. 注意: 登录日志是绝对不会记录输入参数的, 无论你这里设置true或false
+     *
+     * @return
+     */
+    boolean saveInputParam() default true;
 }

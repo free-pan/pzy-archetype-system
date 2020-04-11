@@ -40,8 +40,13 @@ public class CommLogVO implements Serializable {
     @ApiModelProperty(value = "异常信息")
     private String expInfo;
     @ApiModelProperty(value = "操作用时. 单位: 毫秒")
-    private Float useTime;
-
+    private Long useTime;
+    @ApiModelProperty(value = "执行方法的全名")
+    private String methodFullName;
+    @ApiModelProperty(value = "输入参数的json格式")
+    private String inputParamJson;
+    @ApiModelProperty(value = "客户端ip")
+    private String clientIp;
 
     @ApiModelProperty(value = "主键")
     private Long id;

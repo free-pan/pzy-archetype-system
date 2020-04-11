@@ -1,5 +1,6 @@
 package org.pzy.archetypesystem.base.module.comm.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,6 +34,12 @@ public class CommOnlineUserVO implements Serializable {
     private String email;
     @ApiModelProperty(value = "用户真实姓名")
     private String name;
+    @ApiModelProperty(value = "客户端ip")
+    private String clientIp;
+    @ApiModelProperty(value = "客户端浏览器信息")
+    private String clientBrowser;
+    @ApiModelProperty(value = "客户端操作系统信息")
+    private String clientOs;
 
 
     @ApiModelProperty(value = "主键")

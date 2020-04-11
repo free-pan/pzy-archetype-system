@@ -46,6 +46,18 @@ public class CommOnlineUser extends SimpleBaseEntity {
     @TableField("name")
     private String name;
 
+    @ApiModelProperty(value = "客户端ip")
+    @TableField("client_ip")
+    private String clientIp;
+
+    @ApiModelProperty(value = "客户端浏览器信息")
+    @TableField("client_browser")
+    private String clientBrowser;
+
+    @ApiModelProperty(value = "客户端操作系统信息")
+    @TableField("client_os")
+    private String clientOs;
+
     public static final String SESSION_ID = "session_id";
 
     public static final String USER_ID = "user_id";
@@ -55,5 +67,11 @@ public class CommOnlineUser extends SimpleBaseEntity {
     public static final String EMAIL = "email";
 
     public static final String NAME = "name";
+
+    public static final String CLIENT_IP = "client_ip";
+
+    public static final String CLIENT_BROWSER = "client_browser";
+
+    public static final String CLIENT_OS = "client_os";
 
 }

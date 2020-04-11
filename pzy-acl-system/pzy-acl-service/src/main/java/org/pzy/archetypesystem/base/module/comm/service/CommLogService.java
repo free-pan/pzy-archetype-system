@@ -47,18 +47,4 @@ public interface CommLogService extends IService<CommLog> {
      */
     CommLogVO getByIdAndCache(Serializable id);
 
-    /**
-    * 根据id更新, 并清除缓存
-    *
-    * @param dto 待更新对象
-    * @return 是否更新成功
-    */
-    boolean updateByIdAndClearCache(@Valid @NotNull CommLogEditDTO dto);
-
-    /**
-     * 根据id删除, 并清除缓存
-     *
-     * @param id 主键ID
-     */
-    boolean removeByIdAndClearCache(Serializable id);
 }

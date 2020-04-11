@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.pzy.archetypesystem.base.module.comm.dto.CommOnlineUserAddDTO;
-import org.pzy.archetypesystem.base.module.comm.dto.CommOnlineUserEditDTO;
 import org.pzy.archetypesystem.base.module.comm.dto.CommOnlineUserSearchDTO;
 import org.pzy.archetypesystem.base.module.comm.service.CommOnlineUserService;
 import org.pzy.archetypesystem.base.module.comm.vo.CommOnlineUserVO;
@@ -54,21 +53,6 @@ public class CommOnlineUserController {
     public ResultT<CommOnlineUserVO> searchById(@PathVariable("id") Long id) {
         CommOnlineUserVO result = service.getByIdAndCache(id);
         return ResultT.success(result);
-    }
-
-    @PutMapping
-    @ApiOperation(value = "CommOnlineUser编辑", notes = "结果数据,为实际的业务逻辑,是否执行成功")
-    public ResultT<Boolean> edit(@RequestBody CommOnlineUserEditDTO dto) {
-        boolean optSuc = service.updateByIdAndClearCache(dto);
-        return ResultT.success(optSuc);
-    }
-
-    @DeleteMapping("{id}")
-    @ApiOperation(value = "CommOnlineUser删除", notes = "结果数据,为实际的业务逻辑,是否执行成功")
-    @ApiImplicitParam(name = "id", value = "唯一标识", dataType = "Long", paramType = "path", required = true, example = "1")
-    public ResultT<Boolean> removeById(@PathVariable("id") Long id) {
-        boolean optSuc = service.removeByIdAndClearCache(id);
-        return ResultT.success(optSuc);
     }
 
 }

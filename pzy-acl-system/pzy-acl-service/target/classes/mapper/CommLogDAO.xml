@@ -14,12 +14,15 @@
         <result column="opt_result" property="optResult" />
         <result column="exp_info" property="expInfo" />
         <result column="use_time" property="useTime" />
+        <result column="client_ip" property="clientIp" />
+        <result column="method_full_name" property="methodFullName" />
+        <result column="input_param_json" property="inputParamJson" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
-        type, creator_id, creator_name, fun_code, fun_name, create_time, opt_result, exp_info, use_time
+        type, creator_id, creator_name, fun_code, fun_name, create_time, opt_result, exp_info, use_time, client_ip, method_full_name, input_param_json
     </sql>
 
 </mapper>

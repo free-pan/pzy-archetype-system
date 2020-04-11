@@ -56,19 +56,4 @@ public class CommLogController {
         return ResultT.success(result);
     }
 
-    @PutMapping
-    @ApiOperation(value = "CommLog编辑", notes = "结果数据,为实际的业务逻辑,是否执行成功")
-    public ResultT<Boolean> edit(@RequestBody CommLogEditDTO dto) {
-        boolean optSuc = service.updateByIdAndClearCache(dto);
-        return ResultT.success(optSuc);
-    }
-
-    @DeleteMapping("{id}")
-    @ApiOperation(value = "CommLog删除", notes = "结果数据,为实际的业务逻辑,是否执行成功")
-    @ApiImplicitParam(name = "id", value = "唯一标识", dataType = "Long", paramType = "path", required = true, example = "1")
-    public ResultT<Boolean> removeById(@PathVariable("id") Long id) {
-        boolean optSuc = service.removeByIdAndClearCache(id);
-        return ResultT.success(optSuc);
-    }
-
 }

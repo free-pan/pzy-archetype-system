@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-04-06T22:44:18+0800",
+    date = "2020-04-11T11:16:47+0800",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_181 (Oracle Corporation)"
 )
 @Component
@@ -32,6 +32,7 @@ public class CommLogMapStructImpl implements CommLogMapStruct {
 
         CommLog commLog = new CommLog();
 
+        commLog.setClientIp( stringDataMapper.stringMapper( source.getClientIp() ) );
         commLog.setType( source.getType() );
         commLog.setCreatorId( source.getCreatorId() );
         commLog.setCreatorName( stringDataMapper.stringMapper( source.getCreatorName() ) );
@@ -41,6 +42,8 @@ public class CommLogMapStructImpl implements CommLogMapStruct {
         commLog.setOptResult( source.getOptResult() );
         commLog.setExpInfo( stringDataMapper.stringMapper( source.getExpInfo() ) );
         commLog.setUseTime( source.getUseTime() );
+        commLog.setMethodFullName( stringDataMapper.stringMapper( source.getMethodFullName() ) );
+        commLog.setInputParamJson( stringDataMapper.stringMapper( source.getInputParamJson() ) );
 
         return commLog;
     }
@@ -76,7 +79,9 @@ public class CommLogMapStructImpl implements CommLogMapStruct {
         commLog.setCreateTime( source.getCreateTime() );
         commLog.setOptResult( source.getOptResult() );
         commLog.setExpInfo( stringDataMapper.stringMapper( source.getExpInfo() ) );
-        commLog.setUseTime( source.getUseTime() );
+        if ( source.getUseTime() != null ) {
+            commLog.setUseTime( source.getUseTime().longValue() );
+        }
 
         return commLog;
     }
@@ -112,6 +117,9 @@ public class CommLogMapStructImpl implements CommLogMapStruct {
         commLogVO.setOptResult( source.getOptResult() );
         commLogVO.setExpInfo( stringDataMapper.stringMapper( source.getExpInfo() ) );
         commLogVO.setUseTime( source.getUseTime() );
+        commLogVO.setMethodFullName( stringDataMapper.stringMapper( source.getMethodFullName() ) );
+        commLogVO.setInputParamJson( stringDataMapper.stringMapper( source.getInputParamJson() ) );
+        commLogVO.setClientIp( stringDataMapper.stringMapper( source.getClientIp() ) );
         commLogVO.setId( source.getId() );
 
         return commLogVO;

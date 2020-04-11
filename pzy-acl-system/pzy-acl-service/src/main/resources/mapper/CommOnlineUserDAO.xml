@@ -10,12 +10,15 @@
         <result column="login_time" property="loginTime" />
         <result column="email" property="email" />
         <result column="name" property="name" />
+        <result column="client_ip" property="clientIp" />
+        <result column="client_browser" property="clientBrowser" />
+        <result column="client_os" property="clientOs" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
-        session_id, user_id, login_time, email, name
+        session_id, user_id, login_time, email, name, client_ip, client_browser, client_os
     </sql>
 
 </mapper>

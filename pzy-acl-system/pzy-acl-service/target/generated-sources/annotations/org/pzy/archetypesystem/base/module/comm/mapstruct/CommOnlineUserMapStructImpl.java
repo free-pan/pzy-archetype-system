@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-04-06T22:44:18+0800",
+    date = "2020-04-11T11:16:47+0800",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_181 (Oracle Corporation)"
 )
 @Component
@@ -37,6 +37,9 @@ public class CommOnlineUserMapStructImpl implements CommOnlineUserMapStruct {
         commOnlineUser.setLoginTime( source.getLoginTime() );
         commOnlineUser.setEmail( stringDataMapper.stringMapper( source.getEmail() ) );
         commOnlineUser.setName( stringDataMapper.stringMapper( source.getName() ) );
+        commOnlineUser.setClientIp( stringDataMapper.stringMapper( source.getClientIp() ) );
+        commOnlineUser.setClientBrowser( stringDataMapper.stringMapper( source.getClientBrowser() ) );
+        commOnlineUser.setClientOs( stringDataMapper.stringMapper( source.getClientOs() ) );
 
         return commOnlineUser;
     }
@@ -100,6 +103,9 @@ public class CommOnlineUserMapStructImpl implements CommOnlineUserMapStruct {
         commOnlineUserVO.setLoginTime( source.getLoginTime() );
         commOnlineUserVO.setEmail( stringDataMapper.stringMapper( source.getEmail() ) );
         commOnlineUserVO.setName( stringDataMapper.stringMapper( source.getName() ) );
+        commOnlineUserVO.setClientIp( stringDataMapper.stringMapper( source.getClientIp() ) );
+        commOnlineUserVO.setClientBrowser( stringDataMapper.stringMapper( source.getClientBrowser() ) );
+        commOnlineUserVO.setClientOs( stringDataMapper.stringMapper( source.getClientOs() ) );
         commOnlineUserVO.setId( source.getId() );
 
         return commOnlineUserVO;

@@ -156,26 +156,6 @@ public class CommOnlineUserServiceImpl extends ServiceTemplate<CommOnlineUserDAO
     @CacheEvict(allEntries = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     @Override
-    public boolean updateByIdAndClearCache(@Valid @NotNull CommOnlineUserEditDTO dto) {
-        // 对象转换
-        CommOnlineUser entity = this.mapStruct.editSourceToEntity(dto);
-        return super.updateById(entity);
-    }
-
-    @CacheEvict(allEntries = true)
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    @Override
-    public boolean removeByIdAndClearCache(Serializable id) {
-        if (null == id) {
-            return false;
-        }
-        // 如果表和实体符合系统的逻辑删除规范, 请调用 super.baseMapper.logicDeleteById(id) 方法进行逻辑删除
-        return super.removeById(id);
-    }
-
-    @CacheEvict(allEntries = true)
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    @Override
     public void deleteBySessionIdAndClearCache(String sessionId) {
         this.remove(super.buildQueryWrapper().eq(CommOnlineUser.SESSION_ID, sessionId));
     }

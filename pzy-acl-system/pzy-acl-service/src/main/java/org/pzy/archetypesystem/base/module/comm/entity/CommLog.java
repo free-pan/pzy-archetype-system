@@ -26,6 +26,10 @@ public class CommLog extends SimpleBaseEntity {
 
     private static final long serialVersionUID=1L;
 
+    @ApiModelProperty(value = "客户端ip")
+    @TableField("client_ip")
+    private String clientIp;
+
     @ApiModelProperty(value = "日志类型. 1.操作日志 2.登录日志")
     @TableField("type")
     private Integer type;
@@ -46,7 +50,7 @@ public class CommLog extends SimpleBaseEntity {
     @TableField("fun_name")
     private String funName;
 
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "日志记录时间/操作开始时间")
     @TableField("create_time")
     private LocalDateTime createTime;
 
@@ -60,7 +64,17 @@ public class CommLog extends SimpleBaseEntity {
 
     @ApiModelProperty(value = "操作用时. 单位: 毫秒")
     @TableField("use_time")
-    private Float useTime;
+    private Long useTime;
+
+    @ApiModelProperty(value = "执行方法的全名")
+    @TableField("method_full_name")
+    private String methodFullName;
+
+    @ApiModelProperty(value = "输入参数的json格式")
+    @TableField("input_param_json")
+    private String inputParamJson;
+
+    public static final String METHOD_FULL_NAME = "method_full_name";
 
     public static final String TYPE = "type";
 
@@ -79,5 +93,7 @@ public class CommLog extends SimpleBaseEntity {
     public static final String EXP_INFO = "exp_info";
 
     public static final String USE_TIME = "use_time";
+
+    public static final String CLIENT_IP = "client_ip";
 
 }

@@ -47,4 +47,13 @@ public class CommOnlineUserAddDTO implements Serializable {
     @ApiModelProperty(value = "用户真实姓名")
     private String name;
 
+    @ApiModelProperty(value = "客户端ip")
+    private String clientIp;
+
+    @ApiModelProperty(value = "客户端浏览器信息")
+    private String clientBrowser;
+
+    @ApiModelProperty(value = "客户端操作系统信息")
+    private String clientOs;
+
 }
