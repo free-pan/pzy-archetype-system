@@ -9,6 +9,7 @@ import org.pzy.opensource.domain.entity.BaseEnum;
  * @date 2020/4/6 17:42
  */
 public enum FunCodeEnum implements BaseEnum<String> {
+    Spring("spring框架异常"),
     LOGIN("登录"),
     LOGOUT("登出"),
     SEND_RESET_PWD_VERIFY_CODE("发送重置密码验证码"),

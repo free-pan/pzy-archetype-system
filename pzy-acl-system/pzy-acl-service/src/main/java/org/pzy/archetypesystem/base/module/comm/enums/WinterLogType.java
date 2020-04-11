@@ -16,7 +16,11 @@ public enum WinterLogType implements BaseEnum<Integer> {
     /**
      * 登录日志
      */
-    Login(2);
+    Login(2),
+    /**
+     * 框架异常日志
+     */
+    FrameworkExp(3);
 
     private Integer code;
 
