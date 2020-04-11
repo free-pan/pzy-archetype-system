@@ -6,7 +6,7 @@ package org.pzy.archetypesystem.base.module.comm.enums;
  * @author pan
  * @date 4/11/20
  */
-public enum OptResultEnum {
+public enum OptResultEnum implements BaseEnum<Integer>{
     /**
      * 操作执行成功
      */
@@ -21,10 +21,12 @@ public enum OptResultEnum {
         this.code = code;
     }
 
+    @Override
     public Integer getCode() {
         return code;
     }
 
+    @Override
     public void setCode(Integer code) {
         this.code = code;
     }

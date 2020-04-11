@@ -21,7 +21,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -67,13 +66,13 @@ public class CommLogServiceImpl extends ServiceTemplate<CommLogDAO, CommLog> imp
         IPage<CommLog> mybatisPlusPageCondition = toMybatisPlusPage(condition.getPg());
         // 构建mybatis plus查询条件
         QueryWrapper<CommLog> queryWrapper = buildQueryWrapper();
+        if(null!=dto.getType()){
+            queryWrapper.eq(CommLog.TYPE,dto.getType().getType());
+        }
         if(null!=dto.getUseTime()){
             queryWrapper.ge(CommLog.USE_TIME, dto.getUseTime());
         }
-        if(!StringUtils.isEmpty(dto.getKw())){
-            String tmpKw = super.keywordEscape(dto.getKw());
-            queryWrapper.like(CommLog.METHOD_FULL_NAME,tmpKw);
-        }
+        super.like(queryWrapper,CommLog.EXP_INFO,dto.getKw());
         // mybatis plus分页查询
         IPage<CommLog> mybatisPlusPageResult = super.page(mybatisPlusPageCondition, queryWrapper);
         // mybatis plus分页结果, 转系统分页结果
