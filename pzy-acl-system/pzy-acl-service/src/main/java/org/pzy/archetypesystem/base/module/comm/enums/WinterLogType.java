@@ -33,4 +33,5 @@ public enum WinterLogType implements BaseEnum<Integer> {
     public void setCode(Integer code) {
         this.code = code;
     }
+
 }

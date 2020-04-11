@@ -46,7 +46,7 @@ spring:
     # JsonInclude.Include.NON_NULL          属性为NULL不序列化
     default-property-inclusion: ALWAYS
     deserialization:
-      ACCEPT_EMPTY_STRING_AS_NULL_OBJECT: true #遇到无法转换的枚举类型, 直接返回null, 而不是抛出异常
+      ACCEPT_EMPTY_STRING_AS_NULL_OBJECT: true # 如果字段的目标类型是对象或枚举类型类型, 但实际的值是空字符串, 则反序列化时, 将该字段设置为null
 mybatis:
   mapper-locations: classpath*:mapper/**/*.xml
   configuration:

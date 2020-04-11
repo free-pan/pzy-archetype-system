@@ -3,8 +3,10 @@ package org.pzy.archetypesystem.base.module.comm.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.pzy.archetypesystem.base.module.comm.annotation.WinterLog;
 import org.pzy.archetypesystem.base.module.comm.dto.CommLogAddDTO;
 import org.pzy.archetypesystem.base.module.comm.dto.CommLogSearchDTO;
+import org.pzy.archetypesystem.base.module.comm.enums.FunCodeEnum;
 import org.pzy.archetypesystem.base.module.comm.service.CommLogService;
 import org.pzy.archetypesystem.base.module.comm.vo.CommLogVO;
 import org.pzy.opensource.domain.PageT;
@@ -34,6 +36,7 @@ public class CommLogController {
     }
 
     @PostMapping("page")
+    @WinterLog(code = FunCodeEnum.LOGIN)
     @ApiOperation(value = "CommLog分页查找", notes = "未找到匹配数据,结果数据为空集合")
     public ResultT<PageT<CommLogVO>> searchPage(@RequestBody CommLogSearchDTO dto) {
         PageT<CommLogVO> result = service.pageAndCache(dto);
