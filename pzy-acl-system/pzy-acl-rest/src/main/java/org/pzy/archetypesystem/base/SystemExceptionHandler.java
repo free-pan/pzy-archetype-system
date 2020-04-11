@@ -3,6 +3,7 @@ package org.pzy.archetypesystem.base;
 import lombok.extern.slf4j.Slf4j;
 import org.pzy.archetypesystem.base.module.comm.dto.CommLogAddDTO;
 import org.pzy.archetypesystem.base.module.comm.enums.FunCodeEnum;
+import org.pzy.archetypesystem.base.module.comm.enums.OptResultEnum;
 import org.pzy.archetypesystem.base.module.comm.enums.WinterLogType;
 import org.pzy.archetypesystem.base.module.comm.service.CommLogService;
 import org.pzy.opensource.currentuser.ThreadCurrentUser;
@@ -45,6 +46,7 @@ public class SystemExceptionHandler extends DefaultWinterExceptionHandlerImpl {
             dto.setFunName(FunCodeEnum.Spring.getCode());
             dto.setClientIp(HttpClientInfoUtil.getClientIp());
             dto.setType(WinterLogType.FrameworkExp.getCode());
+            dto.setOptResult(OptResultEnum.EXP.getCode());
             commLogService.saveAndClearCache(dto);
         }
     }
