@@ -30,7 +30,7 @@ public interface CommLogService extends IService<CommLog> {
      * @param dto 查询条件
      * @return 查询结果
      */
-    PageT<CommLogVO> pageAndCache(CommLogSearchDTO dto);
+    PageT<CommLogVO> pageAndCache(@Valid CommLogSearchDTO dto);
 
     /**
     * 新增, 并清除缓存

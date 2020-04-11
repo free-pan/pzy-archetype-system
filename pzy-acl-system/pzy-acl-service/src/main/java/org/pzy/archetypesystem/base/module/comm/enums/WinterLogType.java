@@ -20,7 +20,7 @@ public enum WinterLogType implements BaseEnum<Integer> {
 
     private Integer code;
 
-    WinterLogType(Integer type) {
+    WinterLogType(Integer code) {
         this.code = code;
     }
 

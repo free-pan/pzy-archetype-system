@@ -10,6 +10,7 @@ import org.pzy.archetypesystem.base.module.comm.vo.CommLogVO;
 import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.domain.ResultT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * CommLog 的rest服务
@@ -32,9 +33,9 @@ public class CommLogController {
         return ResultT.success();
     }
 
-    @GetMapping
+    @PostMapping("page")
     @ApiOperation(value = "CommLog分页查找", notes = "未找到匹配数据,结果数据为空集合")
-    public ResultT<PageT<CommLogVO>> searchPage(CommLogSearchDTO dto) {
+    public ResultT<PageT<CommLogVO>> searchPage(@RequestBody CommLogSearchDTO dto) {
         PageT<CommLogVO> result = service.pageAndCache(dto);
         return ResultT.success(result);
     }

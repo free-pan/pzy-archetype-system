@@ -7,6 +7,7 @@ import org.pzy.archetypesystem.base.module.comm.dao.CommLogDAO;
 import org.pzy.archetypesystem.base.module.comm.dto.CommLogAddDTO;
 import org.pzy.archetypesystem.base.module.comm.dto.CommLogSearchDTO;
 import org.pzy.archetypesystem.base.module.comm.entity.CommLog;
+import org.pzy.archetypesystem.base.module.comm.enums.WinterLogType;
 import org.pzy.archetypesystem.base.module.comm.mapstruct.CommLogMapStruct;
 import org.pzy.archetypesystem.base.module.comm.service.CommLogService;
 import org.pzy.archetypesystem.base.module.comm.vo.CommLogVO;
@@ -56,7 +57,7 @@ public class CommLogServiceImpl extends ServiceTemplate<CommLogDAO, CommLog> imp
     @Cacheable(sync = true)
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, readOnly = true)
     @Override
-    public PageT<CommLogVO> pageAndCache(CommLogSearchDTO dto) {
+    public PageT<CommLogVO> pageAndCache(@Valid CommLogSearchDTO dto) {
         if (null == dto) {
             return PageT.EMPTY();
         }
@@ -66,13 +67,24 @@ public class CommLogServiceImpl extends ServiceTemplate<CommLogDAO, CommLog> imp
         IPage<CommLog> mybatisPlusPageCondition = toMybatisPlusPage(condition.getPg());
         // 构建mybatis plus查询条件
         QueryWrapper<CommLog> queryWrapper = buildQueryWrapper();
-        if(null!=dto.getType()){
-            queryWrapper.eq(CommLog.TYPE,dto.getType().getType());
+        // 操作人条件
+        if (null != dto.getOperatorId()) {
+            queryWrapper.eq(CommLog.CREATOR_ID, dto.getOperatorId());
         }
-        if(null!=dto.getUseTime()){
+        // 日志类型条件
+        System.out.println(dto.getType());
+        System.out.println(dto.getType() == WinterLogType.Operate);
+        super.eq(queryWrapper, CommLog.TYPE, dto.getType());
+        // 操作用时条件
+        if (null != dto.getUseTime()) {
             queryWrapper.ge(CommLog.USE_TIME, dto.getUseTime());
         }
-        super.like(queryWrapper,CommLog.EXP_INFO,dto.getKw());
+        // 功能编码条件
+        super.eq(queryWrapper, CommLog.FUN_CODE, dto.getFunCode());
+        // 异常信息模糊查询
+        super.like(queryWrapper, CommLog.EXP_INFO, dto.getKw());
+        // 操作结果类型条件
+        super.eq(queryWrapper, CommLog.OPT_RESULT, dto.getOptResult());
         // mybatis plus分页查询
         IPage<CommLog> mybatisPlusPageResult = super.page(mybatisPlusPageCondition, queryWrapper);
         // mybatis plus分页结果, 转系统分页结果

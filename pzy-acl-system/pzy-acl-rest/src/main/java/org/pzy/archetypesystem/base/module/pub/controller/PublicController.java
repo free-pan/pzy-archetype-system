@@ -143,7 +143,7 @@ public class PublicController {
     public ResultT forbidden() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        return ResultT.success().setMsgList(Arrays.asList("您尚未登录或登录已过期!")).setCode(GlobalSystemErrorCodeEnum.SECURITY_UNAUTHORIZED_EXCEPTION.getErrorCode());
+        return ResultT.success().setMsgList(Arrays.asList("您尚未登录或登录已过期!")).setCode(GlobalSystemErrorCodeEnum.SECURITY_UNAUTHORIZED_EXCEPTION.name());
     }
 
     @RequestMapping("/pu/force-kickout")
@@ -151,7 +151,7 @@ public class PublicController {
     public ResultT forceKickout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        return ResultT.success().setMsgList(Arrays.asList("您的账号已达登录上限,您被自动退出!")).setCode(GlobalSystemErrorCodeEnum.SECURITY_UNAUTHORIZED_EXCEPTION.getErrorCode());
+        return ResultT.success().setMsgList(Arrays.asList("您的账号已达登录上限,您被自动退出!")).setCode(GlobalSystemErrorCodeEnum.SECURITY_LOGIN_EXCEPTION.name());
     }
 
     @WinterLog(code = FunCodeEnum.SEND_RESET_PWD_VERIFY_CODE)

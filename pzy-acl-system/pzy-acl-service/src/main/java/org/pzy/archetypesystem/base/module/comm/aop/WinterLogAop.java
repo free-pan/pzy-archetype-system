@@ -110,8 +110,8 @@ public class WinterLogAop implements Ordered {
         dto.setCreateTime(now);
         dto.setCreatorId(ThreadCurrentUser.getUserId(null));
         dto.setCreatorName(ThreadCurrentUser.getRealName(null));
-        dto.setFunCode(winterLog.code().getCode());
-        dto.setFunName(winterLog.code().getFunName());
+        dto.setFunCode(winterLog.code().name());
+        dto.setFunName(winterLog.code().getCode());
         dto.setClientIp(HttpClientInfoUtil.getClientIp());
 
         if (WinterLogType.Login != winterLog.type() && winterLog.saveInputParam()) {
@@ -144,7 +144,7 @@ public class WinterLogAop implements Ordered {
             }
             dto.setInputParamJson(paramJson);
         }
-        dto.setType(winterLog.type().getType());
+        dto.setType(winterLog.type().getCode());
         logService.saveAndClearCache(dto);
     }
 

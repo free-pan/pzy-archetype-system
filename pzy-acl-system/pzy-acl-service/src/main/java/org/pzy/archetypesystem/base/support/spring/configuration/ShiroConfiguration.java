@@ -29,4 +29,5 @@ public class ShiroConfiguration {
         customShiroFilterBoxTemplate.addCustomShiroFilter(new CrossKickoutSessionControlFilter("/pu/force-kickout"));
         return customShiroFilterBoxTemplate;
     }
+
 }

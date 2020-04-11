@@ -6,7 +6,7 @@ spring:
     redis:
       namespace: "base-session"
   cache:
-    type: redis # 开发时禁用缓存,测试时需要启用redis缓存. 将值改为redis即可
+    type: none # 开发时禁用缓存,测试时需要启用redis缓存. 将值改为redis即可
   datasource:
     druid:
       driver-class-name: com.p6spy.engine.spy.P6SpyDriver # com.mysql.cj.jdbc.Driver
@@ -45,8 +45,8 @@ spring:
     # JsonInclude.Include.NON_EMPTY         属性为 空（””） 或者为 NULL 都不序列化
     # JsonInclude.Include.NON_NULL          属性为NULL不序列化
     default-property-inclusion: ALWAYS
-
-
+    deserialization:
+      ACCEPT_EMPTY_STRING_AS_NULL_OBJECT: true # 如果字段的目标类型是对象或枚举类型类型, 但实际的值是空字符串, 则反序列化时, 将该字段设置为null
 mybatis:
   mapper-locations: classpath*:mapper/**/*.xml
   configuration:
