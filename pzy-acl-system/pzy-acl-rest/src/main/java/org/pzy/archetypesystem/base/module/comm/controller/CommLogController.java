@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.pzy.archetypesystem.base.module.comm.dto.CommLogAddDTO;
-import org.pzy.archetypesystem.base.module.comm.dto.CommLogEditDTO;
 import org.pzy.archetypesystem.base.module.comm.dto.CommLogSearchDTO;
 import org.pzy.archetypesystem.base.module.comm.service.CommLogService;
 import org.pzy.archetypesystem.base.module.comm.vo.CommLogVO;

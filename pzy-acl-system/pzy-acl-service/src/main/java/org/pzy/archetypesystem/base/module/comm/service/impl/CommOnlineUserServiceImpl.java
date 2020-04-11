@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
 import org.pzy.archetypesystem.base.module.comm.dao.CommOnlineUserDAO;
 import org.pzy.archetypesystem.base.module.comm.dto.CommOnlineUserAddDTO;
-import org.pzy.archetypesystem.base.module.comm.dto.CommOnlineUserEditDTO;
 import org.pzy.archetypesystem.base.module.comm.dto.CommOnlineUserSearchDTO;
 import org.pzy.archetypesystem.base.module.comm.entity.CommOnlineUser;
 import org.pzy.archetypesystem.base.module.comm.mapstruct.CommOnlineUserMapStruct;

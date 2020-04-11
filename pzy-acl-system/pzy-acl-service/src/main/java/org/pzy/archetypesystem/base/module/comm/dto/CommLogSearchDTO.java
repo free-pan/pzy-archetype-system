@@ -17,6 +17,9 @@ public class CommLogSearchDTO extends KeywordDateRangeSearchDTO {
     @ApiModelProperty(value = "分页条件")
     private PageVO pg;
 
+    @ApiModelProperty(value = "用时大于等于. 单位:毫秒")
+    private Long useTime;
+
     public CommLogSearchDTO() {
         this.pg = new PageVO();
     }
