@@ -26,8 +26,8 @@ public class CodeGeneratorTest {
         String moduleName = "comm";
         String parentPackage = "org.pzy.archetypesystem.base.module";
         String projectPath = "/Users/pan/workspace/idea/pzy-opensource/pzy-archetype-system/pzy-acl-system/pzy-acl-rest";
-        WinterStyleSuperEntityEnum superEntityInfoBO = WinterStyleSuperEntityEnum.SimpleBaseEntity;
-        TableInfoBO tableInfoBO = new TableInfoBO(new String[]{"comm_log", "comm_online_user"});
+        WinterStyleSuperEntityEnum superEntityInfoBO = WinterStyleSuperEntityEnum.LogicDelBaseEntity;
+        TableInfoBO tableInfoBO = new TableInfoBO(new String[]{"comm_dictionary","comm_dictionary_item"});
 
         WinterCodeGeneratorConfigBO winterCodeGeneratorConfigBO = new WinterCodeGeneratorConfigBO(dbConnectionInfo, moduleName, parentPackage, projectPath, superEntityInfoBO, tableInfoBO);
         winterCodeGeneratorConfigBO.setCodeGeneratorModelEnum(CodeGeneratorModelEnum.ONLY_CONTROLLER);

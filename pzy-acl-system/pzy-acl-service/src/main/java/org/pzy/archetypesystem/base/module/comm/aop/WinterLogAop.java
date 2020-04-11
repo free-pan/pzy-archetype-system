@@ -11,6 +11,7 @@ import org.pzy.archetypesystem.base.module.comm.dto.CommLogAddDTO;
 import org.pzy.archetypesystem.base.module.comm.enums.OptResultEnum;
 import org.pzy.archetypesystem.base.module.comm.enums.WinterLogType;
 import org.pzy.archetypesystem.base.module.comm.service.CommLogService;
+import org.pzy.opensource.comm.util.ExceptionUtil;
 import org.pzy.opensource.comm.util.JsonUtil;
 import org.pzy.opensource.currentuser.ThreadCurrentUser;
 import org.pzy.opensource.domain.GlobalConstant;
@@ -26,9 +27,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -69,7 +67,7 @@ public class WinterLogAop implements Ordered {
             return target;
         } catch (Exception e) {
             try {
-                String expTraceInfo = extractExceptionInfo(e);
+                String expTraceInfo = ExceptionUtil.extractExceptionStackTrace(e);
                 dto.setExpInfo(expTraceInfo);
             } catch (Exception ex) {
                 log.error("记录异常日志,提取异常堆栈信息时发生错误!", e);
@@ -146,30 +144,6 @@ public class WinterLogAop implements Ordered {
         }
         dto.setType(winterLog.type().getCode());
         logService.saveAndClearCache(dto);
-    }
-
-    /**
-     * 提取异常的堆栈信息
-     *
-     * @param e 异常
-     * @return 异常堆栈信息字符串
-     */
-    private String extractExceptionInfo(Exception e) throws IOException {
-        PrintWriter pw = null;
-        StringWriter sw = null;
-        try {
-            sw = new StringWriter();
-            pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            return sw.toString();
-        } finally {
-            if (null != pw) {
-                pw.close();
-            }
-            if (null != sw) {
-                sw.close();
-            }
-        }
     }
 
     @Override

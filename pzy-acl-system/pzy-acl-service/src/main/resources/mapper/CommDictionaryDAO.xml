@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.pzy.archetypesystem.base.module.comm.dao.CommDictionaryDAO">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.pzy.archetypesystem.base.module.comm.entity.CommDictionary">
+    <result column="id" property="id" />
+    <result column="disabled" property="disabled" />
+    <result column="disabled_time" property="disabledTime" />
+    <result column="create_time" property="createTime" />
+    <result column="edit_time" property="editTime" />
+    <result column="creator_id" property="creatorId" />
+    <result column="editor_id" property="editorId" />
+    <result column="creator_name" property="creatorName" />
+    <result column="editor_name" property="editorName" />
+    <result column="disabled_opt_id" property="disabledOptId" />
+    <result column="disabled_opt_name" property="disabledOptName" />
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        disabled,
+        disabled_time,
+        create_time,
+        edit_time,
+        creator_id,
+        editor_id,
+        creator_name,
+        editor_name,
+        disabled_opt_id,
+        disabled_opt_name,
+        code, name, remark
+    </sql>
+
+</mapper>
