@@ -1,12 +1,14 @@
 package org.pzy.archetypesystem.base.module.comm.enums;
 
+import org.pzy.opensource.domain.entity.BaseEnum;
+
 /**
  * 操作结果枚举. 用于日志记录
  *
  * @author pan
  * @date 4/11/20
  */
-public enum OptResultEnum implements BaseEnum<Integer>{
+public enum OptResultEnum implements BaseEnum<Integer> {
     /**
      * 操作执行成功
      */

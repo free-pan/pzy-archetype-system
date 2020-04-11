@@ -1,5 +1,7 @@
 package org.pzy.archetypesystem.base.module.comm.enums;
 
+import org.pzy.opensource.domain.entity.BaseEnum;
+
 /**
  * 功能标识
  *
