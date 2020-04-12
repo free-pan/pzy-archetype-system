@@ -2,6 +2,7 @@ package org.pzy.archetypesystem.base.module.pub.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -66,7 +67,10 @@ public class PublicController {
 
     @WinterLog(type = WinterLogType.Login, code = FunCodeEnum.LOGIN)
     @PostMapping("login")
-    @ApiImplicitParam(name = VerificationCodeConstant.CLIENT_ID, value = "客户端id. 当需要进行验证校验时,则需要携带该参数", required = false, paramType = "header", dataType = "string")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = VerificationCodeConstant.CLIENT_ID, value = "客户端id. 当需要进行验证校验时,则需要携带该参数", required = false, paramType = "header", dataType = "string"),
+            @ApiImplicitParam(name = VerificationCodeConstant.VERIFICATION_CODE_ID, value = "验证码. 密码错误次数大于3次,则需要输入验证码.", required = false, paramType = "header", dataType = "string")
+    })
     @ApiOperation(value = "登录")
     public ResultT<Integer> login(@RequestBody @Validated LoginParamsDTO dto) {
         Subject subject = SecurityUtils.getSubject();
@@ -74,7 +78,6 @@ public class PublicController {
             int loginErrorCount = getLoginErrorCountFromCookie();
             // 尚未登录, 执行登录逻辑
             if (log.isDebugEnabled()) {
-                log.debug("尚未登录,执行shiro登录...");
                 log.debug("当前已登录错误次数[{}]次", loginErrorCount);
             }
             if (loginErrorCount > 3) {
@@ -87,6 +90,9 @@ public class PublicController {
                     log.warn("登录错误次数超过3次, 验证码过滤器已经检测到客户端传入的验证码是错误的, 实际应该转入验证码错误的uri, 但现在依然进入了登录接口, 请检查验证码过滤器配置或者逻辑是否有误!");
                     throw new ValidateException("验证码错误!");
                 }
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("尚未登录,执行shiro登录...");
             }
             try {
                 // shiro登录
@@ -203,7 +209,7 @@ public class PublicController {
     @ApiOperation(value = "验证码验证失败,转入此接口")
     public ResultT verifyCodeError() {
         VerifyCodeValidateFailTypeEnum failTypeEnum = VerificationCodeUtil.loadVerifyCodeValidateFailType(HttpRequestUtil.loadHttpServletRequest());
-        return ResultT.success().setMsgList(Arrays.asList("验证码验证失败错误!")).setCode(failTypeEnum.name());
+        return ResultT.success().setMsgList(Arrays.asList("验证码验证失败!")).setCode(failTypeEnum.name());
     }
 
     @WinterLog(code = FunCodeEnum.SEND_RESET_PWD_VERIFY_CODE)

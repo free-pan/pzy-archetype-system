@@ -29,7 +29,4 @@ public class LoginParamsDTO implements Serializable {
 
     @ApiModelProperty(value = "是否记住我. 默认:false", required = true)
     private boolean rememberMe;
-
-    @ApiModelProperty(value = "验证码. 密码错误次数大于3次,则需要输入验证码.")
-    private String verifyCode;
 }
