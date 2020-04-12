@@ -23,6 +23,8 @@ import org.pzy.opensource.domain.ResultT;
 import org.pzy.opensource.domain.enums.GlobalSystemErrorCodeEnum;
 import org.pzy.opensource.security.domain.bo.SimpleShiroUserBO;
 import org.pzy.opensource.security.properties.WinterShiroProperties;
+import org.pzy.opensource.verifycode.domain.enums.VerifyCodeValidateFailTypeEnum;
+import org.pzy.opensource.verifycode.support.util.VerificationCodeUtil;
 import org.pzy.opensource.web.util.CookieUtil;
 import org.pzy.opensource.web.util.HttpClientInfoUtil;
 import org.pzy.opensource.web.util.HttpRequestUtil;
@@ -32,6 +34,7 @@ import org.springframework.http.MediaType;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -171,12 +174,19 @@ public class PublicController {
         return ResultT.success().setMsgList(Arrays.asList("您尚未登录或登录已过期!")).setCode(GlobalSystemErrorCodeEnum.SECURITY_UNAUTHORIZED_EXCEPTION.name());
     }
 
-    @RequestMapping("/pu/force-kickout")
+    @RequestMapping("force-kickout")
     @ApiOperation(value = "单用户会话数量超过系统上限,转入此接口")
     public ResultT forceKickout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         return ResultT.success().setMsgList(Arrays.asList("您的账号已达登录上限,您被自动退出!")).setCode(GlobalSystemErrorCodeEnum.SECURITY_LOGIN_EXCEPTION.name());
+    }
+
+    @RequestMapping("verify-code-validate-error")
+    @ApiOperation(value = "验证码验证失败,转入此接口")
+    public ResultT verifyCodeError() {
+        VerifyCodeValidateFailTypeEnum failTypeEnum = VerificationCodeUtil.loadVerifyCodeValidateFailType(HttpRequestUtil.loadHttpServletRequest());
+        return ResultT.success().setMsgList(Arrays.asList("验证码验证失败错误!")).setCode(failTypeEnum.name());
     }
 
     @WinterLog(code = FunCodeEnum.SEND_RESET_PWD_VERIFY_CODE)

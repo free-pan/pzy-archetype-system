@@ -86,6 +86,9 @@ component:
     enable: true
   pic-verify-code:
     enable: true
+    error-redirect-url: "/pu/verify-code-validate-error"
+    filter-urls:
+      - "/pu/login"
   security:
     login-url: "/pu/login"
     logout-url: "/pu/logout"
