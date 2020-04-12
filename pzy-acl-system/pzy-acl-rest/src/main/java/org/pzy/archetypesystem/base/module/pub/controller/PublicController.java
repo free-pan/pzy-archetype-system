@@ -1,6 +1,7 @@
 package org.pzy.archetypesystem.base.module.pub.controller;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -18,11 +19,13 @@ import org.pzy.archetypesystem.base.module.comm.service.CommOnlineUserService;
 import org.pzy.archetypesystem.base.support.constant.SystemConstant;
 import org.pzy.archetypesystem.base.support.shiro.LoginParamsDTO;
 import org.pzy.archetypesystem.base.support.shiro.ShiroMapStruct;
+import org.pzy.opensource.comm.exception.ValidateException;
 import org.pzy.opensource.domain.GlobalConstant;
 import org.pzy.opensource.domain.ResultT;
 import org.pzy.opensource.domain.enums.GlobalSystemErrorCodeEnum;
 import org.pzy.opensource.security.domain.bo.SimpleShiroUserBO;
 import org.pzy.opensource.security.properties.WinterShiroProperties;
+import org.pzy.opensource.verifycode.domain.enums.CheckCodeVerifyStatusEnums;
 import org.pzy.opensource.verifycode.domain.enums.VerifyCodeValidateFailTypeEnum;
 import org.pzy.opensource.verifycode.support.util.VerificationCodeUtil;
 import org.pzy.opensource.web.util.CookieUtil;
@@ -62,15 +65,28 @@ public class PublicController {
 
     @WinterLog(type = WinterLogType.Login, code = FunCodeEnum.LOGIN)
     @PostMapping("login")
+    @ApiImplicitParam(name = "clientId", value = "客户端id. 当需要进行验证校验时,则需要携带该参数", required = false, paramType = "header", dataType = "string")
     @ApiOperation(value = "登录")
     public ResultT<Integer> login(@RequestBody @Validated LoginParamsDTO dto) {
         Subject subject = SecurityUtils.getSubject();
         if (!subject.isAuthenticated()) {
+            int loginErrorCount = getLoginErrorCountFromCookie();
             // 尚未登录, 执行登录逻辑
             if (log.isDebugEnabled()) {
                 log.debug("尚未登录,执行shiro登录...");
+                log.debug("当前已登录错误次数[{}]次", loginErrorCount);
             }
-            int loginErrorCount = getLoginErrorCountFromCookie();
+            if (loginErrorCount > 3) {
+                CheckCodeVerifyStatusEnums checkCodeVerifyStatusEnums = VerificationCodeUtil.loadCheckCodeVerifyStatus(HttpRequestUtil.loadHttpServletRequest());
+                if (checkCodeVerifyStatusEnums == CheckCodeVerifyStatusEnums.NOT_EXECUTE_VERIFY) {
+                    log.warn("登录错误次数超过3次, 应该需要执行验证码校验, 但获取到的状态却是未执行验证码校验, 请确认客户端的请求头中是否拥有客户端id!");
+                    throw new ValidateException("验证码校验失败!");
+                }
+                if (checkCodeVerifyStatusEnums == CheckCodeVerifyStatusEnums.VERIFY_FAIL) {
+                    log.warn("登录错误次数超过3次, 验证码过滤器已经检测到客户端传入的验证码是错误的, 实际应该转入验证码错误的uri, 但现在依然进入了登录接口, 请检查验证码过滤器配置或者逻辑是否有误!");
+                    throw new ValidateException("验证码错误!");
+                }
+            }
             try {
                 // shiro登录
                 subject.login(shiroMapStruct.loginParamsDTO2ShiroLoginToken(dto));
