@@ -32,7 +32,6 @@ import org.springframework.http.MediaType;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
