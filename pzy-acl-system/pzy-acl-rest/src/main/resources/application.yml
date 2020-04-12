@@ -82,6 +82,8 @@ email:
   password: ZMPMXLYELXFVEKQY
 
 component:
+  cross:
+    enable: true
   pic-verify-code:
     enable: true
   security:
@@ -96,5 +98,6 @@ component:
     enable: true
     match-packages:
       - "org.pzy.archetypesystem.base.module.*.controller"
+      - "org.pzy.opensource.verifycode.controller"
   cache: # 缓存详细配置
     cache-key-namespace: winter-cache # 缓存统一前缀
