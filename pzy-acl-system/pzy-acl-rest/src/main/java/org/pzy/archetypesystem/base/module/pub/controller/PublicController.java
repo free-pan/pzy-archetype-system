@@ -104,10 +104,7 @@ public class PublicController {
                 CookieUtil.addSessionCookie(HttpResponseUtl.loadHttpServletResponse(), SystemConstant.LOGIN_ERROR_COUNT_COOKIE_NAME, String.valueOf(++loginErrorCount), true);
                 throw e;
             }
-        }
-        if (subject.isAuthenticated()) {
-            // 登录成功
-            log.debug("登录成功,登录凭证:[{}]", subject.getPrincipal());
+            log.debug("shiro登录成功,登录凭证:[{}], 准备保存在线用户信息!", subject.getPrincipal());
             try {
                 saveOnlineUserInfo(subject);
             } catch (Exception e) {
@@ -115,6 +112,9 @@ public class PublicController {
                 log.error("保存在线用户时发生异常!", e);
                 throw e;
             }
+        }
+        if (subject.isAuthenticated()) {
+            // 登录成功
             return ResultT.success();
         } else {
             // 登录失败

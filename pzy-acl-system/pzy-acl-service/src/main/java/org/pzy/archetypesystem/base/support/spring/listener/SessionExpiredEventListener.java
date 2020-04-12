@@ -74,7 +74,7 @@ public class SessionExpiredEventListener {
     }
 
     private void clearRelationData(Session session) {
-        StringBuilder stringBuilder = new StringBuilder("监听到session销毁");
+        StringBuilder stringBuilder = new StringBuilder("监听到session销毁. ");
         if (null != session) {
             String sessionId = session.getId();
             stringBuilder.append("session id为:[" + sessionId + "]");

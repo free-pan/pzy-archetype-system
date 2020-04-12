@@ -101,7 +101,7 @@ public class CommOnlineUserServiceImpl extends ServiceTemplate<CommOnlineUserDAO
             if (dto.getKickoutAfter()) {
                 // 踢出后登录的
                 if (log.isWarnEnabled()) {
-                    log.warn("用户id[{}]的会话数已达[{}]个,超过系统允许的单个用户最大会话数[{}],登录失败!", dto.getUserId(), sessionMap.size(), dto.getSingleUserMaxSession());
+                    log.warn("用户id[{}]的会话数已达[{}]个,超过系统允许的单个用户最大会话数[{}],强制shiro进行登出!", dto.getUserId(), sessionMap.size(), dto.getSingleUserMaxSession());
                 }
                 throw new ValidateException("您的账号的会话数量已超过系统允许的最大数量,登录失败!");
             } else {
