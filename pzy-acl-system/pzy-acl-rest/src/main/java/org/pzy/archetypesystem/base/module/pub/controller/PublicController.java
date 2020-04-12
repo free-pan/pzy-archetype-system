@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.pzy.archetypesystem.base.module.acl.dto.ResetPasswordDTO;
@@ -14,6 +15,7 @@ import org.pzy.archetypesystem.base.module.comm.dto.CommOnlineUserAddDTO;
 import org.pzy.archetypesystem.base.module.comm.enums.FunCodeEnum;
 import org.pzy.archetypesystem.base.module.comm.enums.WinterLogType;
 import org.pzy.archetypesystem.base.module.comm.service.CommOnlineUserService;
+import org.pzy.archetypesystem.base.support.constant.SystemConstant;
 import org.pzy.archetypesystem.base.support.shiro.LoginParamsDTO;
 import org.pzy.archetypesystem.base.support.shiro.ShiroMapStruct;
 import org.pzy.opensource.domain.GlobalConstant;
@@ -21,10 +23,14 @@ import org.pzy.opensource.domain.ResultT;
 import org.pzy.opensource.domain.enums.GlobalSystemErrorCodeEnum;
 import org.pzy.opensource.security.domain.bo.SimpleShiroUserBO;
 import org.pzy.opensource.security.properties.WinterShiroProperties;
+import org.pzy.opensource.web.util.CookieUtil;
 import org.pzy.opensource.web.util.HttpClientInfoUtil;
+import org.pzy.opensource.web.util.HttpRequestUtil;
+import org.pzy.opensource.web.util.HttpResponseUtl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.session.FindByIndexNameSessionRepository;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,7 +68,17 @@ public class PublicController {
             if (log.isDebugEnabled()) {
                 log.debug("尚未登录,执行shiro登录...");
             }
-            subject.login(shiroMapStruct.loginParamsDTO2ShiroLoginToken(dto));
+            int loginErrorCount = getLoginErrorCountFromCookie();
+            try {
+                // shiro登录
+                subject.login(shiroMapStruct.loginParamsDTO2ShiroLoginToken(dto));
+                // 登录成功, 删除登录错误计数器
+                CookieUtil.remove(HttpResponseUtl.loadHttpServletResponse(), SystemConstant.LOGIN_ERROR_COUNT_COOKIE_NAME);
+            } catch (AuthenticationException e) {
+                // 登录错误次数累加
+                CookieUtil.addSessionCookie(HttpResponseUtl.loadHttpServletResponse(), SystemConstant.LOGIN_ERROR_COUNT_COOKIE_NAME, String.valueOf(++loginErrorCount), true);
+                throw e;
+            }
         }
         if (subject.isAuthenticated()) {
             // 登录成功
@@ -82,6 +98,17 @@ public class PublicController {
             }
             return ResultT.success().setSuccess(false);
         }
+    }
+
+    /**
+     * 从cookie中获取登录错误次数
+     *
+     * @return
+     */
+    private int getLoginErrorCountFromCookie() {
+        String tmp = CookieUtil.getValue(HttpRequestUtil.loadHttpServletRequest(), SystemConstant.LOGIN_ERROR_COUNT_COOKIE_NAME);
+        int loginErrorCount = StringUtils.isEmpty(tmp) ? 0 : Integer.parseInt(tmp);
+        return loginErrorCount;
     }
 
     /**
@@ -119,7 +146,6 @@ public class PublicController {
         onlineUserService.saveAndClearCache(onlineUserAddDTO);
         // 在会话中保存唯一标识
         SecurityUtils.getSubject().getSession().setAttribute(GlobalConstant.SESSION_LOGIN_USER_ID_KEY, id);
-        //
         SecurityUtils.getSubject().getSession().setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, shiroUserBO.getUkFlag());
     }
 

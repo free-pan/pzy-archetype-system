@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class CommDictionaryItemSearchDTO extends KeywordSearchDTO {
 
-    @ApiModelProperty(value = "所属字典id")
+    @ApiModelProperty(value = "所属字典id", example = "1")
     @NotNull(message = "请指定所属字典")
     private Long dictionaryId;
 
