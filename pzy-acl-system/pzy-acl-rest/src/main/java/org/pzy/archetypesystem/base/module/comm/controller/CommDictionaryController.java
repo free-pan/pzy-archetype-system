@@ -1,16 +1,14 @@
 package org.pzy.archetypesystem.base.module.comm.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiImplicitParam;
-import org.pzy.archetypesystem.base.module.comm.service.CommDictionaryService;
+import io.swagger.annotations.ApiOperation;
 import org.pzy.archetypesystem.base.module.comm.dto.*;
+import org.pzy.archetypesystem.base.module.comm.service.CommDictionaryService;
 import org.pzy.archetypesystem.base.module.comm.vo.*;
 import org.pzy.opensource.domain.PageT;
 import org.pzy.opensource.domain.ResultT;
-import org.pzy.opensource.domain.vo.PageVO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * CommDictionary 的rest服务

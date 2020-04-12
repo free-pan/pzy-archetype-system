@@ -36,4 +36,25 @@
         code, name, remark
     </sql>
 
+    <select id="selectByCondition" resultType="org.pzy.archetypesystem.base.module.comm.entity.CommDictionary">
+        select
+            <include refid="Base_Column_List"></include>
+        from
+            comm_dictionary
+        <where>
+            <trim prefix="" prefixOverrides="and || AND">
+                <if test="null!=dto.kw and ''!=dto.kw">
+                    (
+                        code like concat('%',#{dto.kw},'%')
+                        or
+                        name like concat('%',#{dto.kw},'%')
+                    )
+                </if>
+                <if test="null!=status">
+                    and disabled=#{status.code}
+                </if>
+            </trim>
+        </where>
+    </select>
+
 </mapper>

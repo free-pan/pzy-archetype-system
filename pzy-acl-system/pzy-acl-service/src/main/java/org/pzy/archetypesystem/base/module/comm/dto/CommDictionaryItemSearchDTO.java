@@ -2,12 +2,10 @@ package org.pzy.archetypesystem.base.module.comm.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.pzy.opensource.domain.dto.KeywordDateRangeSearchDTO;
-import org.pzy.opensource.domain.vo.PageVO;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
+import org.pzy.opensource.domain.dto.KeywordSearchDTO;
+import org.pzy.opensource.domain.enums.DisableStatusEnum;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * CommDictionaryItem查询条件
@@ -16,12 +14,12 @@ import java.util.Date;
  * @date 2020-04-11
  */
 @Data
-public class CommDictionaryItemSearchDTO extends KeywordDateRangeSearchDTO {
+public class CommDictionaryItemSearchDTO extends KeywordSearchDTO {
 
-    @ApiModelProperty(value = "分页条件")
-    private PageVO pg;
+    @ApiModelProperty(value = "所属字典id")
+    @NotNull(message = "请指定所属字典")
+    private Long dictionaryId;
 
-    public CommDictionaryItemSearchDTO() {
-        this.pg = new PageVO();
-    }
+    @ApiModelProperty(value = "启用禁用状态")
+    private DisableStatusEnum status;
 }

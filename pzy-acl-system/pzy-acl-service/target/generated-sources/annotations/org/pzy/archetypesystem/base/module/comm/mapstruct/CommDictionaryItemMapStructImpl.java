@@ -1,9 +1,5 @@
 package org.pzy.archetypesystem.base.module.comm.mapstruct;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.annotation.Generated;
 import org.pzy.archetypesystem.base.module.comm.dto.CommDictionaryItemAddDTO;
 import org.pzy.archetypesystem.base.module.comm.dto.CommDictionaryItemEditDTO;
 import org.pzy.archetypesystem.base.module.comm.dto.CommDictionaryItemSearchDTO;
@@ -12,6 +8,11 @@ import org.pzy.archetypesystem.base.module.comm.vo.CommDictionaryItemVO;
 import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Generated;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",

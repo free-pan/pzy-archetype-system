@@ -1,9 +1,9 @@
 package org.pzy.archetypesystem.base.module.comm.mapstruct;
 
 import org.mapstruct.Mapper;
-import org.pzy.archetypesystem.base.module.comm.vo.*;
-import org.pzy.archetypesystem.base.module.comm.entity.*;
 import org.pzy.archetypesystem.base.module.comm.dto.*;
+import org.pzy.archetypesystem.base.module.comm.entity.*;
+import org.pzy.archetypesystem.base.module.comm.vo.*;
 import org.pzy.opensource.comm.mapstruct.ComplexMapStruct;
 import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 
