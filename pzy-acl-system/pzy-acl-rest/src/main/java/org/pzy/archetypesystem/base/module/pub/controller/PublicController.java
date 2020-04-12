@@ -25,6 +25,7 @@ import org.pzy.opensource.domain.ResultT;
 import org.pzy.opensource.domain.enums.GlobalSystemErrorCodeEnum;
 import org.pzy.opensource.security.domain.bo.SimpleShiroUserBO;
 import org.pzy.opensource.security.properties.WinterShiroProperties;
+import org.pzy.opensource.verifycode.domain.constant.VerificationCodeConstant;
 import org.pzy.opensource.verifycode.domain.enums.CheckCodeVerifyStatusEnums;
 import org.pzy.opensource.verifycode.domain.enums.VerifyCodeValidateFailTypeEnum;
 import org.pzy.opensource.verifycode.support.util.VerificationCodeUtil;
@@ -65,7 +66,7 @@ public class PublicController {
 
     @WinterLog(type = WinterLogType.Login, code = FunCodeEnum.LOGIN)
     @PostMapping("login")
-    @ApiImplicitParam(name = "clientId", value = "客户端id. 当需要进行验证校验时,则需要携带该参数", required = false, paramType = "header", dataType = "string")
+    @ApiImplicitParam(name = VerificationCodeConstant.CLIENT_ID, value = "客户端id. 当需要进行验证校验时,则需要携带该参数", required = false, paramType = "header", dataType = "string")
     @ApiOperation(value = "登录")
     public ResultT<Integer> login(@RequestBody @Validated LoginParamsDTO dto) {
         Subject subject = SecurityUtils.getSubject();
