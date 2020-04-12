@@ -3,12 +3,16 @@ package org.pzy.archetypesystem.base.module.comm.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.pzy.archetypesystem.base.module.comm.dto.*;
+import org.pzy.archetypesystem.base.module.comm.dto.CommDictionaryItemAddDTO;
+import org.pzy.archetypesystem.base.module.comm.dto.CommDictionaryItemEditDTO;
+import org.pzy.archetypesystem.base.module.comm.dto.CommDictionaryItemSearchDTO;
 import org.pzy.archetypesystem.base.module.comm.service.CommDictionaryItemService;
-import org.pzy.archetypesystem.base.module.comm.vo.*;
-import org.pzy.opensource.domain.PageT;
+import org.pzy.archetypesystem.base.module.comm.vo.CommDictionaryItemVO;
 import org.pzy.opensource.domain.ResultT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * CommDictionaryItem 的rest服务
@@ -33,8 +37,8 @@ public class CommDictionaryItemController {
 
     @GetMapping
     @ApiOperation(value = "CommDictionaryItem分页查找", notes = "未找到匹配数据,结果数据为空集合")
-    public ResultT<PageT<CommDictionaryItemVO>> searchPage(CommDictionaryItemSearchDTO dto) {
-        PageT<CommDictionaryItemVO> result = service.listAndCache(dto);
+    public ResultT<List<CommDictionaryItemVO>> searchPage(CommDictionaryItemSearchDTO dto) {
+        List<CommDictionaryItemVO> result = service.listAndCache(dto);
         return ResultT.success(result);
     }
 

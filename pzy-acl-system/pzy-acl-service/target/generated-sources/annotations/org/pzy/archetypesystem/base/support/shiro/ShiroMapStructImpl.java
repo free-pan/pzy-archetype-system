@@ -1,14 +1,13 @@
 package org.pzy.archetypesystem.base.support.shiro;
 
+import javax.annotation.Generated;
 import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Generated;
-
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-04-11T13:05:05+0800",
+    date = "2020-04-12T09:27:40+0800",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_181 (Oracle Corporation)"
 )
 @Component

@@ -36,5 +36,60 @@
         disabled_opt_name,
         dictionary_id, code, name, view_priority
     </sql>
+    <select id="selectListByCondition"
+            resultType="org.pzy.archetypesystem.base.module.comm.entity.CommDictionaryItem">
+        select
+            <include refid="Base_Column_List"></include>
+        from
+            comm_dictionary_item
+        where
+            dictionary_id=#{dictionaryId}
+            <if test="kw!=null and ''!=kw">
+                and (
+                    code like concat('%',#{kw},'%')
+                    or
+                    name like concat('%',#{kw},'%')
+                )
+            </if>
+    </select>
+    <select id="selectCountByCondition" resultType="java.lang.Integer">
+        select
+            count(di.id)
+        from
+            comm_dictionary d, comm_dictionary_item di
+        where
+            d.id=di.dictionary_id
+            and d.code=#{dictionaryCode}
+            and di.code in <foreach collection="itemCodeColl" item="item" open="(" separator="," close=")">#{item}</foreach>
+            <if test="status!=null">
+                and di.disabled=#{status.code}
+            </if>
+    </select>
+    <select id="selectByDictionaryCode"
+            resultType="org.pzy.archetypesystem.base.module.comm.vo.CommDictionaryItemSimpleVO">
+        select
+            d.code as dictionaryCode, di.id, dictionary_id, di.code, di.name, di.view_priority
+        from
+            comm_dictionary d, comm_dictionary_item di
+        where
+            d.id=di.dictionary_id
+            and d.code=#{dictionaryCode}
+        <if test="status!=null">
+            and di.disabled=#{status.code}
+        </if>
+    </select>
+    <select id="selectByDictionaryCodeColl"
+            resultType="org.pzy.archetypesystem.base.module.comm.vo.CommDictionaryItemSimpleVO">
+        select
+            d.code as dictionaryCode, di.id, dictionary_id, di.code, di.name, di.view_priority
+        from
+            comm_dictionary d, comm_dictionary_item di
+        where
+            d.id=di.dictionary_id
+            and d.code in <foreach collection="dictionaryCodeColl" item="item" open="(" separator="," close=")">#{item}</foreach>
+        <if test="status!=null">
+            and di.disabled=#{status.code}
+        </if>
+    </select>
 
 </mapper>
