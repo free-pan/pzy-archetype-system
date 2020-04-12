@@ -82,6 +82,8 @@ email:
   password: ZMPMXLYELXFVEKQY
 
 component:
+  pic-verify-code:
+    enable: true
   security:
     login-url: "/pu/login"
     logout-url: "/pu/logout"
