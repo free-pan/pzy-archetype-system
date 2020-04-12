@@ -10,7 +10,6 @@ import org.pzy.archetypesystem.base.module.comm.service.CommDictionaryItemServic
 import org.pzy.archetypesystem.base.module.comm.vo.CommDictionaryItemVO;
 import org.pzy.opensource.domain.ResultT;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 

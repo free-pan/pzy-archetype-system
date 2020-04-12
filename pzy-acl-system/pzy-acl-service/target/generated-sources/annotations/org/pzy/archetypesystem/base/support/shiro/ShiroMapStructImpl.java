@@ -1,9 +1,10 @@
 package org.pzy.archetypesystem.base.support.shiro;
 
-import javax.annotation.Generated;
 import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
