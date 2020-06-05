@@ -108,6 +108,6 @@ public class SysRoleServiceImpl extends ServiceTemplate<SysRoleDAO, SysRole> imp
         if (null == id) {
             return false;
         }
-        return super.baseMapper.logicDeleteById(id) > 0;
+        return super.baseMapper.winterLogicDeleteById(id) > 0;
     }
 }

@@ -1,5 +1,9 @@
 package org.pzy.archetypesystem.base.module.acl.mapstruct;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import javax.annotation.Generated;
 import org.pzy.archetypesystem.base.module.acl.dto.SysRoleAddDTO;
 import org.pzy.archetypesystem.base.module.acl.dto.SysRoleEditDTO;
 import org.pzy.archetypesystem.base.module.acl.dto.SysRoleSearchDTO;
@@ -9,15 +13,10 @@ import org.pzy.opensource.comm.mapstruct.StringDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Generated;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-04-12T17:45:35+0800",
-    comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_181 (Oracle Corporation)"
+    date = "2020-06-05T15:07:17+0800",
+    comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_231 (Oracle Corporation)"
 )
 @Component
 public class SysRoleMapStructImpl implements SysRoleMapStruct {

@@ -231,6 +231,6 @@ public class SysUserServiceImpl extends ServiceTemplate<SysUserDAO, SysUser> imp
         if (null == id) {
             return false;
         }
-        return super.baseMapper.logicDeleteById(id) > 0;
+        return super.baseMapper.winterLogicDeleteById(id) > 0;
     }
 }
